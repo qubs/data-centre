@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^stations/(?P<pk>[0-9]+)/$', views.StationDetail.as_view(), name='station-detail'),
     url(r'^stations/(?P<pk>[0-9]+)/data/$', views.StationData.as_view(), name='station-data'),
     url(r'^stations/(?P<pk>[0-9]+)/sensors/$', views.StationSensors.as_view(), name='station-sensors'),
+    url(r'^stations/(?P<pk>[0-9]+)/messages/$', views.StationMessages.as_view(), name='station-messages'),
 
     url(r'^station-sensor-links/$', views.StationSensorLinkList.as_view(), name='station-sensor-link-list'),
     url(r'^station-sensor-links/(?P<pk>[0-9]+)/$', views.StationSensorLinkDetail.as_view(), name='station-sensor-link-detail'),

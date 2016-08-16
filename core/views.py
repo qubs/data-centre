@@ -107,10 +107,15 @@ class StationSensors(generics.ListAPIView):
 
     def get_queryset(self):
         pk = self.kwargs["pk"]
+        return Sensor.objects.filter(stations__id=pk).order_by("stationsensorlink__station_order")
 
-        return Sensor.objects.filter(
-            stations__id=pk
-        ).order_by("stationsensorlink__station_order")
+class StationMessages(generics.ListAPIView):
+    serializer_class = MessageSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,) # TODO: Read only
+
+    def get_queryset(self):
+        pk = self.kwargs["pk"]
+        return Message.objects.filter(station=pk).order_by("arrival_time")
 
 
 class StationSensorLinkList(generics.ListCreateAPIView):
