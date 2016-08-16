@@ -7,8 +7,8 @@ from rest_framework.reverse import reverse
 from rest_framework import permissions
 from django.contrib.auth.models import User
 
-from core.models import Sensor, Station, Reading, Message
-from core.serializers import SensorSerializer, StationSerializer, ReadingSerializer, MessageSerializer, UserSerializer
+from core.models import Sensor, Station, StationSensorLink, Reading, Message
+from core.serializers import SensorSerializer, StationSerializer, StationSensorLinkSerializer, ReadingSerializer, MessageSerializer, UserSerializer
 
 
 @api_view(['GET'])
@@ -16,6 +16,7 @@ def api_root(request, format=None):
     return Response({
         'sensors': reverse('sensor-list', request=request, format=format),
         'stations': reverse('station-list', request=request, format=format),
+        'station-sensor-links': reverse('station-sensor-link-list', request=request, format=format),
         'readings': reverse('reading-list', request=request, format=format),
         'messages': reverse('message-list', request=request, format=format),
         'users': reverse('user-list', request=request, format=format),
@@ -37,8 +38,19 @@ class SensorData(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
-        pk = self.kwargs['pk']
+        pk = self.kwargs["pk"]
         return Reading.objects.filter(sensor=pk)
+
+class SensorStations(generics.ListAPIView):
+    serializer_class = StationSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,) # TODO: Read only
+
+    def get_queryset(self):
+        pk = self.kwargs["pk"]
+
+        return Station.objects.filter(
+            sensors__id=pk
+        )
 
 
 class StationList(generics.ListCreateAPIView):
@@ -53,17 +65,17 @@ class StationDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class StationData(generics.ListAPIView):
     serializer_class = ReadingSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,) # TODO: Read only
 
     def get_queryset(self):
-        pk = self.kwargs['pk']
+        pk = self.kwargs["pk"]
 
-        start_date = self.request.query_params.get('start', None)
+        start_date = self.request.query_params.get("start", None)
         start_date_object = datetime.datetime.today() - datetime.timedelta(days = 7) # Default to a week's worth
         if start_date != None:
             start_date_object = dateutil.parser.parse(start_date)
 
-        end_date = self.request.query_params.get('end', None)
+        end_date = self.request.query_params.get("end", None)
         end_date_object = datetime.datetime.today()
         if end_date != None:
             end_date_object = dateutil.parser.parse(end_date)
@@ -74,18 +86,40 @@ class StationData(generics.ListAPIView):
             read_time__lte = end_date_object
         )
 
+class StationSensors(generics.ListAPIView):
+    serializer_class = SensorSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,) # TODO: Read only
+
+    def get_queryset(self):
+        pk = self.kwargs["pk"]
+
+        return Sensor.objects.filter(
+            stations__id=pk
+        ).order_by("stationsensorlink__station_order")
+
+
+class StationSensorLinkList(generics.ListCreateAPIView):
+    queryset = StationSensorLink.objects.all()
+    serializer_class = StationSensorLinkSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+class StationSensorLinkDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = StationSensorLink.objects.all()
+    serializer_class = StationSensorLinkSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
 
 class ReadingList(generics.ListCreateAPIView):
     serializer_class = ReadingSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
-        start_date = self.request.query_params.get('start', None)
+        start_date = self.request.query_params.get("start", None)
         start_date_object = datetime.datetime.today() - datetime.timedelta(days = 7) # Default to a week's worth
         if start_date != None:
             start_date_object = dateutil.parser.parse(start_date)
 
-        end_date = self.request.query_params.get('end', None)
+        end_date = self.request.query_params.get("end", None)
         end_date_object = datetime.datetime.today()
         if end_date != None:
             end_date_object = dateutil.parser.parse(end_date)
@@ -110,12 +144,12 @@ class MessageList(generics.ListCreateAPIView):
         serializer.save()
 
     def get_queryset(self):
-        start_date = self.request.query_params.get('start', None)
+        start_date = self.request.query_params.get("start", None)
         start_date_object = datetime.datetime.today() - datetime.timedelta(days = 7) # Default to a week's worth
         if start_date != None:
             start_date_object = dateutil.parser.parse(start_date)
 
-        end_date = self.request.query_params.get('end', None)
+        end_date = self.request.query_params.get("end", None)
         end_date_object = datetime.datetime.today()
         if end_date != None:
             end_date_object = dateutil.parser.parse(end_date)
@@ -125,7 +159,7 @@ class MessageList(generics.ListCreateAPIView):
             arrival_time__lte = end_date_object
         )
 
-        goes_id = self.request.query_params.get('goes_id', None)
+        goes_id = self.request.query_params.get("goes_id", None)
         if goes_id is not None:
             queryset = Message.objects.filter(
                 arrival_time__gte = start_date_object,
