@@ -127,7 +127,7 @@ class StationMessages(generics.ListAPIView):
 
 
 class StationSensorLinkList(generics.ListCreateAPIView):
-    queryset = StationSensorLink.objects.all()
+    queryset = StationSensorLink.objects.all().order_by("created")
     serializer_class = StationSensorLinkSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
@@ -155,7 +155,7 @@ class ReadingList(generics.ListCreateAPIView):
         return Reading.objects.filter(
             read_time__gte = start_date_object,
             read_time__lte = end_date_object
-        )
+        ).order_by("read_time")
 
 class ReadingDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Reading.objects.all()
