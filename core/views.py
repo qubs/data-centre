@@ -109,6 +109,20 @@ class StationData(generics.ListAPIView):
             read_time__lte = end_date_object
         )
 
+class StationLatestData(generics.ListAPIView):
+    serializer_class = ReadingSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,) # TODO: Read only
+
+    def get_queryset(self):
+        pk = self.kwargs["pk"]
+        latest_message = Message.objects.filter(station = pk).latest("arrival_time")
+        start_date_object = latest_message.arrival_time - datetime.timedelta(hours = 1)
+
+        return Reading.objects.filter(
+            station = pk,
+            read_time__gte = start_date_object,
+        )
+
 class StationSensors(generics.ListAPIView):
     serializer_class = SensorSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,) # TODO: Read only
@@ -161,6 +175,24 @@ class ReadingDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Reading.objects.all()
     serializer_class = ReadingSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+class ReadingLatest(generics.ListAPIView):
+    serializer_class = ReadingSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,) # TODO: Read only
+
+    def get_queryset(self):
+        stations = Station.objects.all()
+        station_ids = []
+        for s in stations:
+            station_ids.append(s.id)
+
+        latest_message = Message.objects.all().latest("arrival_time")
+        start_date_object = latest_message.arrival_time - datetime.timedelta(hours = 1)
+
+        return Reading.objects.filter(
+            station__in = station_ids,
+            read_time__gte = start_date_object,
+        )
 
 
 class MessageList(generics.ListCreateAPIView):
