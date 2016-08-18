@@ -57,6 +57,7 @@ class StationSensorLink(models.Model):
     sensor = models.ForeignKey(Sensor, on_delete=models.CASCADE)
 
     station_order = models.PositiveSmallIntegerField()
+    read_frequency = models.PositiveSmallIntegerField(default=4) # Default to 4 times per message.
 
     def __str__(self):
         return "Link between station {} and sensor {}".format(station, sensor)
