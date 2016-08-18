@@ -235,6 +235,18 @@ class MessageDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MessageSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
+class MessageLatest(generics.ListAPIView):
+    serializer_class = MessageSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,) # TODO: Read only
+
+    def get_queryset(self):
+        latest_message = Message.objects.all().latest("arrival_time")
+        start_date_object = latest_message.arrival_time - datetime.timedelta(hours = 1)
+
+        return Message.objects.filter(
+            arrival_time__gte = start_date_object
+        )
+
 
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()

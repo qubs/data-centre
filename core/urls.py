@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^readings/(?P<pk>[0-9]+)/$', views.ReadingDetail.as_view(), name='reading-detail'),
 
     url(r'^messages/$', views.MessageList.as_view(), name='message-list'),
+    url(r'^messages/latest/$', views.MessageLatest.as_view(), name='message-latest'),
     url(r'^messages/(?P<pk>[0-9]+)/$', views.MessageDetail.as_view(), name='message-detail'),
 
     url(r'^users/$', views.UserList.as_view(), name='user-list'),
