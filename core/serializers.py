@@ -34,7 +34,8 @@ class StationSerializer(serializers.ModelSerializer):
 class StationSensorLinkSerializer(serializers.ModelSerializer):
     class Meta:
         model = StationSensorLink
-        fields = ("id", "created", "updated", "station", "sensor", "station_order")
+        fields = ("id", "created", "updated", "station", "sensor", "station_order", "read_frequency")
+
 
 class ReadingSerializer(serializers.ModelSerializer):
     class Meta:
