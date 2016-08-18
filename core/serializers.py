@@ -25,7 +25,10 @@ class SensorSerializer(serializers.ModelSerializer):
 
 
 class StationSerializer(serializers.ModelSerializer):
-    sensors = serializers.HyperlinkedRelatedField(many=True, view_name="sensor-detail", read_only=True)
+    sensors = serializers.SerializerMethodField("get_sensor_list")
+
+    def get_sensor_list(self, instance):
+        return StationSensorLink.objects.filter(station = instance.id).order_by("station_order").values_list("sensor_id", flat=True)
 
     class Meta:
         model = Station
