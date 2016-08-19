@@ -47,7 +47,7 @@ class ReadingSerializer(serializers.ModelSerializer):
 
 
 class MessageSerializer(serializers.ModelSerializer):
-    values = serializers.ListField(child=serializers.IntegerField())
+    values = serializers.ListField(child=serializers.IntegerField(allow_null=True))
 
     class Meta:
         model = Message

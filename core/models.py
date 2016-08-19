@@ -151,7 +151,7 @@ class Message(models.Model):
 
     recorded_message_length = models.PositiveSmallIntegerField()
 
-    values = ArrayField(models.IntegerField())
+    values = ArrayField(models.IntegerField(null=True))
     message_text = models.TextField()
 
     # Foreign keys
