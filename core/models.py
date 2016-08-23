@@ -76,6 +76,7 @@ class Reading(models.Model):
     # Foreign keys
     sensor = models.ForeignKey("Sensor", on_delete=models.SET_NULL, null=True)
     station = models.ForeignKey("Station", on_delete=models.SET_NULL, null=True)
+    message = models.ForeignKey("Message", on_delete=models.SET_NULL, null=True)
 
     def __repr__(self):
         return "<Reading {} at {} from station {}>".format(self.value, self.read_time, self.station)

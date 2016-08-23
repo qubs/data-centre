@@ -44,6 +44,7 @@ class ReadingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reading
         fields = ("id", "created", "updated", "read_time", "value", "sensor", "station")
+        fields = ("id", "created", "updated", "read_time", "value", "sensor", "station", "message")
 
 
 class MessageSerializer(serializers.ModelSerializer):
