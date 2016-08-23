@@ -67,11 +67,24 @@ class StationSensorLink(models.Model):
 
 
 class Reading(models.Model):
+    FROM_GOES = "G"
+    FROM_DEVICE_LOG = "L"
+
+    DATA_SOURCE_CHOICES = (
+        (FROM_GOES, "Retrieved from GOES satellite message"),
+        (FROM_DEVICE_LOG, "Retrieved from station data log"),
+    )
+
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     read_time = models.DateTimeField()
-    value = models.IntegerField()
+    data_source = models.CharField(max_length=1, choices=DATA_SOURCE_CHOICES, default=FROM_GOES)
+
+    value = models.IntegerField(null=True)
+
+    qc_processed = models.BooleanField(default=False)
+    invalid = models.BooleanField(default=False)
 
     # Foreign keys
     sensor = models.ForeignKey("Sensor", on_delete=models.SET_NULL, null=True)
