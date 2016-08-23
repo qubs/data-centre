@@ -131,6 +131,7 @@ class Message(models.Model):
         ("XW", "Sioux Falls, West; USGS EROS"),
         ("XL", "Sioux Falls, LRIT; USGS EROS"),
         ("RL", "Reston, LRIT; Reston, Virginia"),
+        ("FF", "Unknown 1"),
     )
 
     created = models.DateTimeField(auto_now_add=True)
