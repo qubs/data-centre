@@ -15,29 +15,31 @@
 
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from core.models import Sensor, Station, StationSensorLink, Reading, Message
+
+from core.models import *
 
 
 class SensorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sensor
-        fields = ("id", "created", "updated", "name", "data_id", "decimals")
+        fields = ("id", "created", "updated", "name", "data_id", "decimals",)
 
 
 class StationSerializer(serializers.ModelSerializer):
-    sensors = serializers.SerializerMethodField("get_sensor_list")
+    sensors = serializers.SerializerMethodField("get_sensor_list",)
 
     def get_sensor_list(self, instance):
-        return StationSensorLink.objects.filter(station = instance.id).order_by("station_order").values_list("sensor_id", flat=True)
+        return StationSensorLink.objects.filter(station=instance.id).order_by("station_order") \
+                                        .values_list("sensor_id", flat=True)
 
     class Meta:
         model = Station
-        fields = ("id", "created", "updated", "name", "goes_id", "sensors")
+        fields = ("id", "created", "updated", "name", "goes_id", "sensors",)
 
 class StationSensorLinkSerializer(serializers.ModelSerializer):
     class Meta:
         model = StationSensorLink
-        fields = ("id", "created", "updated", "station", "sensor", "station_order", "read_frequency")
+        fields = ("id", "created", "updated", "station", "sensor", "station_order", "read_frequency",)
 
 
 class ReadingSerializer(serializers.ModelSerializer):
@@ -54,7 +56,7 @@ class MessageSerializer(serializers.ModelSerializer):
         model = Message
         fields = ("id", "created", "updated", "goes_id", "goes_channel", "goes_spacecraft",
             "arrival_time", "failure_code", "signal_strength", "frequency_offset", "modulation_index",
-            "data_quality", "data_source", "recorded_message_length", "values", "message_text", "station")
+            "data_quality", "data_source", "recorded_message_length", "values", "message_text", "station",)
 
 
 class UserSerializer(serializers.ModelSerializer):

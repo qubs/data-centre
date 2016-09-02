@@ -58,7 +58,7 @@ class SensorData(generics.ListAPIView):
 
 class SensorStations(generics.ListAPIView):
     serializer_class = StationSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,) # TODO: Read only
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
         pk = self.kwargs["pk"]
@@ -77,7 +77,7 @@ class StationList(generics.ListCreateAPIView):
 
         goes_id = self.request.query_params.get("goes_id", None)
         if goes_id is not None:
-            queryset = Station.objects.filter(goes_id = goes_id)
+            queryset = Station.objects.filter(goes_id=goes_id)
 
         return queryset
 
@@ -88,7 +88,7 @@ class StationDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class StationData(generics.ListAPIView):
     serializer_class = ReadingSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,) # TODO: Read only
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
         pk = self.kwargs["pk"]
@@ -104,28 +104,28 @@ class StationData(generics.ListAPIView):
             end_date_object = dateutil.parser.parse(end_date)
 
         return Reading.objects.filter(
-            station = pk,
-            read_time__gte = start_date_object,
-            read_time__lte = end_date_object
+            station=pk,
+            read_time__gte=start_date_object,
+            read_time__lte=end_date_object
         )
 
 class StationLatestData(generics.ListAPIView):
     serializer_class = ReadingSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,) # TODO: Read only
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
         pk = self.kwargs["pk"]
-        latest_message = Message.objects.filter(station = pk).latest("arrival_time")
-        start_date_object = latest_message.arrival_time - datetime.timedelta(hours = 1)
+        latest_message = Message.objects.filter(station=pk).latest("arrival_time")
+        start_date_object = latest_message.arrival_time - datetime.timedelta(hours=1)
 
         return Reading.objects.filter(
-            station = pk,
+            station=pk,
             read_time__gte = start_date_object,
         )
 
 class StationSensors(generics.ListAPIView):
     serializer_class = SensorSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,) # TODO: Read only
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
         pk = self.kwargs["pk"]
@@ -133,11 +133,20 @@ class StationSensors(generics.ListAPIView):
 
 class StationMessages(generics.ListAPIView):
     serializer_class = MessageSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,) # TODO: Read only
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
         pk = self.kwargs["pk"]
         return Message.objects.filter(station=pk).order_by("arrival_time")
+
+class StationLatestMessage(generics.RetrieveAPIView):
+    queryset = Message.objects.all()
+    serializer_class = MessageSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def get_object(self):
+        pk = self.kwargs["pk"]
+        return self.queryset.filter(station_id=pk).latest("arrival_time")
 
 
 class StationSensorLinkList(generics.ListCreateAPIView):
@@ -167,8 +176,8 @@ class ReadingList(generics.ListCreateAPIView):
             end_date_object = dateutil.parser.parse(end_date)
 
         return Reading.objects.filter(
-            read_time__gte = start_date_object,
-            read_time__lte = end_date_object
+            read_time__gte=start_date_object,
+            read_time__lte=end_date_object
         ).order_by("read_time")
 
 class ReadingDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -178,7 +187,7 @@ class ReadingDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class ReadingLatest(generics.ListAPIView):
     serializer_class = ReadingSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,) # TODO: Read only
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
         stations = Station.objects.all()
@@ -187,11 +196,11 @@ class ReadingLatest(generics.ListAPIView):
             station_ids.append(s.id)
 
         latest_message = Message.objects.all().latest("arrival_time")
-        start_date_object = latest_message.arrival_time - datetime.timedelta(hours = 1)
+        start_date_object = latest_message.arrival_time - datetime.timedelta(hours=1)
 
         return Reading.objects.filter(
-            station__in = station_ids,
-            read_time__gte = start_date_object,
+            station__in=station_ids,
+            read_time__gte=start_date_object,
         )
 
 
@@ -215,18 +224,18 @@ class MessageList(generics.ListCreateAPIView):
             end_date_object = dateutil.parser.parse(end_date)
 
         queryset = Message.objects.filter(
-            arrival_time__gte = start_date_object,
-            arrival_time__lte = end_date_object
-        )
+            arrival_time__gte=start_date_object,
+            arrival_time__lte=end_date_object
+        ).order_by("arrival_time")
 
         goes_id = self.request.query_params.get("goes_id", None)
         if goes_id is not None:
             queryset = Message.objects.filter(
-                arrival_time__gte = start_date_object,
-                arrival_time__lte = end_date_object,
+                arrival_time__gte=start_date_object,
+                arrival_time__lte=end_date_object,
 
-                goes_id = goes_id
-            )
+                goes_id=goes_id
+            ).order_by("arrival_time")
 
         return queryset
 
@@ -237,14 +246,14 @@ class MessageDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class MessageLatest(generics.ListAPIView):
     serializer_class = MessageSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,) # TODO: Read only
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
         latest_message = Message.objects.all().latest("arrival_time")
-        start_date_object = latest_message.arrival_time - datetime.timedelta(hours = 1)
+        start_date_object = latest_message.arrival_time - datetime.timedelta(hours=1)
 
         return Message.objects.filter(
-            arrival_time__gte = start_date_object
+            arrival_time__gte=start_date_object
         )
 
 
