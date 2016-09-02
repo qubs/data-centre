@@ -22,8 +22,8 @@ from rest_framework.reverse import reverse
 from rest_framework import permissions
 from django.contrib.auth.models import User
 
-from core.models import Sensor, Station, StationSensorLink, Reading, Message
-from core.serializers import SensorSerializer, StationSerializer, StationSensorLinkSerializer, ReadingSerializer, MessageSerializer, UserSerializer
+from core.models import *
+from core.serializers import *
 
 
 @api_view(['GET'])
