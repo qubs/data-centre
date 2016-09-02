@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-import datetime, dateutil.parser
+import datetime, dateutil.parser, pytz
 
 from rest_framework import mixins, generics
 from rest_framework.decorators import api_view
@@ -94,12 +94,12 @@ class StationData(generics.ListAPIView):
         pk = self.kwargs["pk"]
 
         start_date = self.request.query_params.get("start", None)
-        start_date_object = datetime.datetime.today() - datetime.timedelta(days = 7) # Default to a week's worth
+        start_date_object = datetime.datetime.now(pytz.utc) - datetime.timedelta(days=7) # Default to a week's worth
         if start_date != None:
             start_date_object = dateutil.parser.parse(start_date)
 
         end_date = self.request.query_params.get("end", None)
-        end_date_object = datetime.datetime.today()
+        end_date_object = datetime.datetime.now(pytz.utc)
         if end_date != None:
             end_date_object = dateutil.parser.parse(end_date)
 
@@ -166,12 +166,12 @@ class ReadingList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         start_date = self.request.query_params.get("start", None)
-        start_date_object = datetime.datetime.today() - datetime.timedelta(days = 7) # Default to a week's worth
+        start_date_object = datetime.datetime.now(pytz.utc) - datetime.timedelta(days=7) # Default to a week's worth
         if start_date != None:
             start_date_object = dateutil.parser.parse(start_date)
 
         end_date = self.request.query_params.get("end", None)
-        end_date_object = datetime.datetime.today()
+        end_date_object = datetime.datetime.now(pytz.utc)
         if end_date != None:
             end_date_object = dateutil.parser.parse(end_date)
 
@@ -214,12 +214,12 @@ class MessageList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         start_date = self.request.query_params.get("start", None)
-        start_date_object = datetime.datetime.today() - datetime.timedelta(days = 7) # Default to a week's worth
+        start_date_object = datetime.datetime.now(pytz.utc) - datetime.timedelta(days=7) # Default to a week's worth
         if start_date != None:
             start_date_object = dateutil.parser.parse(start_date)
 
         end_date = self.request.query_params.get("end", None)
-        end_date_object = datetime.datetime.today()
+        end_date_object = datetime.datetime.now(pytz.utc)
         if end_date != None:
             end_date_object = dateutil.parser.parse(end_date)
 
