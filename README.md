@@ -27,7 +27,17 @@ TODO
 
 TODO
 
-### `GET /messages/[id]/` (where `[id]` is the numeric id of a message)
+### `GET /messages/latest/`
+
+#### Parameters
+
+TODO
+
+#### Example Request
+
+TODO
+
+### `GET /messages/[id]/` (where `[id]` is the numeric ID of a message)
 
 Shows a single message object.
 
@@ -70,7 +80,27 @@ TODO
 
 TODO
 
+### `GET /readings/[id]/` (where `[id]` is the numeric ID of a reading)
+
+#### Parameters
+
+TODO
+
+#### Example Request
+
+TODO
+
 ### `GET /sensors/`
+
+#### Parameters
+
+TODO
+
+#### Example Request
+
+TODO
+
+### `GET /sensors/[id]/` (where `[id]` is the numeric ID of a sensor)
 
 #### Parameters
 
@@ -115,6 +145,16 @@ Host: climate.qubs.ca
 ```
 
 (Response truncated for conciseness)
+
+### `GET /stations/[id]/` (where `[id]` is the numeric ID of a station)
+
+#### Parameters
+
+TODO
+
+#### Example Request
+
+TODO
 
 ## Object Types
 
