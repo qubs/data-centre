@@ -195,11 +195,50 @@ Offset can be calculated by multiplying the value by 50 Hz. If the second charac
 
 #### Format
 
-TODO
+```json
+{
+    "id": 187337,
+    "created": "2016-08-23T01:59:48.078269Z",
+    "updated": "2016-08-23T01:59:48.078298Z",
+    "read_time": "2016-07-23T01:15:00Z",
+    "data_source": "G",
+    "value": 2870,
+    "qc_processed": false,
+    "invalid": false,
+    "sensor": 1,
+    "station": 1,
+    "message": 4132
+}
+```
 
 #### Fields
 
-TODO
+`id`: A unique numerical ID representing the reading.
+
+`created`: A timestamp when the reading was created (not when it was taken, but when the data object was added to the
+database).
+
+`updated`: A timestamp of when the data object representing the reading in the database was last changed.
+
+`read_time`: When the reading was taken (in UTC time).
+
+`data_source`: Where the reading is sourced from. `G` means the value was downloaded from the **G**OES satellite, and
+`L` means it was taken from the device data **L**og.
+
+`value`: The value of the reading, raw from the message. Takes on a `null` value if the reading could not be parsed or
+was deemed completely invalid by the auto-downloader. Does not include a decimal point (which can be located in the
+details of the reading's sensor).
+
+`qc_processed`: Whether or not a quality control system has processed and made a decision about the validity of this
+reading.
+
+`invalid`: Whether or not this point is invalid desplite posessing a non-`null` `value`.
+
+`sensor`: The API ID of the sensor which took the reading.
+
+`station`: The API ID of the station which transmitted the message and is linked with the aforementioned sensor.
+
+`message`: The API Id of the GOES message which this reading was sourced from, if applicable.
 
 ### Sensor
 
