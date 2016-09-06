@@ -26,16 +26,16 @@ from core.models import *
 from core.serializers import *
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def api_root(request, format=None):
     return Response({
-        'sensors': reverse('sensor-list', request=request, format=format),
-        'stations': reverse('station-list', request=request, format=format),
-        'station-sensor-links': reverse('station-sensor-link-list', request=request, format=format),
-        'readings': reverse('reading-list', request=request, format=format),
-        'messages': reverse('message-list', request=request, format=format),
-        'users': reverse('user-list', request=request, format=format),
+        "sensors": reverse("sensor-list", request=request, format=format),
+        "stations": reverse("station-list", request=request, format=format),
+        "station-sensor-links": reverse("station-sensor-link-list", request=request, format=format),
+        "readings": reverse("reading-list", request=request, format=format),
+        "messages": reverse("message-list", request=request, format=format),
         "settings": reverse("setting-list", request=request, format=format),
+        "users": reverse("user-list", request=request, format=format),
     })
 
 

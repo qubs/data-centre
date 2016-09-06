@@ -32,10 +32,14 @@ urlpatterns = [
     url(r'^stations/(?P<pk>[0-9]+)/data/latest/$', views.StationLatestData.as_view(), name='station-latest-data'),
     url(r'^stations/(?P<pk>[0-9]+)/sensors/$', views.StationSensors.as_view(), name='station-sensors'),
     url(r'^stations/(?P<pk>[0-9]+)/messages/$', views.StationMessages.as_view(), name='station-messages'),
-    url(r'^stations/(?P<pk>[0-9]+)/messages/latest/$', views.StationLatestMessage.as_view(), name='station-latest-message'),
+    url(r'^stations/(?P<pk>[0-9]+)/messages/latest/$',
+        views.StationLatestMessage.as_view(),
+        name='station-latest-message'),
 
     url(r'^station-sensor-links/$', views.StationSensorLinkList.as_view(), name='station-sensor-link-list'),
-    url(r'^station-sensor-links/(?P<pk>[0-9]+)/$', views.StationSensorLinkDetail.as_view(), name='station-sensor-link-detail'),
+    url(r'^station-sensor-links/(?P<pk>[0-9]+)/$',
+        views.StationSensorLinkDetail.as_view(),
+        name='station-sensor-link-detail'),
 
     url(r'^readings/$', views.ReadingList.as_view(), name='reading-list'),
     url(r'^readings/latest/$', views.ReadingLatest.as_view(), name='reading-latest'),
