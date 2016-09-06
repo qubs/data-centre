@@ -7,21 +7,21 @@ or proofreading done to data stored hear and thus readings may be inaccurate.
 ## Contents
 
 * [Requirements and Technologies](#requirements-and-technologies)
-* [Accessing Data](#accessing-data)
-    * [`GET /messages/`]()
-    * [`GET /messages/latest/`]()
-    * [`GET /messages/[id]/`]()
-    * [`GET /readings/`]()
-    * [`GET /readings/[id]/`]()
-    * [`GET /sensors/`]()
-    * [`GET /sensors/[id]/`]()
-    * [`GET /stations/`]()
-    * [`GET /stations/[id]/`]()
+* [Accessing API Data](#accessing-api-data)
+    * [`GET /messages/`](#get-messages)
+    * [`GET /messages/latest/`](#get-messageslatest)
+    * [`GET /messages/[id]/`](#get-messagesid-where-id-is-the-numeric-id-of-a-message)
+    * [`GET /readings/`](#get-readings)
+    * [`GET /readings/[id]/`](#get-readingsid-where-id-is-the-numeric-id-of-a-reading)
+    * [`GET /sensors/`](#get-sensors)
+    * [`GET /sensors/[id]/`](#get-sensorsid-where-id-is-the-numeric-id-of-a-sensor)
+    * [`GET /stations/`](#get-stations)
+    * [`GET /stations/[id]/`](#get-stationsid-where-id-is-the-numeric-id-of-a-station)
 * [Object Types](#object-types)
-    * [Message]()
-    * [Reading]()
-    * [Sensor]()
-    * [Station]()
+    * [Message](#message)
+    * [Reading](#reading)
+    * [Sensor](#sensor)
+    * [Station](#station)
 
 ## Requirements and Technologies
 
@@ -29,7 +29,7 @@ Requirements are listed programmatically in the `requirements.txt` file. The API
 [Django Rest Framework](http://www.django-rest-framework.org/) and uses [PostgreSQL](https://www.postgresql.org/) for
 a database.
 
-## Accessing Data
+## Accessing API Data
 
 The API is hosted at [http://climate.qubs.ca/api/](http://climate.qubs.ca/api/). Listed below are request paths based
 on this URL for fetching data programmatically.
