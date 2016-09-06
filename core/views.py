@@ -35,6 +35,7 @@ def api_root(request, format=None):
         'readings': reverse('reading-list', request=request, format=format),
         'messages': reverse('message-list', request=request, format=format),
         'users': reverse('user-list', request=request, format=format),
+        "settings": reverse("setting-list", request=request, format=format),
     })
 
 
@@ -255,6 +256,27 @@ class MessageLatest(generics.ListAPIView):
         return Message.objects.filter(
             arrival_time__gte=start_date_object
         )
+
+
+class SettingList(generics.ListAPIView):
+    queryset = Setting.objects.all()
+    serializer_class = SettingSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+class SettingDetail(generics.RetrieveUpdateAPIView):
+    queryset = Setting.objects.all()
+    serializer_class = SettingSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+class SettingDetailWithName(generics.RetrieveUpdateAPIView):
+    queryset = Setting.objects.all()
+    serializer_class = SettingSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def get_object(self):
+        print(self.kwargs)
+        name = self.kwargs["name"]
+        return self.queryset.filter(name=name).first()
 
 
 class UserList(generics.ListAPIView):

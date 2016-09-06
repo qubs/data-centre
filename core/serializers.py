@@ -59,6 +59,12 @@ class MessageSerializer(serializers.ModelSerializer):
             "data_quality", "data_source", "recorded_message_length", "values", "message_text", "station",)
 
 
+class SettingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Setting
+        fields = ("id", "updated", "name", "value")
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

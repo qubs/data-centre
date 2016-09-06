@@ -45,6 +45,12 @@ urlpatterns = [
     url(r'^messages/latest/$', views.MessageLatest.as_view(), name='message-latest'),
     url(r'^messages/(?P<pk>[0-9]+)/$', views.MessageDetail.as_view(), name='message-detail'),
 
+    url(r'^settings/$', views.SettingList.as_view(), name='setting-list'),
+    url(r'^settings/(?P<pk>[0-9]+)/$', views.SettingDetail.as_view(), name='setting-detail'),
+    url(r'^settings/(?P<name>([A-Za-z]|[0-9]|_)+)/$',
+        views.SettingDetailWithName.as_view(),
+        name='setting-detail-with-name'),
+
     url(r'^users/$', views.UserList.as_view(), name='user-list'),
     url(r'^users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view(), name='user-detail'),
 ]

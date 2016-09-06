@@ -177,3 +177,10 @@ class Message(models.Model):
 
     def __str__(self):
         return "Message from {} at {}".format(self.goes_id, self.arrival_time)
+
+
+class Setting(models.Model):
+    updated = models.DateTimeField(auto_now=True)
+
+    name = models.CharField(max_length=63)
+    value = models.TextField()
