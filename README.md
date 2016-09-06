@@ -4,6 +4,25 @@ A web API for accessing live data from the Queen's University Biological Station
 retrieved from this API is provided **completely as-is**. It should be made known that there is no quality assurance
 or proofreading done to data stored hear and thus readings may be inaccurate.
 
+## Contents
+
+* [Requirements and Technologies](#requirements-and-technologies)
+* [Accessing Data](#accessing-data)
+    * [`GET /messages/`]()
+    * [`GET /messages/latest/`]()
+    * [`GET /messages/[id]/`]()
+    * [`GET /readings/`]()
+    * [`GET /readings/[id]/`]()
+    * [`GET /sensors/`]()
+    * [`GET /sensors/[id]/`]()
+    * [`GET /stations/`]()
+    * [`GET /stations/[id]/`]()
+* [Object Types](#object-types)
+    * [Message]()
+    * [Reading]()
+    * [Sensor]()
+    * [Station]()
+
 ## Requirements and Technologies
 
 Requirements are listed programmatically in the `requirements.txt` file. The API is built on the
