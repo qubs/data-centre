@@ -176,10 +176,22 @@ class ReadingList(generics.ListCreateAPIView):
         if end_date != None:
             end_date_object = dateutil.parser.parse(end_date)
 
-        return Reading.objects.filter(
+        start_exclusive = self.request.query_params.get("start_exclusive", False)
+
+        queryset = Reading.objects.filter(
             read_time__gte=start_date_object,
             read_time__lte=end_date_object
-        ).order_by("read_time")
+        )
+
+        if start_exclusive == "true":
+            queryset = Reading.objects.filter(
+                read_time__gt=start_date_object,
+                read_time__lte=end_date_object
+            )
+
+        queryset = queryset.order_by("read_time")
+
+        return queryset
 
 class ReadingDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Reading.objects.all()
@@ -224,10 +236,20 @@ class MessageList(generics.ListCreateAPIView):
         if end_date != None:
             end_date_object = dateutil.parser.parse(end_date)
 
+        start_exclusive = self.request.query_params.get("start_exclusive", False)
+
         queryset = Message.objects.filter(
             arrival_time__gte=start_date_object,
             arrival_time__lte=end_date_object
-        ).order_by("arrival_time")
+        )
+
+        if start_exclusive == "true":
+            queryset = Message.objects.filter(
+                arrival_time__gt=start_date_object,
+                arrival_time__lte=end_date_object
+            )
+
+        queryset = queryset.order_by("arrival_time")
 
         goes_id = self.request.query_params.get("goes_id", None)
         if goes_id is not None:
