@@ -222,7 +222,9 @@ class MessageList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def perform_create(self, serializer):
+        print("--- CREATING MESSAGE ---")
         print(self.request.data)
+        print("------------------------")
         serializer.save()
 
     def get_queryset(self):
