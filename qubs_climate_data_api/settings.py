@@ -25,9 +25,9 @@ SECRET_KEY = '_4p#9bm*(+@9_h^a6mryqg2yi4qb7w&##pobpe9=rydwdr^8m!' # Change the k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [] # Add the site's host URL for production deployment
 
-CORS_ORIGIN_WHITELIST = ("localhost")
+CORS_ORIGIN_WHITELIST = ('localhost')
 
 # Application definition
 
@@ -89,7 +89,7 @@ DATABASES = {
         'NAME': 'qubs_climate_manager',
         'USER': '',
         'PASSWORD': '',
-        'HOST': '',
+        'HOST': 'localhost',
         'PORT': '',
     }
 }
