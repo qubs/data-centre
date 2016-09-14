@@ -1,5 +1,6 @@
 dateutils==0.6.6
-Django==1.10
+Django==1.9.9
+django-cors-headers==1.1.0
 djangorestframework==3.4.4
 psycopg2==2.6.2
 python-dateutil==2.5.3
