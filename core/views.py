@@ -177,6 +177,7 @@ class ReadingList(generics.ListCreateAPIView):
             end_date_object = dateutil.parser.parse(end_date)
 
         start_exclusive = self.request.query_params.get("start_exclusive", False)
+        sensors = self.request.query_params.get("sensors", None)
 
         queryset = Reading.objects.filter(
             read_time__gte=start_date_object,
@@ -189,8 +190,11 @@ class ReadingList(generics.ListCreateAPIView):
                 read_time__lte=end_date_object
             )
 
-        queryset = queryset.order_by("read_time")
+        if sensors is not None:
+            sensor_list = sensors.split(",")
+            queryset = queryset.filter(sensor__in=sensor_list)
 
+        queryset = queryset.order_by("read_time")
         return queryset
 
 class ReadingDetail(generics.RetrieveUpdateDestroyAPIView):
