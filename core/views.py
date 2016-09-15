@@ -302,7 +302,6 @@ class SettingDetailWithName(generics.RetrieveUpdateAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_object(self):
-        print(self.kwargs)
         name = self.kwargs["name"]
         return self.queryset.filter(name=name).first()
 
