@@ -61,7 +61,7 @@ TODO
 
 ## Accessing API Data
 
-The API is hosted at [http://climate.qubs.ca/api/](http://climate.qubs.ca/api/). Listed below are request paths based
+The API is hosted at [http://api.climate.qubs.ca](http://api.climate.qubs.ca). Listed below are request paths based
 on this URL for fetching data programmatically.
 
 ### `GET /messages/`
