@@ -14,5 +14,21 @@
 
 
 from django.contrib import admin
+from core.models import *
 
-# Register your models here.
+
+@admin.register(Sensor)
+class SensorAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Station)
+class StationAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Reading)
+class ReadingAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Message)
+class MessageAdmin(admin.ModelAdmin):
+    pass
