@@ -95,7 +95,7 @@ class Reading(models.Model):
         return "<Reading {} at {} from station {}>".format(self.value, self.read_time, self.station)
 
     def __str__(self):
-        return self.value
+        return "Reading '{}' at {} from station {}".format(self.value, self.read_time, self.station)
 
 
 class Message(models.Model):
