@@ -110,7 +110,7 @@ Host: api.climate.qubs.ca
         "data_quality": "N",
         "data_source": "UP",
         "recorded_message_length": 198,
-        "values": [...],
+        "values": [],
         "message_text": "...",
         "station": 6
     },
@@ -129,7 +129,7 @@ Host: api.climate.qubs.ca
         "data_quality": "N",
         "data_source": "UB",
         "recorded_message_length": 114,
-        "values": [...],
+        "values": [],
         "message_text": "...",
         "station": 2
     }
