@@ -13,30 +13,32 @@
 # limitations under the License.
 
 
-import datetime, dateutil.parser, pytz
+import datetime
+import dateutil.parser
+import pytz
 
-from rest_framework import mixins, generics
+from collections import OrderedDict
+
+from rest_framework import generics
+from rest_framework import permissions
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
-from rest_framework import permissions
-from django.contrib.auth.models import User
 
-from core.models import *
 from core.serializers import *
 
 
 @api_view(["GET"])
 def api_root(request, format=None):
-    return Response({
-        "sensors": reverse("sensor-list", request=request, format=format),
-        "stations": reverse("station-list", request=request, format=format),
-        "station-sensor-links": reverse("station-sensor-link-list", request=request, format=format),
-        "readings": reverse("reading-list", request=request, format=format),
-        "messages": reverse("message-list", request=request, format=format),
-        "settings": reverse("setting-list", request=request, format=format),
-        "users": reverse("user-list", request=request, format=format),
-    })
+    return Response(OrderedDict([
+        ("sensors", reverse("sensor-list", request=request, format=format)),
+        ("stations", reverse("station-list", request=request, format=format)),
+        ("station-sensor-links", reverse("station-sensor-link-list", request=request, format=format)),
+        ("readings", reverse("reading-list", request=request, format=format)),
+        ("messages", reverse("message-list", request=request, format=format)),
+        ("settings", reverse("setting-list", request=request, format=format)),
+        ("users", reverse("user-list", request=request, format=format)),
+    ]))
 
 
 class SensorList(generics.ListCreateAPIView):
