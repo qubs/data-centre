@@ -27,7 +27,7 @@ class Sensor(models.Model):
     decimals = models.PositiveSmallIntegerField()
 
     def __repr__(self):
-        return "<Sensor {}, data ID {}>".format(self.name, self.data_id)
+        return "<Sensor {} | Data ID: {}>".format(self.name, self.data_id)
 
     def __str__(self):
         return self.name
@@ -44,7 +44,7 @@ class Station(models.Model):
     sensors = models.ManyToManyField(Sensor, through="StationSensorLink", related_name="stations")
 
     def __repr__(self):
-        return "<Station {}, GOES ID: {}>".format(self.name, self.goes_id)
+        return "<Station {} | GOES ID: {}>".format(self.name, self.goes_id)
 
     def __str__(self):
         return self.name
@@ -95,7 +95,7 @@ class Reading(models.Model):
     message = models.ForeignKey("Message", on_delete=models.SET_NULL, null=True)
 
     def __repr__(self):
-        return "<Reading {} at {} from station {}>".format(self.value, self.read_time, self.station)
+        return "<Reading | Value: {}, Time: {}, Station: {}>".format(self.value, self.read_time, self.station)
 
     def __str__(self):
         return "Reading '{}' at {} from station {}".format(self.value, self.read_time, self.station)
@@ -176,7 +176,7 @@ class Message(models.Model):
     station = models.ForeignKey("Station", on_delete=models.SET_NULL, null=True)
 
     def __repr__(self):
-        return "<Message from {} at {}>".format(self.goes_id, self.arrival_time)
+        return "<Message | GOES ID: {}, Arrival Time: {}>".format(self.goes_id, self.arrival_time)
 
     def __str__(self):
         return "Message from {} at {}".format(self.goes_id, self.arrival_time)
