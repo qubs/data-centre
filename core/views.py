@@ -35,7 +35,9 @@ def api_root(request, format=None):
         ("stations", reverse("station-list", request=request, format=format)),
         ("station-sensor-links", reverse("station-sensor-link-list", request=request, format=format)),
         ("readings", reverse("reading-list", request=request, format=format)),
+        ("latest-readings", reverse("reading-latest", request=request, format=format)),
         ("messages", reverse("message-list", request=request, format=format)),
+        ("latest-messages", reverse("message-latest", request=request, format=format)),
         ("settings", reverse("setting-list", request=request, format=format)),
         ("users", reverse("user-list", request=request, format=format)),
     ]))
