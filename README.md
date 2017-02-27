@@ -51,7 +51,8 @@ repository.
 ### Apache HTTPD
 
 **BE CAREFUL!** The version of `mod_wsgi` shipped with Ubuntu Server 14.04 does not work with the version of Python 3
-provided by the OS. It is necessary to [install a newer version](http://askubuntu.com/questions/569550/assertionerror-using-apache2-and-libapache2-mod-wsgi-py3-on-ubuntu-14-04-python/569551#569551) of `mod_wsgi`.
+provided by the OS. It is necessary to [install a newer version](http://askubuntu.com/questions/569550/assertionerror-using-apache2-and-libapache2-mod-wsgi-py3-on-ubuntu-14-04-python/569551#569551)
+of `mod_wsgi`.
 
 `WSGIPassAuthorization On`
 
@@ -136,7 +137,7 @@ Host: api.climate.qubs.ca
 ]
 ```
 
-(Response truncated for conciseness)
+(Response truncated, message and values removed for conciseness)
 
 ### `GET /messages/[id]/` (where `[id]` is the numeric ID of a message)
 
@@ -165,11 +166,13 @@ Host: api.climate.qubs.ca
     "data_quality": "N",
     "data_source": "UB",
     "recorded_message_length": 114,
-    "values": [18600, 15200, 15500, 14500, 102, 101, 176, 246,2383,2341,2310,2316,2385,2360,2345,2350,2265,2182,2130,2118,9490,9570,9589,9598,94840,94840,94840,94840,2395,2404,2413,2400,1559,1559,1559,1559],
-    "message_text":"C7A0159216226221911G39+0NN019EUB00114bB1DDbhCm`CrLCbd@Af@Ae@Bp@Cv@eO@de@dF@dL@eQ@dx@di@dn@cY@bF@aR@aFBTRBUbBUuBU~WIxWIxWIxWIx@e[@ed@em@e`@XW@XW@XW@XWI",
+    "values": [],
+    "message_text":"...",
     "station": 8
 }
 ```
+
+(Message and values removed for conciseness)
 
 ### `GET /readings/`
 
@@ -285,13 +288,13 @@ TODO
     "data_quality": "N",
     "data_source": "UB",
     "recorded_message_length": 114,
-    "values": [18600, 15200, 15500, 14500, 102, 101, 176, 246, 2383, 2341, 2310, 2316, 2385, 2360, 2345, 2350, 2265,
-        2182, 2130, 2118, 9490, 9570, 9589, 9598, 94840, 94840, 94840, 94840, 2395, 2404, 2413, 2400, 1559,
-        1559, 1559, 1559],
-    "message_text": "C7A0159216226221911G39+0NN019EUB00114bB1DDbhCm`CrLCbd@Af@Ae@Bp@Cv@eO@de@dF@dL@eQ@dx@di@dn@cY@bF@aR@aFBTRBUbBUuBU~WIxWIxWIxWIx@e[@ed@em@e`@XW@XW@XW@XWI",
+    "values": [],
+    "message_text": "...",
     "station": 8
 }
 ```
+
+(Message and values removed for conciseness)
 
 #### Fields
 
