@@ -96,12 +96,12 @@ class StationData(generics.ListAPIView):
 
         start_date = self.request.query_params.get("start", None)
         start_date_object = datetime.datetime.now(pytz.utc) - datetime.timedelta(days=7) # Default to a week's worth
-        if start_date != None:
+        if start_date is not None:
             start_date_object = dateutil.parser.parse(start_date)
 
         end_date = self.request.query_params.get("end", None)
         end_date_object = datetime.datetime.now(pytz.utc)
-        if end_date != None:
+        if end_date is not None:
             end_date_object = dateutil.parser.parse(end_date)
 
         return Reading.objects.filter(
@@ -167,13 +167,13 @@ class ReadingList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         start_date = self.request.query_params.get("start", None)
-        start_date_object = datetime.datetime.now(pytz.utc) - datetime.timedelta(days=7) # Default to a week's worth
-        if start_date != None:
+        start_date_object = datetime.datetime.now(pytz.utc) - datetime.timedelta(days=7)  # Default to a week's worth
+        if start_date is not None:
             start_date_object = dateutil.parser.parse(start_date)
 
         end_date = self.request.query_params.get("end", None)
         end_date_object = datetime.datetime.now(pytz.utc)
-        if end_date != None:
+        if end_date is not None:
             end_date_object = dateutil.parser.parse(end_date)
 
         start_exclusive = self.request.query_params.get("start_exclusive", False)
@@ -233,13 +233,13 @@ class MessageList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         start_date = self.request.query_params.get("start", None)
-        start_date_object = datetime.datetime.now(pytz.utc) - datetime.timedelta(days=7) # Default to a week's worth
-        if start_date != None:
+        start_date_object = datetime.datetime.now(pytz.utc) - datetime.timedelta(days=7)  # Default to a week's worth
+        if start_date is not None:
             start_date_object = dateutil.parser.parse(start_date)
 
         end_date = self.request.query_params.get("end", None)
         end_date_object = datetime.datetime.now(pytz.utc)
-        if end_date != None:
+        if end_date is not None:
             end_date_object = dateutil.parser.parse(end_date)
 
         start_exclusive = self.request.query_params.get("start_exclusive", False)

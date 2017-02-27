@@ -26,15 +26,16 @@ class SensorSerializer(serializers.ModelSerializer):
 
 
 class StationSerializer(serializers.ModelSerializer):
-    sensors = serializers.SerializerMethodField("get_sensor_list",)
+    sensors = serializers.SerializerMethodField("get_sensor_list", )
 
     def get_sensor_list(self, instance):
         return StationSensorLink.objects.filter(station=instance.id).order_by("station_order") \
-                                        .values_list("sensor_id", flat=True)
+            .values_list("sensor_id", flat=True)
 
     class Meta:
         model = Station
         fields = ("id", "created", "updated", "name", "goes_id", "sensors",)
+
 
 class StationSensorLinkSerializer(serializers.ModelSerializer):
     class Meta:
@@ -46,7 +47,7 @@ class ReadingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reading
         fields = ("id", "created", "updated", "read_time", "data_source", "value", "qc_processed", "invalid", "sensor",
-            "station", "message",)
+                  "station", "message",)
 
 
 class MessageSerializer(serializers.ModelSerializer):
@@ -55,8 +56,8 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = ("id", "created", "updated", "goes_id", "goes_channel", "goes_spacecraft",
-            "arrival_time", "failure_code", "signal_strength", "frequency_offset", "modulation_index",
-            "data_quality", "data_source", "recorded_message_length", "values", "message_text", "station",)
+                  "arrival_time", "failure_code", "signal_strength", "frequency_offset", "modulation_index",
+                  "data_quality", "data_source", "recorded_message_length", "values", "message_text", "station",)
 
 
 class SettingSerializer(serializers.ModelSerializer):

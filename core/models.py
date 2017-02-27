@@ -22,7 +22,7 @@ class Sensor(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     name = models.CharField(max_length=100)
-    data_id = models.CharField(max_length=20) # For downloaded data, sometimes the full name would be unwieldy
+    data_id = models.CharField(max_length=20)  # For downloaded data, sometimes the full name would be unwieldy
 
     decimals = models.PositiveSmallIntegerField()
 
@@ -49,6 +49,7 @@ class Station(models.Model):
     def __str__(self):
         return self.name
 
+
 class StationSensorLink(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -57,7 +58,7 @@ class StationSensorLink(models.Model):
     sensor = models.ForeignKey(Sensor, on_delete=models.CASCADE)
 
     station_order = models.PositiveSmallIntegerField()
-    read_frequency = models.PositiveSmallIntegerField(default=4) # Default to 4 times per message.
+    read_frequency = models.PositiveSmallIntegerField(default=4)  # Default to 4 times per message.
 
     def __repr__(self):
         return "<Link | Station: {}, Sensor: {}>".format(self.station, self.sensor)
