@@ -70,7 +70,11 @@ Lists all messages from the past 7 days sent from the stations.
 
 #### Parameters
 
-TODO
+`start`: TODO
+
+`start_exclusive`: TODO
+
+`end`: TODO
 
 #### Example Request
 
@@ -80,11 +84,59 @@ TODO
 
 #### Parameters
 
-TODO
+None.
 
 #### Example Request
 
-TODO
+```
+GET /messages/latest/
+Host: api.climate.qubs.ca
+```
+
+```json
+[
+    {
+        "id": 25088,
+        "created": "2017-02-26T22:35:04.007139Z",
+        "updated": "2017-02-26T22:35:04.007224Z",
+        "goes_id": "C7A867A4",
+        "goes_channel": 19,
+        "goes_spacecraft": "E",
+        "arrival_time": "2017-02-26T22:20:11Z",
+        "failure_code": "G",
+        "signal_strength": 38,
+        "frequency_offset": "+0",
+        "modulation_index": "N",
+        "data_quality": "N",
+        "data_source": "UP",
+        "recorded_message_length": 198,
+        "values": [...],
+        "message_text": "...",
+        "station": 6
+    },
+    {
+        "id": 25090,
+        "created": "2017-02-26T23:20:05.087461Z",
+        "updated": "2017-02-26T23:20:05.087565Z",
+        "goes_id": "C7A02008",
+        "goes_channel": 19,
+        "goes_spacecraft": "E",
+        "arrival_time": "2017-02-26T23:19:21Z",
+        "failure_code": "G",
+        "signal_strength": 41,
+        "frequency_offset": "+0",
+        "modulation_index": "N",
+        "data_quality": "N",
+        "data_source": "UB",
+        "recorded_message_length": 114,
+        "values": [...],
+        "message_text": "...",
+        "station": 2
+    }
+]
+```
+
+(Response truncated for conciseness)
 
 ### `GET /messages/[id]/` (where `[id]` is the numeric ID of a message)
 
@@ -94,7 +146,7 @@ Shows a single message object.
 
 ```
 GET /messages/2/
-Host: climate.qubs.ca
+Host: api.climate.qubs.ca
 ```
 
 ```json
@@ -123,7 +175,13 @@ Host: climate.qubs.ca
 
 #### Parameters
 
-TODO
+`start`: TODO
+
+`start_exclusive`: TODO
+
+`end`: TODO
+
+`sensors`: TODO
 
 #### Example Request
 
@@ -133,7 +191,7 @@ TODO
 
 #### Parameters
 
-TODO
+None.
 
 #### Example Request
 
@@ -143,7 +201,7 @@ TODO
 
 #### Parameters
 
-TODO
+None.
 
 #### Example Request
 
@@ -153,7 +211,7 @@ TODO
 
 #### Parameters
 
-TODO
+None.
 
 #### Example Request
 
@@ -163,13 +221,13 @@ TODO
 
 #### Parameters
 
-TODO
+`goes_id`: TODO
 
 #### Example Request
 
 ```
 GET /stations/
-Host: climate.qubs.ca
+Host: api.climate.qubs.ca
 ```
 
 ```json
@@ -199,7 +257,7 @@ Host: climate.qubs.ca
 
 #### Parameters
 
-TODO
+None.
 
 #### Example Request
 
