@@ -26,7 +26,7 @@ or proofreading done to data stored hear and thus readings may be inaccurate.
 ## Requirements and Technologies
 
 Requirements are listed programmatically in the `requirements.txt` file. The API is built on the
-[Django Rest Framework](http://www.django-rest-framework.org/) and uses [PostgreSQL](https://www.postgresql.org/) for
+[Django REST Framework](http://www.django-rest-framework.org/) and uses [PostgreSQL](https://www.postgresql.org/) for
 a database.
 
 ## Installation
@@ -306,7 +306,7 @@ TODO
 
 `goes_id`: The GOES self-timed identifier / address, unique to a station. Made up of 4 2-hexadecimal digit numbers.
 
-`goes_channel`:
+`goes_channel`: A number representing the satellite transmit frequency.
 
 `goes_spacecraft`: Which GOES satellite was used to transmit the message. Possible values are `E` for east and `W` for
 west. All QUBS climate stations communicate with the `E`ast satellite.
