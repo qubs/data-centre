@@ -59,6 +59,9 @@ class StationSensorLink(models.Model):
     station_order = models.PositiveSmallIntegerField()
     read_frequency = models.PositiveSmallIntegerField(default=4) # Default to 4 times per message.
 
+    def __repr__(self):
+        return "<Link | Station: {}, Sensor: {}>".format(self.station, self.sensor)
+
     def __str__(self):
         return "Link between station {} and sensor {}".format(self.station, self.sensor)
 
