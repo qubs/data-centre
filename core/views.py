@@ -164,7 +164,7 @@ class StationSensorLinkDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ReadingList(generics.ListCreateAPIView):
-    serializer_class = ReadingSerializer
+    serializer_class = CompactReadingSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
@@ -205,7 +205,7 @@ class ReadingDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 class ReadingLatest(generics.ListAPIView):
-    serializer_class = ReadingSerializer
+    serializer_class = CompactReadingSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
