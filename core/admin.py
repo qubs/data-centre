@@ -25,6 +25,10 @@ class SensorAdmin(admin.ModelAdmin):
 class StationAdmin(admin.ModelAdmin):
     pass
 
+@admin.register(StationSensorLink)
+class StationSensorLinkAdmin(admin.ModelAdmin):
+    pass
+
 @admin.register(Reading)
 class ReadingAdmin(admin.ModelAdmin):
     pass
