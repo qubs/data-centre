@@ -19,6 +19,8 @@ import pytz
 
 from collections import OrderedDict
 
+from django.db.models import Q
+
 from rest_framework import generics
 from rest_framework import permissions
 from rest_framework.decorators import api_view
@@ -180,6 +182,13 @@ class ReadingList(generics.ListCreateAPIView):
         if end_date is not None:
             end_date_object = dateutil.parser.parse(end_date)
 
+        sample_interval = self.request.query_params.get("interval", "1")  # TODO: Make this more elegant.
+
+        try:
+            sample_interval = int(sample_interval)
+        except ValueError:
+            sample_interval = 1
+
         start_exclusive = self.request.query_params.get("start_exclusive", False)
         sensors = self.request.query_params.getlist("sensors[]")
 
@@ -193,6 +202,12 @@ class ReadingList(generics.ListCreateAPIView):
                 read_time__gt=start_date_object,
                 read_time__lte=end_date_object
             )
+
+        if sample_interval == 2:
+            queryset = queryset.filter(Q(read_time__contains=":00:") | Q(read_time__contains=":30:"))
+
+        if sample_interval == 4:
+            queryset = queryset.filter(read_time__contains=":00:")
 
         if sensors:
             queryset = queryset.filter(sensor__in=sensors)
