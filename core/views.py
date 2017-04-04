@@ -91,7 +91,7 @@ class StationList(generics.ListCreateAPIView):
 
         goes_id = self.request.query_params.get("goes_id", None)
         if goes_id is not None:
-            queryset = Station.objects.filter(goes_id=goes_id)
+            queryset = queryset.filter(goes_id=goes_id)
 
         return queryset
 
@@ -210,16 +210,18 @@ class ReadingList(generics.ListCreateAPIView):
         start_exclusive = self.request.query_params.get("start_exclusive", False)
         sensors = self.request.query_params.getlist("sensors[]")
 
-        queryset = Reading.objects.filter(
-            read_time__gte=start_date_object,
-            read_time__lte=end_date_object
-        )
+        queryset_filter = {
+            'read_time__gte': start_date_object,
+            'read_time__lte': end_date_object
+        }
 
         if start_exclusive == "true":
-            queryset = Reading.objects.filter(
-                read_time__gt=start_date_object,
-                read_time__lte=end_date_object
-            )
+            queryset_filter = {
+                'read_time__gt': start_date_object,
+                'read_time__lte': end_date_object
+            }
+
+        queryset = Reading.objects.filter(**queryset_filter)
 
         if sample_interval == 2:
             queryset = queryset.filter(Q(read_time__contains=":00:") | Q(read_time__contains=":30:"))
@@ -250,7 +252,7 @@ class ReadingLatest(generics.ListAPIView):
         for s in stations:
             station_ids.append(s.id)
 
-        latest_message = Message.objects.all().latest("arrival_time")
+        latest_message = Message.objects.latest("arrival_time")
         start_date_object = latest_message.arrival_time - datetime.timedelta(hours=1)
 
         return Reading.objects.filter(
@@ -283,28 +285,23 @@ class MessageList(generics.ListCreateAPIView):
             end_date_object = dateutil.parser.parse(end_date)
 
         start_exclusive = self.request.query_params.get("start_exclusive", False)
+        goes_id = self.request.query_params.get("goes_id", None)
 
-        queryset = Message.objects.filter(
-            arrival_time__gte=start_date_object,
-            arrival_time__lte=end_date_object
-        )
+        queryset_filter = {
+            'arrival_time__gte': start_date_object,
+            'arrival_time__lte': end_date_object
+        }
 
         if start_exclusive == "true":
-            queryset = Message.objects.filter(
-                arrival_time__gt=start_date_object,
-                arrival_time__lte=end_date_object
-            )
+            queryset_filter = {
+                'arrival_time__gt': start_date_object,
+                'arrival_time__lte': end_date_object
+            }
 
-        queryset = queryset.order_by("arrival_time")
-
-        goes_id = self.request.query_params.get("goes_id", None)
         if goes_id is not None:
-            queryset = Message.objects.filter(
-                arrival_time__gte=start_date_object,
-                arrival_time__lte=end_date_object,
+            queryset_filter['goes_id'] = goes_id
 
-                goes_id=goes_id
-            ).order_by("arrival_time")
+        queryset = Message.objects.filter(**queryset_filter).order_by("arrival_time")
 
         return queryset
 
@@ -320,7 +317,7 @@ class MessageLatest(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
-        latest_message = Message.objects.all().latest("arrival_time")
+        latest_message = Message.objects.latest("arrival_time")
         start_date_object = latest_message.arrival_time - datetime.timedelta(hours=1)
 
         return Message.objects.filter(
