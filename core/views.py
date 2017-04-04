@@ -48,18 +48,38 @@ def api_root(request, format=None):
 # Sensor Views
 
 class SensorList(generics.ListCreateAPIView):
+    """
+    get:
+    Return a list of all sensors.
+    
+    post:
+    Create a new sensor in the database.
+    """
+
     queryset = Sensor.objects.all()
     serializer_class = SensorSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 
 class SensorDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    get:
+    Return information about a given sensor.
+    
+    put:
+    Update a given sensor with new information.
+    """
     queryset = Sensor.objects.all()
     serializer_class = SensorSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 
 class SensorData(generics.ListAPIView):
+    """
+    get:
+    Return readings associated with a particular sensor.
+    """
+
     serializer_class = ReadingSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
@@ -69,6 +89,10 @@ class SensorData(generics.ListAPIView):
 
 
 class SensorStations(generics.ListAPIView):
+    """
+    Return stations which are linked with a given sensor.
+    """
+
     serializer_class = StationSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
@@ -83,6 +107,13 @@ class SensorStations(generics.ListAPIView):
 # Station Views
 
 class StationList(generics.ListCreateAPIView):
+    """
+    get:
+    Return a list of all stations, or optionally any (almost always just one) station with a particular GOES ID.
+    post:
+    Create a new station in the database.
+    """
+
     serializer_class = StationSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
@@ -97,12 +128,20 @@ class StationList(generics.ListCreateAPIView):
 
 
 class StationDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Return information about a given station.
+    """
+
     queryset = Station.objects.all()
     serializer_class = StationSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 
 class StationData(generics.ListAPIView):
+    """
+    Return a list of readings associated with a given station.
+    """
+
     serializer_class = ReadingSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
@@ -127,6 +166,10 @@ class StationData(generics.ListAPIView):
 
 
 class StationLatestData(generics.ListAPIView):
+    """
+    Return a list of the latest readings (taken in the past hour) associated with a given station.
+    """
+
     serializer_class = ReadingSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
@@ -142,6 +185,10 @@ class StationLatestData(generics.ListAPIView):
 
 
 class StationSensors(generics.ListAPIView):
+    """
+    Return a list of sensors associated with a given station.
+    """
+
     serializer_class = SensorSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
@@ -151,6 +198,10 @@ class StationSensors(generics.ListAPIView):
 
 
 class StationMessages(generics.ListAPIView):
+    """
+    Return a list of messages associated with a given station.
+    """
+
     serializer_class = MessageSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
