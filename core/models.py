@@ -82,7 +82,7 @@ class Reading(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
-    read_time = models.DateTimeField()
+    read_time = models.DateTimeField(db_index=True)
     data_source = models.CharField(max_length=1, choices=DATA_SOURCE_CHOICES, default=FROM_GOES)
 
     value = models.IntegerField(null=True)
