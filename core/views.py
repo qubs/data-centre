@@ -229,6 +229,9 @@ class ReadingList(generics.ListCreateAPIView):
         if sample_interval == 4:
             queryset = queryset.filter(read_time__contains=":00:")
 
+        if sample_interval == 96:  # TODO: This should probably retrieve an average from a cache - more robust.
+            queryset = queryset.filter(read_time__contains="00:00:")
+
         if sensors:
             queryset = queryset.filter(sensor__in=sensors)
 
