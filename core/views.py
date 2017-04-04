@@ -137,7 +137,7 @@ class StationLatestData(generics.ListAPIView):
 
         return Reading.objects.filter(
             station=pk,
-            read_time__gte = start_date_object,
+            read_time__gte=start_date_object,
         )
 
 
