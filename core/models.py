@@ -18,6 +18,14 @@ from django.contrib.postgres.fields import ArrayField
 
 
 class Sensor(models.Model):
+    """
+    A model of a specific class of sensor attached to various stations. Many stations share similar sensors. This model 
+    is used to keep track of data format, since sensors may return different formats for the same data type.
+    
+    A data type for the sensor to refer to should exist before sensor creation. The foreign key is nullable for
+    backwards compatibility reasons.
+    """
+
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -34,6 +42,10 @@ class Sensor(models.Model):
 
 
 class Station(models.Model):
+    """
+    A model representing a climate station. Climate stations are effectively a list of sensors with an attached GOES ID.
+    """
+
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -51,6 +63,10 @@ class Station(models.Model):
 
 
 class StationSensorLink(models.Model):
+    """
+    A model representing many-to-many links between stations and common sensor classes.
+    """
+
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -71,6 +87,10 @@ class StationSensorLink(models.Model):
 
 
 class Reading(models.Model):
+    """
+    A model representing an individual point of data from a specific station, sensor, and with a specific read time.
+    """
+
     FROM_GOES = "G"
     FROM_DEVICE_LOG = "L"
 
@@ -91,7 +111,7 @@ class Reading(models.Model):
     invalid = models.BooleanField(default=False)
 
     # Foreign keys
-    sensor = models.ForeignKey("Sensor", on_delete=models.SET_NULL, null=True)
+    sensor = models.ForeignKey("Sensor", on_delete=models.SET_NULL, null=True)  # We can get data type from sensor.
     station = models.ForeignKey("Station", on_delete=models.SET_NULL, null=True)
     message = models.ForeignKey("Message", on_delete=models.SET_NULL, null=True)
 
@@ -103,7 +123,10 @@ class Reading(models.Model):
 
 
 class Message(models.Model):
-    # See http://eddn.usgs.gov/dcpformat.html for format details.
+    """
+    A model representing a DCP message retrieved from a GOES satellite.
+    See http://eddn.usgs.gov/dcpformat.html for format details.
+    """
 
     NORMAL = "N"
 
@@ -184,6 +207,10 @@ class Message(models.Model):
 
 
 class Setting(models.Model):
+    """
+    A model for storing key-value setting pairs.
+    """
+
     updated = models.DateTimeField(auto_now=True)
 
     name = models.CharField(max_length=63)
