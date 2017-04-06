@@ -17,6 +17,11 @@ from django.contrib import admin
 from core.models import *
 
 
+@admin.register(DataType)
+class DataTypeAdmin(admin.ModelAdmin):
+    pass
+
+
 @admin.register(Sensor)
 class SensorAdmin(admin.ModelAdmin):
     pass

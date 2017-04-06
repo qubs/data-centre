@@ -26,6 +26,9 @@ API_DESCRIPTION = 'A web API for accessing live data from the Queen\'s Universit
 urlpatterns = [
     url(r'^$', views.api_root),
 
+    url(r'^data-types/$', views.DataTypeList.as_view(), name='data-type-list'),
+    url(r'^data-types/(?P<pk>[0-9]+)/$', views.DataTypeDetail.as_view(), name='data-type-detail'),
+
     url(r'^sensors/$', views.SensorList.as_view(), name='sensor-list'),
     url(r'^sensors/(?P<pk>[0-9]+)/$', views.SensorDetail.as_view(), name='sensor-detail'),
     url(r'^sensors/(?P<pk>[0-9]+)/data/$', views.SensorData.as_view(), name='sensor-data'),

@@ -35,6 +35,7 @@ from core.serializers import *
 @api_view(["GET"])
 def api_root(request, format=None):
     return Response(OrderedDict([
+        ("data-types", reverse("data-type-list", request=request, format=format)),
         ("sensors", reverse("sensor-list", request=request, format=format)),
         ("stations", reverse("station-list", request=request, format=format)),
         ("station-sensor-links", reverse("station-sensor-link-list", request=request, format=format)),
@@ -45,6 +46,36 @@ def api_root(request, format=None):
         ("settings", reverse("setting-list", request=request, format=format)),
         ("users", reverse("user-list", request=request, format=format)),
     ]))
+
+
+# Data Type Views
+
+class DataTypeList(generics.ListCreateAPIView):
+    """
+    get:
+    Return a list of all data types.
+    
+    post:
+    Create a new data type in the database.
+    """
+
+    queryset = DataType.objects.all()
+    serializer_class = DataTypeSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+
+class DataTypeDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    get:
+    Return information about a given data type.
+    
+    put:
+    Update a given data type with new information.
+    """
+
+    queryset = DataType.objects.all()
+    serializer_class = DataTypeSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 
 # Sensor Views
@@ -113,6 +144,7 @@ class StationList(generics.ListCreateAPIView):
     """
     get:
     Return a list of all stations, or optionally any (almost always just one) station with a particular GOES ID.
+    
     post:
     Create a new station in the database.
     """
