@@ -26,12 +26,43 @@ or proofreading done to data stored hear and thus readings may be inaccurate.
 ## Requirements and Technologies
 
 Requirements are listed programmatically in the `requirements.txt` file. The API is built on the
-[Django Rest Framework](http://www.django-rest-framework.org/) and uses [PostgreSQL](https://www.postgresql.org/) for
+[Django REST Framework](http://www.django-rest-framework.org/) and uses [PostgreSQL](https://www.postgresql.org/) for
 a database.
+
+## Installation
+
+### Database
+
+Make sure PostgreSQL 9.5 or later is installed on your web server.
+
+### API Server
+
+1. Download the latest release from the [releases page](https://github.com/qubs/climate-data-api/releases) of the
+repository.
+
+2. Unzip it to a directory not directly accessible from the web.
+
+3. Enter the directory and create a virtual environment for the API server withg the command `virtualenv env`.
+
+4. Source the virtual environment with `source env/bin/activate`.
+
+5. Download the dependencies with `pip3 install -r requirements.txt`.
+
+### Apache HTTPD
+
+**BE CAREFUL!** The version of `mod_wsgi` shipped with Ubuntu Server 14.04 does not work with the version of Python 3
+provided by the OS. It is necessary to [install a newer version](http://askubuntu.com/questions/569550/assertionerror-using-apache2-and-libapache2-mod-wsgi-py3-on-ubuntu-14-04-python/569551#569551)
+of `mod_wsgi`.
+
+`WSGIPassAuthorization On`
+
+### NGINX
+
+TODO
 
 ## Accessing API Data
 
-The API is hosted at [http://climate.qubs.ca/api/](http://climate.qubs.ca/api/). Listed below are request paths based
+The API is hosted at [http://api.climate.qubs.ca](http://api.climate.qubs.ca). Listed below are request paths based
 on this URL for fetching data programmatically.
 
 ### `GET /messages/`
@@ -40,7 +71,11 @@ Lists all messages from the past 7 days sent from the stations.
 
 #### Parameters
 
-TODO
+`start`: TODO
+
+`start_exclusive`: TODO
+
+`end`: TODO
 
 #### Example Request
 
@@ -50,11 +85,59 @@ TODO
 
 #### Parameters
 
-TODO
+None.
 
 #### Example Request
 
-TODO
+```
+GET /messages/latest/
+Host: api.climate.qubs.ca
+```
+
+```json
+[
+    {
+        "id": 25088,
+        "created": "2017-02-26T22:35:04.007139Z",
+        "updated": "2017-02-26T22:35:04.007224Z",
+        "goes_id": "C7A867A4",
+        "goes_channel": 19,
+        "goes_spacecraft": "E",
+        "arrival_time": "2017-02-26T22:20:11Z",
+        "failure_code": "G",
+        "signal_strength": 38,
+        "frequency_offset": "+0",
+        "modulation_index": "N",
+        "data_quality": "N",
+        "data_source": "UP",
+        "recorded_message_length": 198,
+        "values": [],
+        "message_text": "...",
+        "station": 6
+    },
+    {
+        "id": 25090,
+        "created": "2017-02-26T23:20:05.087461Z",
+        "updated": "2017-02-26T23:20:05.087565Z",
+        "goes_id": "C7A02008",
+        "goes_channel": 19,
+        "goes_spacecraft": "E",
+        "arrival_time": "2017-02-26T23:19:21Z",
+        "failure_code": "G",
+        "signal_strength": 41,
+        "frequency_offset": "+0",
+        "modulation_index": "N",
+        "data_quality": "N",
+        "data_source": "UB",
+        "recorded_message_length": 114,
+        "values": [],
+        "message_text": "...",
+        "station": 2
+    }
+]
+```
+
+(Response truncated, message and values removed for conciseness)
 
 ### `GET /messages/[id]/` (where `[id]` is the numeric ID of a message)
 
@@ -64,7 +147,7 @@ Shows a single message object.
 
 ```
 GET /messages/2/
-Host: climate.qubs.ca
+Host: api.climate.qubs.ca
 ```
 
 ```json
@@ -83,17 +166,25 @@ Host: climate.qubs.ca
     "data_quality": "N",
     "data_source": "UB",
     "recorded_message_length": 114,
-    "values": [18600, 15200, 15500, 14500, 102, 101, 176, 246,2383,2341,2310,2316,2385,2360,2345,2350,2265,2182,2130,2118,9490,9570,9589,9598,94840,94840,94840,94840,2395,2404,2413,2400,1559,1559,1559,1559],
-    "message_text":"C7A0159216226221911G39+0NN019EUB00114bB1DDbhCm`CrLCbd@Af@Ae@Bp@Cv@eO@de@dF@dL@eQ@dx@di@dn@cY@bF@aR@aFBTRBUbBUuBU~WIxWIxWIxWIx@e[@ed@em@e`@XW@XW@XW@XWI",
+    "values": [],
+    "message_text":"...",
     "station": 8
 }
 ```
+
+(Message and values removed for conciseness)
 
 ### `GET /readings/`
 
 #### Parameters
 
-TODO
+`start`: TODO
+
+`start_exclusive`: TODO
+
+`end`: TODO
+
+`sensors`: TODO
 
 #### Example Request
 
@@ -103,7 +194,7 @@ TODO
 
 #### Parameters
 
-TODO
+None.
 
 #### Example Request
 
@@ -113,7 +204,7 @@ TODO
 
 #### Parameters
 
-TODO
+None.
 
 #### Example Request
 
@@ -123,7 +214,7 @@ TODO
 
 #### Parameters
 
-TODO
+None.
 
 #### Example Request
 
@@ -133,13 +224,13 @@ TODO
 
 #### Parameters
 
-TODO
+`goes_id`: TODO
 
 #### Example Request
 
 ```
 GET /stations/
-Host: climate.qubs.ca
+Host: api.climate.qubs.ca
 ```
 
 ```json
@@ -169,7 +260,7 @@ Host: climate.qubs.ca
 
 #### Parameters
 
-TODO
+None.
 
 #### Example Request
 
@@ -197,13 +288,13 @@ TODO
     "data_quality": "N",
     "data_source": "UB",
     "recorded_message_length": 114,
-    "values": [18600, 15200, 15500, 14500, 102, 101, 176, 246, 2383, 2341, 2310, 2316, 2385, 2360, 2345, 2350, 2265,
-        2182, 2130, 2118, 9490, 9570, 9589, 9598, 94840, 94840, 94840, 94840, 2395, 2404, 2413, 2400, 1559,
-        1559, 1559, 1559],
-    "message_text": "C7A0159216226221911G39+0NN019EUB00114bB1DDbhCm`CrLCbd@Af@Ae@Bp@Cv@eO@de@dF@dL@eQ@dx@di@dn@cY@bF@aR@aFBTRBUbBUuBU~WIxWIxWIxWIx@e[@ed@em@e`@XW@XW@XW@XWI",
+    "values": [],
+    "message_text": "...",
     "station": 8
 }
 ```
+
+(Message and values removed for conciseness)
 
 #### Fields
 
@@ -215,7 +306,7 @@ TODO
 
 `goes_id`: The GOES self-timed identifier / address, unique to a station. Made up of 4 2-hexadecimal digit numbers.
 
-`goes_channel`:
+`goes_channel`: A number representing the satellite transmit frequency.
 
 `goes_spacecraft`: Which GOES satellite was used to transmit the message. Possible values are `E` for east and `W` for
 west. All QUBS climate stations communicate with the `E`ast satellite.

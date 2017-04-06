@@ -14,7 +14,13 @@
 
 
 from django.conf.urls import url
+from rest_framework.documentation import include_docs_urls
 from core import views
+
+
+API_TITLE = 'QUBS Climate Data API'
+API_DESCRIPTION = 'A web API for accessing live data from the Queen\'s University Biological Station Climate Data ' \
+                  'network.'
 
 
 urlpatterns = [
@@ -57,4 +63,6 @@ urlpatterns = [
 
     url(r'^users/$', views.UserList.as_view(), name='user-list'),
     url(r'^users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view(), name='user-detail'),
+
+    url(r'^docs/', include_docs_urls(title=API_TITLE, description=API_DESCRIPTION)),
 ]

@@ -20,14 +20,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '_4p#9bm*(+@9_h^a6mryqg2yi4qb7w&##pobpe9=rydwdr^8m!' # Change the key for production deployment
+SECRET_KEY = '_4p#9bm*(+@9_h^a6mryqg2yi4qb7w&##pobpe9=rydwdr^8m!'  # Change the key for production deployment
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []  # Add the site's host URL for production deployment
 
-CORS_ORIGIN_WHITELIST = ("localhost")
+CORS_ORIGIN_WHITELIST = ('localhost')
 
 # Application definition
 
@@ -42,10 +42,12 @@ INSTALLED_APPS = [
     'corsheaders',
 
     'rest_framework',
+    'rest_framework_xml',
+
     'core.apps.CoreConfig',
 ]
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
 
@@ -64,7 +66,7 @@ ROOT_URLCONF = 'qubs_climate_data_api.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'core/../templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -87,9 +89,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'qubs_climate_manager',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
+        'USER': 'qcm',
+        'PASSWORD': 'cl219734',
+        'HOST': 'localhost',
         'PORT': '',
     }
 }
@@ -132,3 +134,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# REST Framework
+
+REST_FRAMEWORK = {
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
+        'rest_framework_xml.parsers.XMLParser',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+        'rest_framework_xml.renderers.XMLRenderer',
+    )
+}

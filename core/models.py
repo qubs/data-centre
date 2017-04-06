@@ -22,12 +22,12 @@ class Sensor(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     name = models.CharField(max_length=100)
-    data_id = models.CharField(max_length=20) # For downloaded data, sometimes the full name would be unwieldy
+    data_id = models.CharField(max_length=20)  # For downloaded data, sometimes the full name would be unwieldy
 
     decimals = models.PositiveSmallIntegerField()
 
     def __repr__(self):
-        return "<Sensor {}, data ID {}>".format(self.name, self.data_id)
+        return "<Sensor {} | Data ID: {}>".format(self.name, self.data_id)
 
     def __str__(self):
         return self.name
@@ -44,10 +44,11 @@ class Station(models.Model):
     sensors = models.ManyToManyField(Sensor, through="StationSensorLink", related_name="stations")
 
     def __repr__(self):
-        return "<Station {}, GOES ID: {}>".format(self.name, self.goes_id)
+        return "<Station {} | GOES ID: {}>".format(self.name, self.goes_id)
 
     def __str__(self):
         return self.name
+
 
 class StationSensorLink(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -57,10 +58,13 @@ class StationSensorLink(models.Model):
     sensor = models.ForeignKey(Sensor, on_delete=models.CASCADE)
 
     station_order = models.PositiveSmallIntegerField()
-    read_frequency = models.PositiveSmallIntegerField(default=4) # Default to 4 times per message.
+    read_frequency = models.PositiveSmallIntegerField(default=4)  # Default to 4 times per message.
+
+    def __repr__(self):
+        return "<Link | Station: {}, Sensor: {}>".format(self.station, self.sensor)
 
     def __str__(self):
-        return "Link between station {} and sensor {}".format(station, sensor)
+        return "Link between station {} and sensor {}".format(self.station, self.sensor)
 
     class Meta:
         ordering = ("station_order",)
@@ -78,7 +82,7 @@ class Reading(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
-    read_time = models.DateTimeField()
+    read_time = models.DateTimeField(db_index=True)
     data_source = models.CharField(max_length=1, choices=DATA_SOURCE_CHOICES, default=FROM_GOES)
 
     value = models.IntegerField(null=True)
@@ -92,10 +96,10 @@ class Reading(models.Model):
     message = models.ForeignKey("Message", on_delete=models.SET_NULL, null=True)
 
     def __repr__(self):
-        return "<Reading {} at {} from station {}>".format(self.value, self.read_time, self.station)
+        return "<Reading | Value: {}, Time: {}, Station: {}>".format(self.value, self.read_time, self.station)
 
     def __str__(self):
-        return self.value
+        return "Reading '{}' at {} from station {}".format(self.value, self.read_time, self.station)
 
 
 class Message(models.Model):
@@ -173,7 +177,7 @@ class Message(models.Model):
     station = models.ForeignKey("Station", on_delete=models.SET_NULL, null=True)
 
     def __repr__(self):
-        return "<Message from {} at {}>".format(self.goes_id, self.arrival_time)
+        return "<Message | GOES ID: {}, Arrival Time: {}>".format(self.goes_id, self.arrival_time)
 
     def __str__(self):
         return "Message from {} at {}".format(self.goes_id, self.arrival_time)
