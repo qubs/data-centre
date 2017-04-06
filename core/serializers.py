@@ -19,10 +19,16 @@ from django.contrib.auth.models import User
 from core.models import *
 
 
+class DataTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DataType
+        fields = ("id", "created", "updated", "name", "short_name", "unit",)
+
+
 class SensorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sensor
-        fields = ("id", "created", "updated", "name", "data_id", "decimals",)
+        fields = ("id", "created", "updated", "name", "data_id", "decimals", "data_type",)
 
 
 class StationSerializer(serializers.ModelSerializer):

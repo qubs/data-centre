@@ -17,6 +17,27 @@ from django.db import models
 from django.contrib.postgres.fields import ArrayField
 
 
+class DataType(models.Model):
+    """
+    A model of reading's data type. There may be multiple sensors which share a single data type; for example,
+    temperature.
+    """
+
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    name = models.CharField(max_length=100)
+    short_name = models.CharField(max_length=20)  # For downloaded data, sometimes the full name would be unwieldy
+
+    unit = models.CharField(max_length=40)  # Example: celcius.
+
+    def __repr__(self):
+        return "<DataType {} ({})>".format(self.name, self.short_name)
+
+    def __str__(self):
+        return self.name
+
+
 class Sensor(models.Model):
     """
     A model of a specific class of sensor attached to various stations. Many stations share similar sensors. This model 
@@ -30,12 +51,15 @@ class Sensor(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     name = models.CharField(max_length=100)
-    data_id = models.CharField(max_length=20)  # For downloaded data, sometimes the full name would be unwieldy
+    data_id = models.CharField(max_length=20)  # DEPRECATED
 
-    decimals = models.PositiveSmallIntegerField()
+    decimals = models.PositiveSmallIntegerField()  # Data points are sent without decimals; they need to be adjusted.
+
+    # Foreign Keys
+    data_type = models.ForeignKey(DataType, on_delete=models.CASCADE, null=True)
 
     def __repr__(self):
-        return "<Sensor {} | Data ID: {}>".format(self.name, self.data_id)
+        return "<Sensor {}>".format(self.name)
 
     def __str__(self):
         return self.name
@@ -70,11 +94,12 @@ class StationSensorLink(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    station_order = models.PositiveSmallIntegerField()  # Need to keep an order for sensors to parse message data.
+    read_frequency = models.PositiveSmallIntegerField(default=4)  # Default to 4 times per message.
+
+    # Foreign Keys
     station = models.ForeignKey(Station, on_delete=models.CASCADE)
     sensor = models.ForeignKey(Sensor, on_delete=models.CASCADE)
-
-    station_order = models.PositiveSmallIntegerField()
-    read_frequency = models.PositiveSmallIntegerField(default=4)  # Default to 4 times per message.
 
     def __repr__(self):
         return "<Link | Station: {}, Sensor: {}>".format(self.station, self.sensor)
