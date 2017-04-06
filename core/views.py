@@ -30,6 +30,8 @@ from rest_framework.reverse import reverse
 from core.serializers import *
 
 
+# API Root View
+
 @api_view(["GET"])
 def api_root(request, format=None):
     return Response(OrderedDict([
@@ -69,6 +71,7 @@ class SensorDetail(generics.RetrieveUpdateDestroyAPIView):
     put:
     Update a given sensor with new information.
     """
+
     queryset = Sensor.objects.all()
     serializer_class = SensorSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
