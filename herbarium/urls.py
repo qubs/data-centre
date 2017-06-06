@@ -28,6 +28,4 @@ urlpatterns = [
 
     url(r'^specimens/$', views.SpecimenList.as_view(), name='specimen-list'),
     url(r'^specimens/(?P<pk>[0-9]+)/$', views.SpecimenDetail.as_view(), name='specimen-detail'),
-
-    url(r'^docs/', include_docs_urls(title=API_TITLE, description=API_DESCRIPTION)),
 ]
