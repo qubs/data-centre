@@ -12,7 +12,7 @@ from herbarium.serializers import *
 # API Root View
 
 @api_view(["GET"])
-def api_root(request, format=None):
+def herbarium_api_root(request, format=None):
     return Response(OrderedDict([
         ("specimens", reverse("specimen-list", request=request, format=format)),
     ]))

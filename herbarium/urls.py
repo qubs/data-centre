@@ -24,7 +24,7 @@ API_DESCRIPTION = 'A web API for accessing herbarium data from the Queen\'s Univ
 
 
 urlpatterns = [
-    url(r'^$', views.api_root),
+    url(r'^$', views.herbarium_api_root, name='herbarium-api-root'),
 
     url(r'^specimens/$', views.SpecimenList.as_view(), name='specimen-list'),
     url(r'^specimens/(?P<pk>[0-9]+)/$', views.SpecimenDetail.as_view(), name='specimen-detail'),

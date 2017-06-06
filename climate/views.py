@@ -37,7 +37,7 @@ station_compact_reading_columns = ("id", "read_time", "value", "invalid", "senso
 # API Root View
 
 @api_view(["GET"])
-def api_root(request, format=None):
+def climate_api_root(request, format=None):
     return Response(OrderedDict([
         ("data-types", reverse("data-type-list", request=request, format=format)),
         ("sensors", reverse("sensor-list", request=request, format=format)),
@@ -48,7 +48,6 @@ def api_root(request, format=None):
         ("messages", reverse("message-list", request=request, format=format)),
         ("latest-messages", reverse("message-latest", request=request, format=format)),
         ("settings", reverse("setting-list", request=request, format=format)),
-        ("users", reverse("user-list", request=request, format=format)),
     ]))
 
 
@@ -456,17 +455,3 @@ class SettingDetailWithName(generics.RetrieveUpdateAPIView):
     def get_object(self):
         name = self.kwargs["name"]
         return self.queryset.filter(name=name).first()
-
-
-# User Views
-
-class UserList(generics.ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-
-
-class UserDetail(generics.RetrieveAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)

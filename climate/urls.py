@@ -24,7 +24,7 @@ API_DESCRIPTION = 'A web API for accessing live data from the Queen\'s Universit
 
 
 urlpatterns = [
-    url(r'^$', views.api_root),
+    url(r'^$', views.climate_api_root, name='climate-api-root'),
 
     url(r'^data-types/$', views.DataTypeList.as_view(), name='data-type-list'),
     url(r'^data-types/(?P<pk>[0-9]+)/$', views.DataTypeDetail.as_view(), name='data-type-detail'),
@@ -63,7 +63,4 @@ urlpatterns = [
     url(r'^settings/(?P<name>([A-Za-z]|[0-9]|_)+)/$',
         views.SettingDetailWithName.as_view(),
         name='setting-detail-with-name'),
-
-    url(r'^users/$', views.UserList.as_view(), name='user-list'),
-    url(r'^users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view(), name='user-detail'),
 ]
