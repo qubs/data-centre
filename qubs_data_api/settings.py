@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_xml',
 
+    'core.apps.CoreConfig',
     'climate.apps.ClimateConfig',
     'herbarium.apps.HerbariumConfig',
 ]
