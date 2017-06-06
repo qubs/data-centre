@@ -43,17 +43,17 @@ class Migration(migrations.Migration):
                 ('updated', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=100)),
                 ('goes_id', models.CharField(max_length=8)),
-                ('sensors', models.ManyToManyField(to='core.Sensor')),
+                ('sensors', models.ManyToManyField(to='climate.Sensor')),
             ],
         ),
         migrations.AddField(
             model_name='reading',
             name='sensor',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='core.Sensor'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='climate.Sensor'),
         ),
         migrations.AddField(
             model_name='reading',
             name='station',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='core.Station'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='climate.Station'),
         ),
     ]

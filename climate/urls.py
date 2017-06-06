@@ -15,7 +15,7 @@
 
 from django.conf.urls import url
 from rest_framework.documentation import include_docs_urls
-from core import views
+from climate import views
 
 
 API_TITLE = 'QUBS Climate Data API'

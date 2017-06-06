@@ -8,13 +8,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0005_auto_20160816_1408'),
+        ('climate', '0005_auto_20160816_1408'),
     ]
 
     operations = [
         migrations.AlterField(
             model_name='station',
             name='sensors',
-            field=models.ManyToManyField(related_name='stations', through='core.StationSensorLink', to='core.Sensor'),
+            field=models.ManyToManyField(related_name='stations', through='climate.StationSensorLink', to='climate.Sensor'),
         ),
     ]

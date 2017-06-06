@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_xml',
 
-    'core.apps.CoreConfig',
+    'climate.apps.ClimateConfig',
 ]
 
 MIDDLEWARE = [
@@ -66,7 +66,7 @@ ROOT_URLCONF = 'qubs_data_api.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'core/../templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'climate/../templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

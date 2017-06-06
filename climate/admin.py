@@ -14,7 +14,7 @@
 
 
 from django.contrib import admin
-from core.models import *
+from climate.models import *
 
 
 @admin.register(DataType)

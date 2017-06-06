@@ -10,7 +10,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0001_initial'),
+        ('climate', '0001_initial'),
     ]
 
     operations = [
@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
                 ('recorded_message_length', models.PositiveSmallIntegerField()),
                 ('values', django.contrib.postgres.fields.ArrayField(base_field=models.IntegerField(), size=None)),
                 ('message_text', models.TextField()),
-                ('station', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='core.Station')),
+                ('station', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='climate.Station')),
             ],
         ),
     ]

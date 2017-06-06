@@ -16,7 +16,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
-from core.models import *
+from climate.models import *
 
 
 class DataTypeSerializer(serializers.ModelSerializer):
@@ -52,7 +52,13 @@ class StationSensorLinkSerializer(serializers.ModelSerializer):
 class CompactReadingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reading
-        fields = ("id", "read_time", "value", "invalid", "sensor", "station", "message")
+        fields = ("id", "read_time", "value", "invalid", "sensor", "station")
+
+
+class StationCompactReadingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reading
+        fields = ("id", "read_time", "value", "invalid", "sensor")
 
 
 class ReadingSerializer(serializers.ModelSerializer):

@@ -27,7 +27,7 @@ class DataType(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     name = models.CharField(max_length=100)
-    short_name = models.CharField(max_length=20)  # For downloaded data, sometimes the full name would be unwieldy
+    short_name = models.CharField(max_length=20, db_index=True)  # For downloaded data, the full name would be unwieldy
 
     unit = models.CharField(max_length=40)  # Example: celcius.
 

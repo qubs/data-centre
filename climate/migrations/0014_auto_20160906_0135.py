@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.db import migrations, models
 
 def load_settings(apps, schema_editor):
-    Setting = apps.get_model("core", "Setting")
+    Setting = apps.get_model("climate", "Setting")
     Setting(
         name="receiving_data",
         value="0"
@@ -14,7 +14,7 @@ def load_settings(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0013_setting'),
+        ('climate', '0013_setting'),
     ]
 
     operations = [

@@ -9,13 +9,13 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0008_auto_20160819_1650'),
+        ('climate', '0008_auto_20160819_1650'),
     ]
 
     operations = [
         migrations.AddField(
             model_name='reading',
             name='message',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='core.Message'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='climate.Message'),
         ),
     ]

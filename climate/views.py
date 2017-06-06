@@ -27,7 +27,11 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
-from core.serializers import *
+from climate.serializers import *
+
+
+compact_reading_columns = ("id", "read_time", "value", "invalid", "sensor", "station")
+station_compact_reading_columns = ("id", "read_time", "value", "invalid", "sensor")
 
 
 # API Root View
@@ -193,11 +197,19 @@ class StationData(generics.ListAPIView):
         if end_date is not None:
             end_date_object = dateutil.parser.parse(end_date)
 
-        return Reading.objects.filter(
+        return_compact = self.request.query_params.get("compact", False)
+
+        queryset = Reading.objects.filter(
             station=pk,
             read_time__gte=start_date_object,
             read_time__lte=end_date_object
         )
+
+        if return_compact == "true":
+            self.serializer_class = StationCompactReadingSerializer
+            queryset = queryset.only(*station_compact_reading_columns)
+
+        return queryset
 
 
 class StationLatestData(generics.ListAPIView):
@@ -213,10 +225,18 @@ class StationLatestData(generics.ListAPIView):
         latest_message = Message.objects.filter(station=pk).latest("arrival_time")
         start_date_object = latest_message.arrival_time - datetime.timedelta(hours=1)
 
-        return Reading.objects.filter(
+        return_compact = self.request.query_params.get("compact", False)
+
+        queryset = Reading.objects.filter(
             station=pk,
             read_time__gte=start_date_object,
         )
+
+        if return_compact == "true":
+            self.serializer_class = StationCompactReadingSerializer
+            queryset = queryset.only(*station_compact_reading_columns)
+
+        return queryset
 
 
 class StationSensors(generics.ListAPIView):
@@ -276,6 +296,8 @@ class ReadingList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_queryset(self):
+        global compact_reading_columns
+
         start_date = self.request.query_params.get("start", None)
         start_date_object = datetime.datetime.now(pytz.utc) - datetime.timedelta(days=7)  # Default to a week's worth
         if start_date is not None:
@@ -307,7 +329,7 @@ class ReadingList(generics.ListCreateAPIView):
                 'read_time__lte': end_date_object
             }
 
-        queryset = Reading.objects.filter(**queryset_filter)
+        queryset = Reading.objects.only(*compact_reading_columns).filter(**queryset_filter)
 
         if sample_interval == 2:
             queryset = queryset.filter(Q(read_time__contains=":00:") | Q(read_time__contains=":30:"))

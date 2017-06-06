@@ -9,7 +9,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0002_message'),
+        ('climate', '0002_message'),
     ]
 
     operations = [
@@ -20,17 +20,17 @@ class Migration(migrations.Migration):
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('updated', models.DateTimeField(auto_now=True)),
                 ('station_order', models.PositiveSmallIntegerField()),
-                ('sensor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.Sensor')),
+                ('sensor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='climate.Sensor')),
             ],
         ),
         migrations.AddField(
             model_name='station',
             name='sensors1',
-            field=models.ManyToManyField(related_name='sensors', through='core.StationSensorLink', to='core.Sensor'),
+            field=models.ManyToManyField(related_name='sensors', through='climate.StationSensorLink', to='climate.Sensor'),
         ),
         migrations.AddField(
             model_name='stationsensorlink',
             name='station',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.Station'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='climate.Station'),
         ),
     ]
