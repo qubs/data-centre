@@ -1,3 +1,7 @@
 from django.contrib import admin
+from herbarium.models import *
 
-# Register your models here.
+
+@admin.register(Specimen)
+class SpecimenAdmin(admin.ModelAdmin):
+    pass
