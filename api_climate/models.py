@@ -202,7 +202,7 @@ class Message(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
-    goes_id = models.CharField(max_length=8)
+    goes_id = models.CharField(max_length=8, db_index=True)
     goes_channel = models.PositiveSmallIntegerField()
     goes_spacecraft = models.CharField(max_length=1, choices=GOES_SPACECRAFT_CHOICES, default=EAST)
 
