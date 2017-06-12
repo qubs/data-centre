@@ -19,7 +19,8 @@ from climate_data.models import *
 
 @admin.register(DataType)
 class DataTypeAdmin(admin.ModelAdmin):
-    pass
+    list_display = ("name", "short_name", "unit")
+    ordering = ["name"]
 
 
 @admin.register(Sensor)
@@ -49,5 +50,6 @@ class ReadingAdmin(admin.ModelAdmin):
 class MessageAdmin(admin.ModelAdmin):
     list_display = ("arrival_time", "goes_id", "data_quality", "data_source", "signal_strength",
                     "recorded_message_length")
+    list_filter = ("goes_id", "data_quality")
     ordering = ["-arrival_time"]
     pass
