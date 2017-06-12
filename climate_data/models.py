@@ -124,6 +124,12 @@ class Reading(models.Model):
         (FROM_DEVICE_LOG, "Retrieved from station data log"),
     )
 
+    def decimal_value(self):
+        return self.value / (10 ** self.sensor.decimals)
+
+    def decimal_value_str(self):
+        return format(self.decimal_value(), '.{}f'.format(self.sensor.decimals))
+
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

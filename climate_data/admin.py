@@ -24,24 +24,30 @@ class DataTypeAdmin(admin.ModelAdmin):
 
 @admin.register(Sensor)
 class SensorAdmin(admin.ModelAdmin):
-    pass
+    list_display = ("name", "decimals", "data_type")
 
 
 @admin.register(Station)
 class StationAdmin(admin.ModelAdmin):
-    pass
+    list_display = ("name", "goes_id")
 
 
 @admin.register(StationSensorLink)
 class StationSensorLinkAdmin(admin.ModelAdmin):
-    pass
+    list_display = ("station", "sensor", "read_frequency", "station_order")
+    ordering = ["station", "station_order"]
 
 
 @admin.register(Reading)
 class ReadingAdmin(admin.ModelAdmin):
-    pass
+    list_display = ("read_time", "station", "sensor", "decimal_value_str", "data_source", "qc_processed", "invalid")
+    list_filter = ("station", "qc_processed")
+    ordering = ["-read_time", "station", "sensor"]
 
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
+    list_display = ("arrival_time", "goes_id", "data_quality", "data_source", "signal_strength",
+                    "recorded_message_length")
+    ordering = ["-arrival_time"]
     pass
