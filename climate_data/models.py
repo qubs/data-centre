@@ -67,7 +67,7 @@ class Sensor(models.Model):
 
 class Station(models.Model):
     """
-    A model representing a climate_data station. Climate stations are effectively a list of sensors with an attached GOES ID.
+    A model representing a climate station. Climate stations are effectively a list of sensors with an attached GOES ID.
     """
 
     created = models.DateTimeField(auto_now_add=True)
