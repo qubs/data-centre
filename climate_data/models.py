@@ -120,8 +120,8 @@ class Reading(models.Model):
     FROM_DEVICE_LOG = "L"
 
     DATA_SOURCE_CHOICES = (
-        (FROM_GOES, "Retrieved from GOES satellite message"),
-        (FROM_DEVICE_LOG, "Retrieved from station data log"),
+        (FROM_GOES, "GOES satellite message"),
+        (FROM_DEVICE_LOG, "Station data log"),
     )
 
     def decimal_value(self):
@@ -204,6 +204,9 @@ class Message(models.Model):
         ("RL", "Reston, LRIT; Reston, Virginia"),
         ("FF", "Unknown 1"),
     )
+
+    def message_content(self):
+        return self.message_text[37:]
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
