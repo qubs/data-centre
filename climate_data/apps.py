@@ -13,22 +13,8 @@
 # limitations under the License.
 
 
-from django.conf.urls import url, include
-from api import views
+from django.apps import AppConfig
 
 
-API_TITLE = 'QUBS Data API'
-API_DESCRIPTION = 'A web API for accessing data provided by the Queen\'s University Biological Station'
-
-
-urlpatterns = [
-    url(r'^$', views.api_root, name='qubs-api-root'),
-
-    url(r'^climate/', include('climate_data.urls')),
-    url(r'^herbarium/', include('herbarium_data.urls')),
-
-    url(r'^users/$', views.UserList.as_view(), name='user-list'),
-    url(r'^users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view(), name='user-detail'),
-
-    url(r'^api-auth/', include('rest_framework.urls')),
-]
+class ClimateDataConfig(AppConfig):
+    name = 'climate_data'

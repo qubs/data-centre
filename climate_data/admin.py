@@ -13,22 +13,35 @@
 # limitations under the License.
 
 
-from django.conf.urls import url, include
-from api import views
+from django.contrib import admin
+from climate_data.models import *
 
 
-API_TITLE = 'QUBS Data API'
-API_DESCRIPTION = 'A web API for accessing data provided by the Queen\'s University Biological Station'
+@admin.register(DataType)
+class DataTypeAdmin(admin.ModelAdmin):
+    pass
 
 
-urlpatterns = [
-    url(r'^$', views.api_root, name='qubs-api-root'),
+@admin.register(Sensor)
+class SensorAdmin(admin.ModelAdmin):
+    pass
 
-    url(r'^climate/', include('climate_data.urls')),
-    url(r'^herbarium/', include('herbarium_data.urls')),
 
-    url(r'^users/$', views.UserList.as_view(), name='user-list'),
-    url(r'^users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view(), name='user-detail'),
+@admin.register(Station)
+class StationAdmin(admin.ModelAdmin):
+    pass
 
-    url(r'^api-auth/', include('rest_framework.urls')),
-]
+
+@admin.register(StationSensorLink)
+class StationSensorLinkAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Reading)
+class ReadingAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Message)
+class MessageAdmin(admin.ModelAdmin):
+    pass

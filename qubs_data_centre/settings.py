@@ -45,8 +45,8 @@ INSTALLED_APPS = [
     'rest_framework_xml',
 
     'api.apps.APIConfig',
-    'api_climate.apps.APIClimateConfig',
-    'api_herbarium.apps.APIHerbariumConfig',
+    'climate_data.apps.ClimateDataConfig',
+    'herbarium_data.apps.HerbariumDataConfig',
 ]
 
 MIDDLEWARE = [
@@ -68,7 +68,7 @@ ROOT_URLCONF = 'qubs_data_centre.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'api_climate/../templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'climate_data/../templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
