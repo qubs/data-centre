@@ -17,6 +17,12 @@ from django.contrib import admin
 from climate_data.models import *
 
 
+def invalidate_reading(modeladmin, request, queryset):
+    queryset.update(invalid=True)
+
+invalidate_reading.short_description = "Mark selected readings as 'invalid'"
+
+
 @admin.register(DataType)
 class DataTypeAdmin(admin.ModelAdmin):
     list_display = ("name", "short_name", "unit")
@@ -44,6 +50,7 @@ class ReadingAdmin(admin.ModelAdmin):
     list_display = ("read_time", "station", "sensor", "decimal_value_str", "data_source", "qc_processed", "invalid")
     list_filter = ("station", "qc_processed")
     ordering = ["-read_time", "station", "sensor"]
+    actions = [invalidate_reading]
 
 
 @admin.register(Message)
