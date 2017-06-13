@@ -1,10 +1,42 @@
+import datetime
+
 from django.db import models
+from django.core.exceptions import ValidationError
+
+
+def validate_year(year):
+    if year is None:
+        return  # Years can be null
+    if year < 1800 or year > datetime.datetime.now().year:
+        raise ValidationError('Not a valid year.')
+
+
+def validate_day_of_month(day):
+    if day is None:
+        return  # Days can be null
+    elif day > 31 or day < 1:
+        raise ValidationError('Not a valid day.')
 
 
 class Specimen(models.Model):
     """
     A model of a herbarium_data specimen entry.
     """
+
+    MONTH_CHOICES = (
+        (1, "January"),
+        (2, "February"),
+        (3, "March"),
+        (4, "April"),
+        (5, "May"),
+        (6, "June"),
+        (7, "July"),
+        (8, "August"),
+        (9, "September"),
+        (10, "October"),
+        (11, "November"),
+        (12, "December")
+    )
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -18,7 +50,9 @@ class Specimen(models.Model):
     dth = models.CharField(max_length=10)
     accession = models.PositiveIntegerField(null=True)
 
-    date_collected = models.DateField(null=True)
+    year_collected = models.PositiveSmallIntegerField(null=True, validators=[validate_year])
+    month_collected = models.PositiveSmallIntegerField(null=True, choices=MONTH_CHOICES)
+    day_collected = models.PositiveSmallIntegerField(null=True, validators=[validate_day_of_month])
 
     collectors = models.TextField()
 
