@@ -55,8 +55,7 @@ class ReadingAdmin(admin.ModelAdmin):
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
-    list_display = ("arrival_time", "goes_id", "data_quality", "data_source", "signal_strength",
-                    "recorded_message_length")
+    list_display = ("arrival_time", "station", "goes_id", "data_quality", "data_source", "recorded_message_length")
     list_filter = ("goes_id", "data_quality")
     ordering = ["-arrival_time"]
     pass
