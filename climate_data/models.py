@@ -55,9 +55,6 @@ class Sensor(models.Model):
 
     decimals = models.PositiveSmallIntegerField()  # Data points are sent without decimals; they need to be adjusted.
 
-    # Foreign Keys
-    data_type = models.ForeignKey(DataType, on_delete=models.CASCADE, null=True)
-
     def __repr__(self):
         return "<Sensor {}>".format(self.name)
 
@@ -100,6 +97,7 @@ class StationSensorLink(models.Model):
     # Foreign Keys
     station = models.ForeignKey(Station, on_delete=models.CASCADE)
     sensor = models.ForeignKey(Sensor, on_delete=models.CASCADE)
+    data_type = models.ForeignKey(DataType, null=True, on_delete=models.SET_NULL)
 
     def __repr__(self):
         return "<Link | Station: {}, Sensor: {}>".format(self.station, self.sensor)

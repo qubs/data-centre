@@ -31,7 +31,7 @@ class DataTypeAdmin(admin.ModelAdmin):
 
 @admin.register(Sensor)
 class SensorAdmin(admin.ModelAdmin):
-    list_display = ("name", "decimals", "data_type")
+    list_display = ("name", "decimals")
 
 
 @admin.register(Station)
@@ -41,7 +41,8 @@ class StationAdmin(admin.ModelAdmin):
 
 @admin.register(StationSensorLink)
 class StationSensorLinkAdmin(admin.ModelAdmin):
-    list_display = ("station", "sensor", "read_frequency", "station_order")
+    list_display = ("station", "sensor", "data_type", "read_frequency", "station_order")
+    list_editable = ("sensor", "data_type")
     ordering = ["station", "station_order"]
 
 

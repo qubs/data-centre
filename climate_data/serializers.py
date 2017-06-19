@@ -28,7 +28,7 @@ class DataTypeSerializer(serializers.ModelSerializer):
 class SensorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sensor
-        fields = ("id", "created", "updated", "name", "data_id", "decimals", "data_type",)
+        fields = ("id", "created", "updated", "name", "data_id", "decimals",)
 
 
 class StationSerializer(serializers.ModelSerializer):
@@ -46,7 +46,7 @@ class StationSerializer(serializers.ModelSerializer):
 class StationSensorLinkSerializer(serializers.ModelSerializer):
     class Meta:
         model = StationSensorLink
-        fields = ("id", "created", "updated", "station", "sensor", "station_order", "read_frequency",)
+        fields = ("id", "created", "updated", "station", "sensor", "data_type", "station_order", "read_frequency",)
 
 
 class CompactReadingSerializer(serializers.ModelSerializer):
