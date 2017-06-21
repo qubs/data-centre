@@ -8,14 +8,14 @@ def validate_year(year):
     if year is None:
         return  # Years can be null
     if year < 1800 or year > datetime.datetime.now().year:
-        raise ValidationError('Not a valid year.')
+        raise ValidationError("Not a valid year.")
 
 
 def validate_day_of_month(day):
     if day is None:
         return  # Days can be null
     elif day > 31 or day < 1:
-        raise ValidationError('Not a valid day.')
+        raise ValidationError("Not a valid day.")
 
 
 class Specimen(models.Model):
@@ -54,17 +54,19 @@ class Specimen(models.Model):
     month_collected = models.PositiveSmallIntegerField(null=True, choices=MONTH_CHOICES)
     day_collected = models.PositiveSmallIntegerField(null=True, validators=[validate_day_of_month])
 
-    collectors = models.TextField()
+    collectors = models.TextField(default="")
 
     map_included = models.NullBooleanField()
     map_reference = models.CharField(max_length=255)
 
-    county = models.CharField(max_length=127)
-    township = models.CharField(max_length=127)
-    location = models.CharField(max_length=127)
-    habitat = models.CharField(max_length=127)
+    county = models.CharField(max_length=127, default="")
+    township = models.CharField(max_length=127, default="")
+    country = models.CharField(max_length=127, default="")
 
-    notes = models.TextField()
+    location = models.CharField(max_length=127, default="")
+    habitat = models.CharField(max_length=127, default="")
+
+    notes = models.TextField(default="")
 
     image = models.ImageField(null=True)
 
