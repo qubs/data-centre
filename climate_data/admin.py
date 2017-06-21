@@ -43,6 +43,7 @@ class StationAdmin(admin.ModelAdmin):
 class StationSensorLinkAdmin(admin.ModelAdmin):
     list_display = ("station", "sensor", "data_type", "read_frequency", "station_order")
     list_editable = ("sensor", "data_type")
+    list_filter = ("data_type",)
     ordering = ["station", "station_order"]
 
 
