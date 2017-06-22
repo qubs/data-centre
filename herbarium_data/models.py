@@ -62,14 +62,14 @@ class Specimen(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
-    dataset = models.CharField(max_length=50)
+    dataset = models.CharField(max_length=50, default="")
 
-    genus = models.CharField(max_length=50, db_index=True)
-    species = models.CharField(max_length=50, db_index=True)
-    common_name = models.CharField(max_length=255)
+    genus = models.CharField(max_length=50, default="", db_index=True)
+    species = models.CharField(max_length=50, default="", db_index=True)
+    common_name = models.CharField(max_length=255, default="")
 
-    dth = models.CharField(max_length=10)
-    accession = models.PositiveIntegerField(null=True)
+    dth = models.CharField(max_length=10, default="")
+    accession = models.CharField(max_length=20, default="")
 
     year_collected = models.PositiveSmallIntegerField(null=True, validators=[validate_year])
     month_collected = models.PositiveSmallIntegerField(null=True, choices=MONTH_CHOICES)
@@ -78,7 +78,7 @@ class Specimen(models.Model):
     collectors = models.TextField(default="")
 
     map_included = models.NullBooleanField()
-    map_reference = models.CharField(max_length=255)
+    map_reference = models.CharField(max_length=255, default="")
 
     county = models.CharField(max_length=127, default="")
     township = models.CharField(max_length=127, default="")
