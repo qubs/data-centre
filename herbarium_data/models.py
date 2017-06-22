@@ -38,6 +38,13 @@ class Specimen(models.Model):
         (12, "December")
     )
 
+    # Generated Attributes
+
+    def latin_name(self):
+        return "{} {}".format(self.genus, self.species)
+
+    # Schema Attributes
+
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
