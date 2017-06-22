@@ -128,6 +128,8 @@ class Reading(models.Model):
     def decimal_value_str(self):
         return format(self.decimal_value(), '.{}f'.format(self.sensor.decimals))
 
+    decimal_value_str.short_description = "Decimal Value"
+
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -136,7 +138,7 @@ class Reading(models.Model):
 
     value = models.IntegerField(null=True)
 
-    qc_processed = models.BooleanField(default=False)
+    qc_processed = models.BooleanField(default=False, verbose_name="QC Processed")
     invalid = models.BooleanField(default=False)
 
     # Foreign keys
@@ -232,7 +234,7 @@ class Message(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
-    goes_id = models.CharField(max_length=8, db_index=True)
+    goes_id = models.CharField(max_length=8, db_index=True, verbose_name="GOES ID")
     goes_channel = models.PositiveSmallIntegerField()
     goes_spacecraft = models.CharField(max_length=1, choices=GOES_SPACECRAFT_CHOICES, default=EAST)
 
@@ -246,7 +248,7 @@ class Message(models.Model):
     data_quality = models.CharField(max_length=1, choices=DATA_QUALITY_CHOICES, default=NORMAL)
     data_source = models.CharField(max_length=2, choices=DATA_SOURCE_CHOICES)
 
-    recorded_message_length = models.PositiveSmallIntegerField()
+    recorded_message_length = models.PositiveSmallIntegerField(verbose_name="Message Length")
 
     values = ArrayField(models.IntegerField(null=True))
     message_text = models.TextField()
