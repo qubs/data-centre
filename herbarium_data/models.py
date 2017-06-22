@@ -43,6 +43,20 @@ class Specimen(models.Model):
     def latin_name(self):
         return "{} {}".format(self.genus, self.species)
 
+    def date_collected_str(self):
+        if self.year_collected:
+            if self.month_collected:
+                if self.day_collected:
+                    return "{} {}, {}".format(self.get_month_collected_display(), self.day_collected,
+                                              self.year_collected)
+                else:
+                    return "{}, {}".format(self.get_month_collected_display(), self.year_collected)
+            else:
+                return self.year_collected
+        return None
+
+    date_collected_str.short_description = "Date Collected"
+
     # Schema Attributes
 
     created = models.DateTimeField(auto_now_add=True)
