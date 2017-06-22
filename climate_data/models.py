@@ -14,7 +14,7 @@
 
 
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
+from django.contrib.postgres.fields import ArrayField, DateTimeRangeField
 
 
 class DataType(models.Model):
@@ -149,6 +149,29 @@ class Reading(models.Model):
 
     def __str__(self):
         return "Reading '{}' at {} from station {}".format(self.value, self.read_time, self.station)
+
+
+class Annotation(models.Model):
+    """
+    A model representing an annotation on a range of data from a particular sensor and station.
+    """
+
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    time_range = DateTimeRangeField()
+
+    comment = models.TextField()
+
+    # Foreign keys
+    sensor = models.ForeignKey("Sensor", on_delete=models.SET_NULL, null=True)
+    station = models.ForeignKey("Station", on_delete=models.SET_NULL, null=True)
+
+    def __repr__(self):
+        return "<Annotation | Station: {}, Sensor: {}>".format(self.station, self.sensor)
+
+    def __str__(self):
+        return "Annotation on station {}, sensor {}".format(self.station, self.sensor)
 
 
 class Message(models.Model):

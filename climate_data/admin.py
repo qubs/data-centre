@@ -55,6 +55,13 @@ class ReadingAdmin(admin.ModelAdmin):
     actions = [invalidate_reading]
 
 
+@admin.register(Annotation)
+class AnnotationAdmin(admin.ModelAdmin):
+    list_display = ("time_range", "station", "sensor")
+    list_filter = ("station",)
+    ordering = ["station"]
+
+
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
     list_display = ("arrival_time", "station", "goes_id", "data_quality", "data_source", "recorded_message_length")

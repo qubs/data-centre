@@ -68,6 +68,12 @@ class ReadingSerializer(serializers.ModelSerializer):
                   "station", "message",)
 
 
+class AnnotationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Annotation
+        fields = ("id", "created", "updated", "time_range", "comment", "sensor", "station",)
+
+
 class MessageSerializer(serializers.ModelSerializer):
     values = serializers.ListField(child=serializers.IntegerField(allow_null=True))
 
