@@ -65,6 +65,6 @@ class AnnotationAdmin(admin.ModelAdmin):
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
     list_display = ("arrival_time", "station", "goes_id", "data_quality", "data_source", "recorded_message_length")
-    list_filter = ("goes_id", "data_quality")
+    list_filter = ("station", "goes_id", "data_quality")
     ordering = ["-arrival_time"]
     pass
