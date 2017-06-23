@@ -281,6 +281,23 @@ class StationSensorLinkList(generics.ListCreateAPIView):
     serializer_class = StationSensorLinkSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
+    def get_queryset(self):
+        station = self.request.query_params.get("station", None)
+        sensor = self.request.query_params.get("sensor", None)
+
+        queryset = StationSensorLink.objects.all()
+
+        if station and sensor:
+            try:
+                station = int(station)
+                sensor = int(sensor)
+            except ValueError:
+                pass  # There was a value error, so the full queryset will just be returned.
+            else:
+                queryset = queryset.filter(station=station, sensor=sensor)
+
+        return queryset
+
 
 class StationSensorLinkDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = StationSensorLink.objects.all()
