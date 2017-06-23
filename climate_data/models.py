@@ -107,6 +107,7 @@ class StationSensorLink(models.Model):
 
     class Meta:
         ordering = ("station_order",)
+        verbose_name = "station-sensor link"
 
 
 class Reading(models.Model):
