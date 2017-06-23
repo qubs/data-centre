@@ -145,6 +145,7 @@ class Reading(models.Model):
     # Foreign keys
     sensor = models.ForeignKey("Sensor", on_delete=models.SET_NULL, null=True)  # We can get data type from sensor.
     station = models.ForeignKey("Station", on_delete=models.SET_NULL, null=True)
+    station_sensor_link = models.ForeignKey("StationSensorLink", on_delete=models.SET_NULL, null=True)
     message = models.ForeignKey("Message", on_delete=models.SET_NULL, null=True)
 
     def __repr__(self):
