@@ -1,0 +1,136 @@
+@import url(https://files.qubs.ca/qubs-bar/qubs-bar.css);
+
+* {
+	font-family: 'Open Sans', sans-serif;
+}
+
+body {
+	padding: 0;
+	margin: 0;
+	background-color: #FEFEFE;
+}
+
+h1 {
+	margin: 0;
+	font-size: 2.7rem;
+	font-weight: lighter;
+	color: #444;
+}
+
+h2 {
+	margin: 0 0 30px 0;
+	font-weight: normal;
+	font-size: 1.3rem;
+	color: #777;
+}
+
+div#container {
+	box-sizing: border-box;
+	max-width: 1140px;
+	margin: 0 auto;
+	padding: 30px 70px 20px 70px;
+}
+
+aside {
+	width: 30%;
+	display: inline-block;
+	vertical-align: top;
+}
+aside img {
+	max-width: 100%;
+}
+
+main {
+	width: 70%;
+	display: inline-block;
+	box-sizing: border-box;
+	vertical-align: top;
+	padding: 0 30px;
+}
+
+main footer {
+	border-top: 1px solid #EEE;
+	margin-top: 30px;
+	padding: 20px 0;
+	color: #AAA;
+	font-size: 0.8rem;
+	text-align: center;
+}
+
+ul.hero-links {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+ul.hero-links li h3 {
+	margin: 0;
+	font-weight: normal;
+	color: #444;
+}
+ul.hero-links li h3 a {
+	color: #444;
+	text-decoration: none;
+	vertical-align: top;
+	margin-left: 0.4em;
+}
+ul.hero-links li h3 a:hover {
+	text-decoration: underline;
+}
+
+ul.hero-links li p {
+	margin-top: 5px;
+	margin-left: 2.35rem;
+	color: #555;
+	font-size: 0.9rem;
+	line-height: 1.6em;
+}
+
+@media screen and (max-width: 920px) {
+	div#container {
+		padding: 30px 50px 20px 50px;
+	}
+	aside {
+		width: 25%;
+	}
+	main {
+		width: 75%;
+	}
+}
+
+@media screen and (max-width: 810px) {
+	div#container {
+		padding: 20px 35px 20px 35px;
+	}
+	aside {
+		width: 20%;
+	}
+	main {
+		width: 80%;
+	}
+}
+
+@media screen and (max-width: 740px) {
+	aside {
+		display: none;
+	}
+	main {
+		width: 100%;
+		padding: 0;
+	}
+}
+
+@media screen and (max-width: 540px) {
+	ul.hero-links li h3 {
+		font-size: 1.05rem;
+	}
+	ul.hero-links li h3 i:last-of-type {
+		display: none;
+	}
+	ul.hero-links li p {
+		margin-left: 0;
+	}
+	main footer {
+		text-align: left;
+	}
+}

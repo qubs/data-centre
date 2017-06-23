@@ -1,0 +1,81 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>QUBS Data Centre</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,700,700i" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="{% static "core/style.css" %}">
+</head>
+<body>
+	<div id="qubsBar" class="queensLogo">
+		<ul>
+			<li><a href="https://qubs.ca">QUBS</a></li>
+			<li><a href="https://elbowlakecentre.ca">ELEEC</a></li>
+			<li><a href="https://dataverse.scholarsportal.info/dataverse/QUBS">QUBS Dataverse</a></li>
+			<li><a href="https://opinicon.wordpress.com">Opinicon Natural History</a></li>
+			<li><a href="https://ecoadventurecamp.ca">Eco-Adventure Camp</a></li>
+			<li><a href="https://fowlerherbarium.ca">Fowler Herbarium</a></li>
+			<li><a href="http://fieldstations.ca">fieldstations.ca</a></li>
+		</ul>
+	</div>
+
+	<div id="container">
+		<h1>QUBS Data Centre</h1>
+		<h2>Some Brief Description Here...</h2>
+		<aside>
+			<img src="{% static "core/hill_island_exterior.jpg" %}" alt="Hill Island Climate Station">
+		</aside><main>
+			<ul class="hero-links">
+				<li>
+					<h3>
+						<i class="material-icons" style="color: #e74c3c;">show_chart</i>
+						<a href="http://climate.qubs.ca">Visualize Real-Time Climate Data</a>
+						<i class="material-icons">chevron_right</i>
+					</h3>
+					<p>
+						View real-time and historical data from QUBS' satellite-linked climate station network from
+						anywhere in the world.
+					</p>
+				</li>
+				<li>
+					<h3>
+						<i class="material-icons" style="color: #3498db;">file_download</i>
+						<a href="http://data.qubs.ca/climate/download">Download Climate Data for Research</a>
+						<i class="material-icons">chevron_right</i>
+					</h3>
+					<p>
+						Download data from any QUBS climate station in many commonly-used formats for research purposes.
+					</p>
+				</li>
+				<li>
+					<h3>
+						<i class="material-icons" style="color: #2ecc71;">nature</i>
+						<a href="https://fowlerherbarium.ca">Browse the Fowler Herbarium</a>
+						<i class="material-icons">chevron_right</i>
+					</h3>
+					<p>
+						The Fowler Herbarium collection, now housed in the Jessie V. Deslauriers Centre for Biology,
+						includes over 140,000 plant specimens with some dating back to the mid-1800s.
+					</p>
+				</li>
+				<li>
+					<h3>
+						<i class="material-icons" style="color: #f39c12;">insert_drive_file</i>
+						<a href="http://data.qubs.ca/publications">See Work Done at QUBS</a>
+						<i class="material-icons">chevron_right</i>
+					</h3>
+					<p>
+						Look through papers published that involved work done at the Biological Station.
+					</p>
+				</li>
+			</ul>
+			<footer>
+				Copyright &copy; the Queen's University Biological Station 2017. All rights reserved.
+			</footer>
+		</main>
+	</div>
+</body>
+</html>
