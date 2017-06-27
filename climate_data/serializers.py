@@ -15,14 +15,30 @@
 
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from psycopg2.extras import NumericRange
 
 from climate_data.models import *
 
 
+class FloatRangeField(serializers.Serializer):
+    def to_representation(self, instance):
+        return {
+            "lower": instance.lower,
+            "upper": instance.upper,
+            "lower_inc": instance.lower_inc,
+            "upper_inc": instance.upper_inc
+        }
+
+    def to_internal_value(self, data):
+        return NumericRange(lower=data["lower"], upper=data["upper"], bounds="[)")  # TODO: Proper bounds determination
+
+
 class DataTypeSerializer(serializers.ModelSerializer):
+    bounds = FloatRangeField()
+
     class Meta:
         model = DataType
-        fields = ("id", "created", "updated", "name", "short_name", "unit",)
+        fields = ("id", "created", "updated", "name", "short_name", "unit", "bounds",)
 
 
 class SensorSerializer(serializers.ModelSerializer):

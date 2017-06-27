@@ -25,7 +25,7 @@ invalidate_reading.short_description = "Mark selected readings as 'invalid'"
 
 @admin.register(DataType)
 class DataTypeAdmin(admin.ModelAdmin):
-    list_display = ("name", "short_name", "unit")
+    list_display = ("name", "short_name", "unit", "bounds_str")
     ordering = ["name"]
 
 

@@ -14,7 +14,8 @@
 
 
 from django.db import models
-from django.contrib.postgres.fields import ArrayField, DateTimeRangeField
+from django.contrib.postgres.fields import ArrayField, DateTimeRangeField, FloatRangeField
+from psycopg2.extras import NumericRange
 
 
 class DataType(models.Model):
@@ -23,13 +24,93 @@ class DataType(models.Model):
     temperature.
     """
 
+    DEGREES_CENTIGRADE = "°C"
+    DEGREES_FAHRENHEIT = "°F"
+    KELVIN = "K"
+
+    KILOMETRES = "km"
+    METRES = "m"
+    CENTIMETRES = "cm"
+    MILLIMETRES = "mm"
+
+    DEGREES = "°"
+    RADIANS = "rad"
+
+    METRES_PER_SECOND = "m/s"
+    KILOMETRES_PER_HOUR = "km/h"
+
+    KILOPASCALS = "kPa"
+    HECTOPASCALS = "hPa"
+    PASCALS = "Pa"
+    BAR = "bar"
+    MILLIBAR = "mbar"
+
+    WATTS_PER_SQUARE_METRE = "W/m^2"
+
+    VOLTS = "V"
+    AMPERES = "A"
+    OHMS = "Ω"
+    JOULES = "J"
+    WATTS = "W"
+
+    PERCENT = "%"
+    NONE = None
+
+    UNIT_CHOICES = (
+        # Temperature
+        (DEGREES_CENTIGRADE, "degrees Celcius"),
+        (DEGREES_FAHRENHEIT, "degrees Fahrenheit"),
+        (KELVIN, "kelvin"),
+
+        # Distance / Depth
+        (KILOMETRES, "kilometres"),
+        (METRES, "metres"),
+        (CENTIMETRES, "centimetres"),
+        (MILLIMETRES, "millimetres"),
+
+        # Direction
+        (DEGREES, "degrees"),
+        (RADIANS, "radians"),
+
+        # Speed / Velocity
+        (METRES_PER_SECOND, "metres per second"),
+        (KILOMETRES_PER_HOUR, "kilometres per hour"),
+
+        # Pressure
+        (KILOPASCALS, "kilopascals"),
+        (HECTOPASCALS, "hectopascals"),
+        (PASCALS, "pascals"),
+        (BAR, "bar"),
+        (MILLIBAR, "millibar"),
+
+        # Irradiance
+        (WATTS_PER_SQUARE_METRE, "Watts per square metre"),
+
+        # Electricity
+        (VOLTS, "volts"),
+        (AMPERES, "amperes"),
+        (OHMS, "ohms"),
+        (JOULES, "joules"),
+        (WATTS, "watts"),
+
+        # Other / Miscellaneous
+        (PERCENT, "percent"),
+        (NONE, "none"),
+    )
+
+    def bounds_str(self):
+        return "[{},{})".format(self.bounds.lower, self.bounds.upper)
+
+    bounds_str.short_description = "Bounds"
+
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=20, db_index=True)  # For downloaded data, the full name would be unwieldy
 
-    unit = models.CharField(max_length=40)  # Example: celcius.
+    unit = models.CharField(max_length=40, choices=UNIT_CHOICES, null=True)
+    bounds = FloatRangeField(default="[{},{})".format(-(2**31), (2**31 - 1)))
 
     def __repr__(self):
         return "<DataType {} ({})>".format(self.name, self.short_name)
