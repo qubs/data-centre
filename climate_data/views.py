@@ -251,6 +251,21 @@ class StationSensors(generics.ListAPIView):
         return Sensor.objects.filter(stations__id=pk).order_by("stationsensorlink__station_order")
 
 
+class StationSensorLinks(generics.ListAPIView):
+    """
+    Return a list of station-sensor links associated with a given station.
+    """
+
+    serializer_class = DeepStationSensorLinkSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def get_queryset(self):
+        pk = self.kwargs["pk"]
+        queryset = StationSensorLink.objects.filter(station_id=pk).order_by("station_order")
+
+        return queryset
+
+
 class StationMessages(generics.ListAPIView):
     """
     Return a list of messages associated with a given station.
