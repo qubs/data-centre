@@ -302,14 +302,21 @@ class StationSensorLinkList(generics.ListCreateAPIView):
 
         queryset = StationSensorLink.objects.all()
 
-        if station and sensor:
+        if station:
             try:
                 station = int(station)
+            except ValueError:
+                pass  # There was a value error, so no filtering will be applied.
+            else:
+                queryset = queryset.filter(station=station)
+
+        if sensor:
+            try:
                 sensor = int(sensor)
             except ValueError:
-                pass  # There was a value error, so the full queryset will just be returned.
+                pass  # There was a value error, so no filtering will be applied.
             else:
-                queryset = queryset.filter(station=station, sensor=sensor)
+                queryset = queryset.filter(sensor=sensor)
 
         return queryset
 
