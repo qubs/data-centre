@@ -76,7 +76,7 @@ class DeepStationSensorLinkSerializer(serializers.ModelSerializer):
 class CompactReadingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reading
-        fields = ("id", "read_time", "value", "invalid", "sensor", "station")
+        fields = ("id", "read_time", "value", "invalid", "sensor", "station", "station_sensor_link")
 
 
 class StationCompactReadingSerializer(serializers.ModelSerializer):
