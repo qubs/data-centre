@@ -295,17 +295,12 @@ class StationSensorLinkList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_serializer_class(self):
-        deep = self.request.query_params.get("deep", False)
+        deep = str(self.request.query_params.get("deep", "false")).lower()
 
-        if deep and (str(deep).lower() == "false" or str(deep) == 0):
-            deep = False
-        else:
-            deep = True
+        if deep == "false" or deep == "0":
+            return StationSensorLinkSerializer
 
-        if deep:
-            return DeepStationSensorLinkSerializer
-
-        return StationSensorLinkSerializer
+        return DeepStationSensorLinkSerializer
 
     def get_queryset(self):
         station = self.request.query_params.get("station", None)
