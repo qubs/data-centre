@@ -292,15 +292,26 @@ class StationLatestMessage(generics.RetrieveAPIView):
 # Station-Sensor Link Views
 
 class StationSensorLinkList(generics.ListCreateAPIView):
-    queryset = StationSensorLink.objects.all().order_by("created")
-    serializer_class = StationSensorLinkSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def get_serializer_class(self):
+        deep = self.request.query_params.get("deep", False)
+
+        if deep and (str(deep).lower() == "false" or str(deep) == 0):
+            deep = False
+        else:
+            deep = True
+
+        if deep:
+            return DeepStationSensorLinkSerializer
+
+        return StationSensorLinkSerializer
 
     def get_queryset(self):
         station = self.request.query_params.get("station", None)
         sensor = self.request.query_params.get("sensor", None)
 
-        queryset = StationSensorLink.objects.all()
+        queryset = StationSensorLink.objects.all().order_by("created")
 
         if station:
             try:
