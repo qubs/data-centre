@@ -89,7 +89,7 @@ class ReadingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reading
         fields = ("id", "created", "updated", "read_time", "data_source", "value", "qc_processed", "invalid", "sensor",
-                  "station", "message",)
+                  "station", "message", "station_sensor_link")
 
 
 class AnnotationSerializer(serializers.ModelSerializer):
