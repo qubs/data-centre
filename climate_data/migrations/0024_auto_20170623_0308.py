@@ -12,10 +12,19 @@ def add_station_sensor_link_to_reading(apps, schema_editor):
     # noinspection PyPep8Naming
     StationSensorLink = apps.get_model('climate_data', 'StationSensorLink')
 
-    for reading in Reading.objects.all():
-        reading.station_sensor_link = StationSensorLink.objects.filter(station=reading.station, sensor=reading.sensor)\
-            .first()
-        reading.save()
+    offset = 0
+    pagesize = 5000
+    count = Reading.objects.all().count()
+
+    while offset < count:
+        for reading in Reading.objects.all()[offset:offset+pagesize].iterator():
+            reading.station_sensor_link = StationSensorLink.objects.filter(
+                station=reading.station,
+                sensor=reading.sensor
+            ).first()
+            reading.save()
+
+        offset += pagesize
 
 
 class Migration(migrations.Migration):
