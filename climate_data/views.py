@@ -329,8 +329,15 @@ class StationSensorLinkList(generics.ListCreateAPIView):
 
 class StationSensorLinkDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = StationSensorLink.objects.all()
-    serializer_class = StationSensorLinkSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def get_serializer_class(self):
+        deep = str(self.request.query_params.get("deep", "false")).lower()
+
+        if deep == "false" or deep == "0":
+            return StationSensorLinkSerializer
+
+        return DeepStationSensorLinkSerializer
 
 
 # Reading Views
