@@ -350,8 +350,15 @@ class StationSensorLinkDetail(generics.RetrieveUpdateDestroyAPIView):
 # Reading Views
 
 class ReadingList(generics.ListCreateAPIView):
-    serializer_class = CompactReadingSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def get_serializer_class(self):
+        compact = str(self.request.query_params.get("compact", "false")).lower()
+
+        if compact == "false" or compact == "0":
+            return ReadingSerializer
+
+        return CompactReadingSerializer
 
     def get_queryset(self):
         global compact_reading_columns
