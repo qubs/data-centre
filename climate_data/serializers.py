@@ -20,7 +20,7 @@ from psycopg2.extras import NumericRange
 from climate_data.models import *
 
 
-class FloatRangeField(serializers.Serializer):
+class FloatRangeField(serializers.Field):
     def to_representation(self, instance):
         return {
             "lower": instance.lower,
