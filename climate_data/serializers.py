@@ -66,6 +66,8 @@ class StationSensorLinkSerializer(serializers.ModelSerializer):
 
 
 class DeepStationSensorLinkSerializer(serializers.ModelSerializer):
+    data_type = DataTypeSerializer()
+
     class Meta:
         model = StationSensorLink
         fields = ("id", "created", "updated", "station", "sensor", "data_type", "station_order", "read_frequency",)
