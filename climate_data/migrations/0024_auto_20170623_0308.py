@@ -4,6 +4,8 @@ from __future__ import unicode_literals
 
 from django.db import migrations
 
+import sys
+
 
 # noinspection PyUnusedLocal
 def add_station_sensor_link_to_reading(apps, schema_editor):
@@ -13,18 +15,28 @@ def add_station_sensor_link_to_reading(apps, schema_editor):
     StationSensorLink = apps.get_model('climate_data', 'StationSensorLink')
 
     offset = 0
-    pagesize = 5000
-    count = Reading.objects.all().count()
+    pagesize = 25000
+    count = Reading.objects.filter(station_sensor_link=None).count()
+
+    sys.stdout.write("\n")
+
+    sys.stdout.write("\r{}/{}".format(offset, count))
+    sys.stdout.flush()
 
     while offset < count:
-        for reading in Reading.objects.all()[offset:offset+pagesize].iterator():
+        for reading in Reading.objects.filter(station_sensor_link=None)[offset:offset+pagesize].iterator():
             reading.station_sensor_link = StationSensorLink.objects.filter(
                 station=reading.station,
                 sensor=reading.sensor
             ).first()
             reading.save()
 
+        sys.stdout.write("\r{}/{} ({}%)".format(offset, count, (offset / count) * 100))
+        sys.stdout.flush()
+
         offset += pagesize
+
+    sys.stdout.write("\n")
 
 
 class Migration(migrations.Migration):
