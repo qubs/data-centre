@@ -15,7 +15,6 @@
 
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from psycopg2.extras import NumericRange
 
 from climate_data.models import *
 
