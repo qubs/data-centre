@@ -205,7 +205,10 @@ class Reading(models.Model):
     )
 
     def decimal_value(self):
-        return self.value / (10 ** self.sensor.decimals)
+        if self.value is not None:
+            return self.value / (10 ** self.sensor.decimals)
+
+        return None
 
     def decimal_value_str(self):
         return format(self.decimal_value(), '.{}f'.format(self.sensor.decimals))
