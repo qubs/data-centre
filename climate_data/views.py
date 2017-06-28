@@ -256,8 +256,15 @@ class StationSensorLinks(generics.ListAPIView):
     Return a list of station-sensor links associated with a given station.
     """
 
-    serializer_class = DeepStationSensorLinkSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def get_serializer_class(self):
+        deep = str(self.request.query_params.get("deep", "false")).lower()
+
+        if deep == "false" or deep == "0":
+            return StationSensorLinkSerializer
+
+        return DeepStationSensorLinkSerializer
 
     def get_queryset(self):
         pk = self.kwargs["pk"]
