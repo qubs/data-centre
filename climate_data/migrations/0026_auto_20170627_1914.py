@@ -21,6 +21,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='datatype',
             name='bounds',
-            field=django.contrib.postgres.fields.ranges.IntegerRangeField(default='[-2147483648,2147483647]'),
+            field=django.contrib.postgres.fields.ranges.IntegerRangeField(default='[-2147483648,2147483646]'),
         ),
     ]
