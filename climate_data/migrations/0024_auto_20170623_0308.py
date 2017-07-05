@@ -16,7 +16,8 @@ def add_station_sensor_link_to_reading(apps, schema_editor):
 
     offset = 0
     pagesize = 25000
-    count = Reading.objects.filter(station_sensor_link=None).count()
+    queryset = Reading.objects.filter(station_sensor_link=None)
+    count = queryset.count()
 
     sys.stdout.write("\n")
 
@@ -24,7 +25,7 @@ def add_station_sensor_link_to_reading(apps, schema_editor):
     sys.stdout.flush()
 
     while offset < count:
-        for reading in Reading.objects.filter(station_sensor_link=None)[offset:offset+pagesize].iterator():
+        for reading in queryset[0:pagesize].iterator():
             reading.station_sensor_link = StationSensorLink.objects.filter(
                 station=reading.station,
                 sensor=reading.sensor
