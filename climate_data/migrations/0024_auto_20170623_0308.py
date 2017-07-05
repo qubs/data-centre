@@ -20,7 +20,7 @@ def add_station_sensor_link_to_reading(apps, schema_editor):
 
     sys.stdout.write("\n")
 
-    sys.stdout.write("\r{}/{}".format(offset, count))
+    sys.stdout.write("\r{}/{} ({}%)".format(offset, count, (offset / count) * 100))
     sys.stdout.flush()
 
     while offset < count:
@@ -31,10 +31,10 @@ def add_station_sensor_link_to_reading(apps, schema_editor):
             ).first()
             reading.save()
 
+        offset += pagesize
+
         sys.stdout.write("\r{}/{} ({}%)".format(offset, count, (offset / count) * 100))
         sys.stdout.flush()
-
-        offset += pagesize
 
     sys.stdout.write("\n")
 
