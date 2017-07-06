@@ -55,8 +55,8 @@ class StationSensorLinkAdmin(admin.ModelAdmin):
 
 @admin.register(Reading)
 class ReadingAdmin(admin.ModelAdmin):
-    list_display = ("read_time", "station", "sensor", "decimal_value_str", "data_source", "qc_processed", "invalid")
-    list_filter = ("station", "qc_processed")
+    list_display = ("read_time", "station", "data_type", "decimal_value_str", "data_source", "qc_processed", "invalid")
+    list_filter = ("station", "station_sensor_link__data_type", "qc_processed")
     ordering = ["-read_time", "station", "sensor"]
     actions = [invalidate_reading, qc_process_reading]
 
