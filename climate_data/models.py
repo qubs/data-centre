@@ -211,7 +211,10 @@ class Reading(models.Model):
         return None
 
     def decimal_value_str(self):
-        return format(self.decimal_value(), '.{}f'.format(self.sensor.decimals))
+        if self.value is not None:
+            return format(self.decimal_value(), '.{}f'.format(self.sensor.decimals))
+
+        return None
 
     decimal_value_str.short_description = "Decimal Value"
 
