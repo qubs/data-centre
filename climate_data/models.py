@@ -216,6 +216,18 @@ class Reading(models.Model):
 
         return None
 
+    def data_type(self):
+        if self.station_sensor_link is not None:
+            return self.station_sensor_link.data_type
+
+        return None
+
+    def in_bounds(self):
+        if self.value is not None:
+            return self.decimal_value() in self.data_type().bounds
+
+        return True
+
     decimal_value_str.short_description = "Decimal Value"
 
     created = models.DateTimeField(auto_now_add=True)
