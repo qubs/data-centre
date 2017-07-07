@@ -106,8 +106,9 @@ class DataType(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    # For downloaded data, the full name would be unwieldy, so also include a unique short name.
     name = models.CharField(max_length=100)
-    short_name = models.CharField(max_length=20, db_index=True)  # For downloaded data, the full name would be unwieldy
+    short_name = models.CharField(max_length=20, unique=True, db_index=True)
 
     unit = models.CharField(max_length=40, choices=UNIT_CHOICES, null=True)
     bounds = FloatRangeField(default="[{},{})".format(-(2**31), (2**31 - 1)))
