@@ -39,6 +39,7 @@ urlpatterns = [
     url(r'^stations/(?P<pk>[0-9]+)/data/$', views.StationData.as_view(), name='station-data'),
     url(r'^stations/(?P<pk>[0-9]+)/data/latest/$', views.StationLatestData.as_view(), name='station-latest-data'),
     url(r'^stations/(?P<pk>[0-9]+)/sensors/$', views.StationSensors.as_view(), name='station-sensors'),
+    url(r'^stations/(?P<pk>[0-9]+)/sensor-links/$', views.StationSensorLinks.as_view(), name='station-sensor-links'),
     url(r'^stations/(?P<pk>[0-9]+)/messages/$', views.StationMessages.as_view(), name='station-messages'),
     url(r'^stations/(?P<pk>[0-9]+)/messages/latest/$',
         views.StationLatestMessage.as_view(),

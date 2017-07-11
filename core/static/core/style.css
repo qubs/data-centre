@@ -24,15 +24,23 @@ h2 {
 	color: #777;
 }
 
+p {
+	margin-bottom: 20px;
+
+	font-size: 0.9rem;
+	line-height: 1.6em;
+	color: #555;
+}
+
 div#container {
 	box-sizing: border-box;
 	max-width: 1140px;
 	margin: 0 auto;
-	padding: 30px 70px 20px 70px;
+	padding: 20px 70px 20px 70px;
 }
 
 aside {
-	width: 30%;
+	width: 25%;
 	display: inline-block;
 	vertical-align: top;
 }
@@ -41,7 +49,7 @@ aside img {
 }
 
 main {
-	width: 70%;
+	width: 75%;
 	display: inline-block;
 	box-sizing: border-box;
 	vertical-align: top;
@@ -101,12 +109,6 @@ ul.hero-links li p {
 @media screen and (max-width: 810px) {
 	div#container {
 		padding: 20px 35px 20px 35px;
-	}
-	aside {
-		width: 20%;
-	}
-	main {
-		width: 80%;
 	}
 }
 

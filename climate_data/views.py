@@ -251,6 +251,28 @@ class StationSensors(generics.ListAPIView):
         return Sensor.objects.filter(stations__id=pk).order_by("stationsensorlink__station_order")
 
 
+class StationSensorLinks(generics.ListAPIView):
+    """
+    Return a list of station-sensor links associated with a given station.
+    """
+
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def get_serializer_class(self):
+        deep = str(self.request.query_params.get("deep", "false")).lower()
+
+        if deep == "false" or deep == "0":
+            return StationSensorLinkSerializer
+
+        return DeepStationSensorLinkSerializer
+
+    def get_queryset(self):
+        pk = self.kwargs["pk"]
+        queryset = StationSensorLink.objects.filter(station_id=pk).order_by("station_order")
+
+        return queryset
+
+
 class StationMessages(generics.ListAPIView):
     """
     Return a list of messages associated with a given station.
@@ -277,22 +299,66 @@ class StationLatestMessage(generics.RetrieveAPIView):
 # Station-Sensor Link Views
 
 class StationSensorLinkList(generics.ListCreateAPIView):
-    queryset = StationSensorLink.objects.all().order_by("created")
-    serializer_class = StationSensorLinkSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def get_serializer_class(self):
+        deep = str(self.request.query_params.get("deep", "false")).lower()
+
+        if deep == "false" or deep == "0":
+            return StationSensorLinkSerializer
+
+        return DeepStationSensorLinkSerializer
+
+    def get_queryset(self):
+        station = self.request.query_params.get("station", None)
+        sensor = self.request.query_params.get("sensor", None)
+
+        queryset = StationSensorLink.objects.all().order_by("created")
+
+        if station:
+            try:
+                station = int(station)
+            except ValueError:
+                pass  # There was a value error, so no filtering will be applied.
+            else:
+                queryset = queryset.filter(station=station)
+
+        if sensor:
+            try:
+                sensor = int(sensor)
+            except ValueError:
+                pass  # There was a value error, so no filtering will be applied.
+            else:
+                queryset = queryset.filter(sensor=sensor)
+
+        return queryset
 
 
 class StationSensorLinkDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = StationSensorLink.objects.all()
-    serializer_class = StationSensorLinkSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def get_serializer_class(self):
+        deep = str(self.request.query_params.get("deep", "false")).lower()
+
+        if deep == "false" or deep == "0":
+            return StationSensorLinkSerializer
+
+        return DeepStationSensorLinkSerializer
 
 
 # Reading Views
 
 class ReadingList(generics.ListCreateAPIView):
-    serializer_class = CompactReadingSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def get_serializer_class(self):
+        compact = str(self.request.query_params.get("compact", "false")).lower()
+
+        if compact == "false" or compact == "0":
+            return ReadingSerializer
+
+        return CompactReadingSerializer
 
     def get_queryset(self):
         global compact_reading_columns
