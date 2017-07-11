@@ -9,6 +9,7 @@ admin.site.site_header = 'QUBS Data Centre Admin'
 urlpatterns = [
     url(r'^', include('core.urls')),
     url(r'^api/', include('api.urls')),
+    url(r'^climate/export/', include('climate_exporter.urls')),
     url(r'^admin/', admin.site.urls),
 ]
 

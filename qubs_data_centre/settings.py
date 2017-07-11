@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'herbarium_data.apps.HerbariumDataConfig',
 
     'climate_manager.apps.ClimateManagerConfig',
+    'climate_exporter.apps.ClimateExporterConfig',
 ]
 
 MIDDLEWARE = [
