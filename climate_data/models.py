@@ -213,9 +213,9 @@ class Reading(models.Model):
 
     def decimal_value_str(self):
         if self.value is not None:
-            return format(self.decimal_value(), '.{}f'.format(self.sensor.decimals))
+            return format(self.decimal_value(), ".{}f".format(self.sensor.decimals))
 
-        return None
+        return ""
 
     def data_type(self):
         if self.station_sensor_link is not None:
