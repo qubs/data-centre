@@ -12,6 +12,16 @@
 
     <link rel="stylesheet" href="{% static "climate_exporter/style.css" %}">
 
+    <!-- Flatpickr -->
+    <link rel="stylesheet" href="https://unpkg.com/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_red.css">
+    <script src="https://unpkg.com/flatpickr"></script>
+    <style type="text/css">
+        .flatpickr-current-month {
+            font-size: 120%;
+        }
+    </style>
+
     <script type="text/javascript">
         const stationDataTypes = JSON.parse('{{ station_data_types|safe }}');
         var selectedStation = null;
@@ -53,6 +63,16 @@
                     }
                 }
             }, false);
+
+            // TODO: Provide minimum dates based on earliest available data.
+            flatpickr('#id_time_start', {
+                enableTime: true,
+                altInput: true
+            });
+            flatpickr('#id_time_end', {
+                enableTime: true,
+                altInput: true
+            });
         }, false);
     </script>
 </head>

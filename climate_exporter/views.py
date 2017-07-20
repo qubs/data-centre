@@ -31,6 +31,9 @@ def index(request):
             include_out_of_bounds = form.cleaned_data['include_out_of_bounds']
             only_use_qc = form.cleaned_data['only_use_qc']
 
+            time_start = form.cleaned_data['time_start']
+            time_end = form.cleaned_data['time_end']
+
             format = form.cleaned_data['format']
 
             station = form.cleaned_data['station']
@@ -45,6 +48,12 @@ def index(request):
 
             if only_use_qc:
                 queryset = queryset.filter(qc_processed=True)
+
+            if time_start:
+                queryset = queryset.filter(read_time__gte=time_start)
+
+            if time_end:
+                queryset = queryset.filter(read_time__lte=time_end)
 
             if len(data_types) > 0:
                 queryset = queryset.filter(station_sensor_link__data_type__in=data_types)
