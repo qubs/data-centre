@@ -24,7 +24,7 @@ button:focus {
 
 input[type='text'] {
     padding: 7px 8px;
-    min-width: 200px;
+    min-width: 230px;
 
     border-radius: 2px;
     border: 2px solid #CCC;
