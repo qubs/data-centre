@@ -416,6 +416,18 @@ class ReadingList(generics.ListCreateAPIView):
         queryset = queryset.order_by("read_time")
         return queryset
 
+    def list(self, request, *args, **kwargs):
+        global compact_reading_columns
+
+        compact = str(self.request.query_params.get("compact", "false")).lower()
+
+        data = self.filter_queryset(self.get_queryset()).values(*compact_reading_columns)
+
+        if compact == "0" or compact == "false":
+            data = self.filter_queryset(self.get_queryset()).values()
+
+        return Response(data)
+
 
 class ReadingDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Reading.objects.all()
