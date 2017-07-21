@@ -370,13 +370,19 @@ class ReadingList(generics.ListCreateAPIView):
 
         start_date = self.request.query_params.get("start", None)
         start_date_object = datetime.datetime.now(pytz.utc) - datetime.timedelta(days=7)  # Default to a week's worth
+
         if start_date is not None:
             start_date_object = dateutil.parser.parse(start_date)
+            if start_date_object.tzinfo is None or start_date_object.tzinfo.utcoffset(start_date_object) is None:
+                start_date_object = pytz.utc.localize(start_date_object)
 
         end_date = self.request.query_params.get("end", None)
         end_date_object = datetime.datetime.now(pytz.utc)
+
         if end_date is not None:
             end_date_object = dateutil.parser.parse(end_date)
+            if end_date_object.tzinfo is None or end_date_object.tzinfo.utcoffset(end_date_object) is None:
+                end_date_object = pytz.utc.localize(end_date_object)
 
         sample_interval = self.request.query_params.get("interval", "1")  # TODO: Make this more elegant.
 
