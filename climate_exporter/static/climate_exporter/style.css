@@ -24,8 +24,17 @@ button:focus {
 
 input[type='text'] {
     padding: 7px 8px;
+    min-width: 200px;
+
+    border-radius: 2px;
+    border: 2px solid #CCC;
+
     font-size: 0.85rem;
     color: #555;
+}
+input[type='text'].active, input[type='text']:focus {
+    border-color: #3498db;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 select {
