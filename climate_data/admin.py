@@ -29,6 +29,12 @@ def qc_process_reading(modeladmin, request, queryset):
 qc_process_reading.short_description = "Mark selected readings as 'QC processed'"
 
 
+def qc_process_and_invalidate_reading(modeladmin, request, queryset):
+    queryset.update(qc_processed=True, invalid=True)
+
+qc_process_and_invalidate_reading.short_description = "Mark selected readings as 'QC processed' and 'invalid'"
+
+
 @admin.register(DataType)
 class DataTypeAdmin(admin.ModelAdmin):
     list_display = ("name", "short_name", "unit", "bounds_str")
@@ -58,7 +64,7 @@ class ReadingAdmin(admin.ModelAdmin):
     list_display = ("read_time", "station", "data_type", "decimal_value_str", "data_source", "qc_processed", "invalid")
     list_filter = ("station", "station_sensor_link__data_type", "qc_processed")
     ordering = ["-read_time", "station", "sensor"]
-    actions = [invalidate_reading, qc_process_reading]
+    actions = [invalidate_reading, qc_process_reading, qc_process_and_invalidate_reading]
 
 
 @admin.register(Annotation)
