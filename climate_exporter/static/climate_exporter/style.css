@@ -29,7 +29,25 @@ input[type='text'] {
 }
 
 select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    padding: 4px 30px 4px 12px;
+    border: 2px solid #CCC;
     font-size: 0.95rem;
+}
+
+/*noinspection CssUnknownTarget*/
+select {
+    background: url('/static/climate_exporter/arrow_drop_down.png') no-repeat 98% 50%;
+    background-size: 18px 18px;
+    background-blend-mode: screen;
+}
+select:focus {
+    border-color: #3498db;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    outline: none;
 }
 
 
