@@ -30,7 +30,7 @@ from rest_framework.reverse import reverse
 from climate_data.serializers import *
 
 
-compact_reading_columns = ("id", "read_time", "value", "invalid", "sensor", "station")
+compact_reading_columns = ("id", "read_time", "value", "invalid", "sensor", "station", "station_sensor_link")
 station_compact_reading_columns = ("id", "read_time", "value", "invalid", "sensor")
 
 
