@@ -312,6 +312,7 @@ class StationSensorLinkList(generics.ListCreateAPIView):
     def get_queryset(self):
         station = self.request.query_params.get("station", None)
         sensor = self.request.query_params.get("sensor", None)
+        deep = str(self.request.query_params.get("deep", "false")).lower()
 
         queryset = StationSensorLink.objects.all().order_by("created")
 
@@ -330,6 +331,10 @@ class StationSensorLinkList(generics.ListCreateAPIView):
                 pass  # There was a value error, so no filtering will be applied.
             else:
                 queryset = queryset.filter(sensor=sensor)
+
+        if deep != "false" and deep != "0":
+            # Hopefully improve performance by fetching related data_type
+            queryset = queryset.select_related("station", "sensor", "data_type")
 
         return queryset
 
