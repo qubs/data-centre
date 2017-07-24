@@ -94,7 +94,7 @@ def station__data_type(request, pk=None, data_type=None):
     graph_data = [[r.read_time, r.decimal_value()] for r in Reading.objects.filter(
         station_sensor_link=station_sensor_link,
         invalid=False
-    ).order_by('read_time').iterator()]
+    ).only('read_time', 'value', 'sensor').select_related('sensor').order_by('read_time').iterator()]
 
     return render(request, 'climate_manager/station__data_type.html', {
         'station': station,
@@ -128,7 +128,7 @@ def station_chart(request, pk=None, data_type=None):
         station_sensor_link=station_sensor_link,
         invalid=False,
         read_time__gte=datetime.datetime.now(pytz.utc)-datetime.timedelta(days=31)
-    ).order_by('read_time'))
+    ).only('read_time', 'value', 'sensor').select_related('sensor').order_by('read_time'))
 
     chart = Figure()
     ax = chart.add_subplot(111)
