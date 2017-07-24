@@ -58,7 +58,8 @@ def index(request):
                 queryset = queryset.filter(read_time__lte=time_end)
 
             if len(data_types) > 0:
-                queryset = queryset.filter(station_sensor_link__data_type__in=data_types)
+                queryset = queryset.filter(station_sensor_link__data_type__in=data_types)\
+                    .select_related('sensor', 'station_sensor_link', 'station_sensor_link__data_type')
 
             if format == 'csv':
                 header = ['time']
