@@ -1,0 +1,102 @@
+{% extends "generic_base.html" %}
+{% load static %}
+
+{% block title %}Climate Data Manager{% endblock %}
+
+{% block head %}
+
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700,700i" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<link rel="stylesheet" href="{% static "climate_manager/style.css" %}">
+
+<!-- Flatpickr -->
+<link rel="stylesheet" href="https://unpkg.com/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_red.css">
+<script src="https://unpkg.com/flatpickr" type="text/javascript"></script>
+<style type="text/css">
+    .flatpickr-current-month {
+        font-size: 120%;
+    }
+</style>
+
+<script type="text/javascript">
+    const stations = JSON.parse('{{ stations_json|escapejs }}');
+    const stationDataTypes = JSON.parse('{{ station_data_types|escapejs }}');
+
+    var selectedStation = null;
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const stationSelector = document.getElementById('{{ invalidation_form.station.id_for_label }}');
+        const dataTypeSelector= document.getElementById('{{ invalidation_form.data_type.id_for_label }}');
+
+        stationSelector.addEventListener('change', function () {
+            selectedStation = parseInt(stationSelector.value, 10);
+            if (isNaN(selectedStation)) {
+                selectedStation = null;
+            }
+
+            for (var d in dataTypeSelector.children) {
+                if (dataTypeSelector.children.hasOwnProperty(d)) {
+                    var currentDataTypeID = parseInt(dataTypeSelector[d].value, 10);
+
+                    if (isNaN(currentDataTypeID)) {
+                        currentDataTypeID = -1;
+                    }
+                    if (typeof stationDataTypes[selectedStation] !== 'undefined') {
+                        if (stationDataTypes[selectedStation].indexOf(currentDataTypeID) === -1) {
+                            dataTypeSelector.children[d]['disabled'] = true;
+                            if (dataTypeSelector[d].value === dataTypeSelector.children[d]['value']) {
+                                dataTypeSelector.children[d]['selected'] = false;
+                            }
+                        } else {
+                            dataTypeSelector.children[d]['disabled'] = false;
+                        }
+                    } else {
+                        // Show everything if nothing is selected.
+                        dataTypeSelector.children[d]['disabled'] = false;
+                    }
+                }
+            }
+        }, false);
+
+        flatpickr('#id_time_start', {
+            enableTime: true,
+            altInput: true
+        });
+        flatpickr('#id_time_end', {
+            enableTime: true,
+            altInput: true
+        });
+    }, false);
+</script>
+
+{% endblock %}
+
+{% block content %}
+    <h1>QUBS Climate Data Manager</h1>
+
+    <h2>Stations</h2>
+
+    <ul id="station-list">
+        {% for station in stations %}
+            <li><a href="{% url 'station' station.id %}">{{ station.name }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <h2>Data Invalidation</h2>
+    <form action="/climate/manage/">
+        {{ invalidation_form.station.errors }}
+        <p>
+            Invalidate data from <label for="{{ invalidation_form.station.id_for_label }}">station</label>
+            {{ invalidation_form.station }} with
+            <label for="{{ invalidation_form.data_type.id_for_label }}">data type</label>
+            {{ invalidation_form.data_type }} between dates {{ invalidation_form.time_start }} and
+            {{ invalidation_form.time_end }} inclusive.
+        </p>
+        <p class="form-help-text">
+            Will mark any data invalidated as having also gone through a quality control process.
+        </p>
+        <button type="submit" value="submit">Submit</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,136 @@
+{% extends "generic_base.html" %}
+{% load static %}
+
+{% block title %}{{ data_type.name }} | {{ station.name }} | Climate Data Manager{% endblock %}
+
+{% block head %}
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,600,700,700i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static "climate_manager/style.css" %}">
+
+    <script src="http://code.highcharts.com/stock/highstock.js"></script>
+
+    <script type="text/javascript">
+        const data = {
+            name: '{{ data_type.name|escapejs }}',
+            data: JSON.parse('{{ graph_data|escapejs }}').map(function (x) {
+                return [Date.parse(x[0]), x[1]]
+            })
+        };
+
+        console.log(data);
+
+        Highcharts.setOptions({
+			global : { useUTC : false }
+		});
+
+        Highcharts.theme = {
+			colors: ["#F44336", "#9C27B0", "#03A9F4", "#CDDC39", "#FF9800", "#607D8B", "#009688", "#FFEB3B", "#3F51B5"],
+			chart: {backgroundColor: "#FEFEFE"},
+			title: {
+				style: {
+					color: "#424242",
+					font: '600 1rem "Open Sans", sans-serif'
+				}
+			},
+			subtitle: {
+				style: {
+					color: "#9E9E9E",
+					font: 'normal 0.8rem "Open Sans", sans-serif'
+				}
+			},
+
+			xAxis: {
+				gridLineColor: "#EEEEEE",
+				gridLineWidth: 1,
+
+				lineColor: "#E0E0E0",
+				tickColor: "#E0E0E0",
+
+				labels: {
+					style: { font: 'normal 0.7rem "Open Sans", sans-serif' }
+				}
+			},
+
+			yAxis: {
+				gridLineColor: "#EEEEEE",
+				gridLineWidth: 1,
+				labels: {
+					style: { font: 'normal 0.7rem "Open Sans", sans-serif' }
+				}
+			},
+
+            legend: {
+			    enabled: false
+            },
+
+			scrollbar: {
+				barBackgroundColor: "#CFD8DC"
+			}
+		};
+
+		// Apply the theme
+		Highcharts.setOptions(Highcharts.theme);
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var dateRange = new Date();
+            dateRange.setDate(dateRange.getDate() - 31);
+
+            const chartOptions = {
+                title: {text: ""},
+                subtitle: {text: ""},
+
+                xAxis: {
+                    type: "datetime",
+                    tickPixelInterval: 150,
+                    min: dateRange.getTime(),
+                    max: (new Date()).getTime()
+                },
+
+                yAxis: {
+                    title: {text: '{{ data_type.name|escapejs }}'},
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: "#FF5722"
+                    }]
+                },
+
+                tooltip: {valueSuffix: '{{ data_type.unit|escapejs }}'},
+                scrollbar: {enabled: true},
+
+                plotOptions: {
+                    series: {
+                        marker: {enabled: false},
+                        gapSize: 5
+                    }
+                },
+
+                chart: {
+                    renderTo: 'graph-container',
+                    type: 'line',
+                    animation: Highcharts.svg,
+                    zoomType: 'x',
+                    spacingTop: 40
+                },
+
+                series: [data]
+            };
+
+            new Highcharts.Chart(chartOptions);
+        }, false);
+    </script>
+{% endblock %}
+
+{% block content %}
+    <h1>QUBS Climate Data Manager</h1>
+    <h2>
+        <a href="{% url 'index' %}"><i class="material-icons">home</i></a>
+        <i class="material-icons">arrow_forward</i>
+        <a href="{% url 'station' station.id %}">{{ station.name }}</a>
+        <i class="material-icons">arrow_forward</i>
+        <span>{{ data_type.name }}</span>
+    </h2>
+    <div id="graph-container"></div>
+{% endblock %}
