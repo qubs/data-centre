@@ -7,6 +7,7 @@ from django.shortcuts import render
 from rest_framework.renderers import JSONRenderer
 
 from climate_exporter.forms import ExportForm
+
 from climate_data.models import *
 from climate_data.serializers import *
 
@@ -26,6 +27,7 @@ def index(request):
 
     if request.method == 'POST':
         form = ExportForm(request.POST)
+
         if form.is_valid():
             include_invalid = form.cleaned_data['include_invalid']
             include_out_of_bounds = form.cleaned_data['include_out_of_bounds']
