@@ -82,7 +82,7 @@ def index(request):
                     if current_row_time != reading.read_time:
                         # Time to send the current row to the CSV, since we've moved past that particular read time.
 
-                        ordered_row = [reading.read_time]
+                        ordered_row = [current_row_time]
 
                         for measurement in header:
                             if measurement != 'time':  # Ignore this, since it has a fixed position and is always there.
