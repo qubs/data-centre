@@ -153,7 +153,7 @@ button:focus {
     border: 2px solid #3498db;
 }
 
-input[type='text'] {
+form > p > input[type='text'] {
     margin: 3px 0.3rem;
 
     padding: 5px 8px;
@@ -165,7 +165,8 @@ input[type='text'] {
     font-size: 1rem;
     color: #555;
 }
-input[type='text'].active, input[type='text']:focus {
+form > p > input[type='text'].active,
+form > p > input[type='text']:focus {
     border-color: #3498db;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
