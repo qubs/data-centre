@@ -84,12 +84,19 @@ def index(request):
 
                         ordered_row = [current_row_time]
 
+                        # We do not necessarily have all the readings for a particular time
+
                         for measurement in header:
                             if measurement != 'time':  # Ignore this, since it has a fixed position and is always there.
+                                found_one = False
                                 for label, value, in_bounds in current_row:
                                     if label == measurement:
                                         if include_out_of_bounds or in_bounds:
+                                            found_one = True
                                             ordered_row.append(value)
+
+                                if not found_one:  # No reading was found for that particular time, so add a null value.
+                                    ordered_row.append(None)
 
                         rows.append(ordered_row)
 
