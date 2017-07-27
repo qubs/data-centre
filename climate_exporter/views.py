@@ -62,12 +62,7 @@ def index(request):
                     .select_related('sensor', 'station_sensor_link', 'station_sensor_link__data_type')
 
             if format == 'csv':
-                header = ['time']
-
-                for link in links:
-                    if link.data_type in data_types:
-                        header.append(link.data_type.short_name)
-
+                header = ['time'] + [l.data_type.short_name for l in links if l.data_type in data_types]
                 rows = [header]
 
                 # Since rows are ordered by time, we can sort of piecemeal build up non-long form rows of data.
