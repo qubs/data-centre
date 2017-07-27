@@ -1,92 +1,11 @@
-* {
-    font-family: 'Open Sans', sans-serif;
-}
-
-
-button {
-    padding: 10px;
-    box-sizing: border-box;
-
-    border: 2px solid rgba(0, 0, 0, 0);
-    border-radius: 2px;
-    background-color: #E6E6E6;
-
-    font-size: 0.95rem;
-    text-transform: uppercase;
-    font-weight: bold;
-    color: #555;
-
-    outline: none;
-}
-button:focus {
-    border: 2px solid #3498db;
-}
-
 form > p > input[type='text'] {
-    padding: 7px 8px;
-    min-width: 230px;
-
-    border-radius: 2px;
-    border: 2px solid #CCC;
-
     font-size: 0.85rem;
-    color: #555;
-}
-form > p > input[type='text'].active,
-form > p > input[type='text']:focus {
-    border-color: #3498db;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-
-    padding: 4px 30px 4px 12px;
-    border: 2px solid #CCC;
-    font-size: 0.95rem;
-}
-
-/*noinspection CssUnknownTarget*/
-select {
-    background: url('/static/climate_exporter/arrow_drop_down.png') no-repeat 98% 50%;
-    background-size: 18px 18px;
-    background-blend-mode: screen;
-}
-select:focus {
-    border-color: #3498db;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    outline: none;
-}
-
-
-body {
-    padding: 0;
-    margin: 0;
-
-    background-color: #FEFEFE;
-}
-
-main {
-    padding: 30px 50px;
-}
-
-main h1 {
+main form > p > input[type="text"],
+main form > p > select {
     margin-top: 0;
-    margin-bottom: 15px;
-    font-size: 2.3rem;
-	font-weight: lighter;
-	color: #444;
-}
-
-main form {
-
-}
-
-main form p {
-    margin: 8px 0;
-    color: #333;
+    margin-bottom: 0;
 }
 
 main form ul#id_data_types {
@@ -112,10 +31,6 @@ main form ul#id_data_types li label {
     display: block;
     padding: 5px;
     background-color: #F7F7F7;
-}
-
-main form button[type="submit"] {
-    margin-top: 10px;
 }
 
 @media screen and (max-width: 1100px) {
