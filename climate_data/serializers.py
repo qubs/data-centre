@@ -55,7 +55,7 @@ class StationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Station
-        fields = ("id", "created", "updated", "name", "goes_id", "sensors",)
+        fields = ("id", "created", "updated", "name", "goes_id", "latitude", "longitude", "sensors",)
 
 
 class StationSensorLinkSerializer(serializers.ModelSerializer):

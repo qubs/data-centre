@@ -48,7 +48,7 @@ class SensorAdmin(admin.ModelAdmin):
 
 @admin.register(Station)
 class StationAdmin(admin.ModelAdmin):
-    list_display = ("name", "goes_id")
+    list_display = ("name", "goes_id", "latitude", "longitude")
 
 
 @admin.register(StationSensorLink)
