@@ -56,14 +56,14 @@ class StationSensorLinkAdmin(admin.ModelAdmin):
     list_display = ("station", "sensor", "data_type", "read_frequency", "station_order")
     list_editable = ("sensor", "data_type")
     list_filter = ("station", "data_type")
-    ordering = ["station", "station_order"]
+    ordering = ("station", "station_order")
 
 
 @admin.register(Reading)
 class ReadingAdmin(admin.ModelAdmin):
     list_display = ("read_time", "station", "data_type", "decimal_value_str", "data_source", "qc_processed", "invalid")
     list_filter = ("station", "station_sensor_link__data_type", "qc_processed")
-    ordering = ["-read_time", "station", "sensor"]
+    ordering = ("-read_time", "station", "sensor")
     actions = [invalidate_reading, qc_process_reading, qc_process_and_invalidate_reading]
 
 
@@ -78,5 +78,5 @@ class AnnotationAdmin(admin.ModelAdmin):
 class MessageAdmin(admin.ModelAdmin):
     list_display = ("arrival_time", "station", "goes_id", "data_quality", "data_source", "recorded_message_length")
     list_filter = ("station", "goes_id", "data_quality")
-    ordering = ["-arrival_time"]
+    ordering = ("-arrival_time",)
     pass
