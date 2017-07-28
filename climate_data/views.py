@@ -152,17 +152,10 @@ class StationList(generics.ListCreateAPIView):
     Create a new station in the database.
     """
 
+    queryset = Station.objects.all()
     serializer_class = StationSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-
-    def get_queryset(self):
-        queryset = Station.objects.all()
-
-        goes_id = self.request.query_params.get("goes_id", None)
-        if goes_id is not None:
-            queryset = queryset.filter(goes_id=goes_id)
-
-        return queryset
+    filter_fields = ("name", "goes_id")
 
 
 class StationDetail(generics.RetrieveUpdateDestroyAPIView):
