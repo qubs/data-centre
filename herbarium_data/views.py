@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 from herbarium_data.serializers import *
+from herbarium_data.filters import *
 
 
 # API Root View
@@ -30,6 +31,8 @@ class SpecimenList(generics.ListCreateAPIView):
     queryset = Specimen.objects.all()
     serializer_class = SpecimenSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    filter_class = SpecimenFilter
+    ordering_fields = '__all__'
 
     # Improve performance by not going through DRF serializer class.
     def list(self, request, *args, **kwargs):
