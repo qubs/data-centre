@@ -43,9 +43,54 @@ of `mod_wsgi`.
 
 `WSGIPassAuthorization On`
 
+1. Make sure to follow the steps above (for setting up the API server) first. For this guide, we will assume the
+repository has been cloned into `/var/www/example.com` with the repo itself being located in a folder called
+`qubs_data_centre`.
+
+2. Create a virtual host file with the following contents in `/etc/apache2/sites-available`:
+
+```apache
+<VirtualHost *:80>
+    ServerName example.com
+    ServerAlias www.example.ca
+    
+    ServerAdmin someone@example.com
+    
+    ErrorLog /var/www/example.com/logs/error.log
+    CustomLog /var/www/example.com/logs/access.log combined
+    
+    Alias /static /var/www/example.com/static
+    <Directory /var/www/example.com/static>
+        Require all granted
+    </Directory>
+    
+    <Directory /var/www/example.com/qubs_data_centre/qubs_data_centre>
+        <Files wsgi.py>
+            Require all granted
+        </Files>
+    </Directory>
+    
+    WSGIDaemonProcess qubs_data_centre processes=1 python-home=/var/www/example.com/qubs_data_centre/env python-path=/var/www/example.com/qubs_data_centre display-name=%{GROUP}
+    WSGIProcessGroup qubs_data_centre
+    WSGIApplicationGroup %{GLOBAL}
+    WSGIScriptAlias / /var/www/example.com/qubs_data_centre/qubs_data_centre/wsgi.py
+    WSGIPassAuthorization On
+</VirtualHost>
+```
+
+3. Enable the site by running `sudo a2ensite example.com`, then running `sudo service apache2 reload`
+(if on Ubuntu 14.10 or earlier) or `sudo systemctl reload apache2` (if on Ubuntu 15.04 or later).
+
+4. TODO (upstart/systemd service files)
+
+
 ### NGINX
 
-TODO
+1. Make sure to follow the steps above (for setting up the API server) first. For this guide, we will assume the
+repository has been cloned into `/var/www/example.com` with the repo itself being located in a folder called
+`qubs_data_centre`.
+
+2. TODO
 
 ## Available Data
 
