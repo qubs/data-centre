@@ -416,13 +416,9 @@ class ReadingList(generics.ListCreateAPIView):
         return queryset
 
     def list(self, request, *args, **kwargs):
-        compact = str(self.request.query_params.get("compact", "false")).lower()
-
-        data = self.filter_queryset(self.get_queryset()).values(*getattr(CompactReadingSerializer.Meta, 'fields', None))
-        if compact == "0" or compact == "false":
-            data = self.filter_queryset(self.get_queryset()).values(*getattr(ReadingSerializer.Meta, 'fields', None))
-
-        return Response(data)
+        return Response(self.filter_queryset(self.get_queryset()).values(
+            *getattr(self.get_serializer_class().Meta, 'fields', None))
+        )
 
 
 class ReadingDetail(generics.RetrieveUpdateDestroyAPIView):
