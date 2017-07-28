@@ -31,6 +31,12 @@ class SpecimenList(generics.ListCreateAPIView):
     serializer_class = SpecimenSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
+    # Improve performance by not going through DRF serializer class.
+    def list(self, request, *args, **kwargs):
+        return Response(self.filter_queryset(self.get_queryset()).values(
+            *getattr(self.get_serializer_class().Meta, 'fields', None))
+        )
+
 
 class SpecimenDetail(generics.RetrieveUpdateDestroyAPIView):
     """
