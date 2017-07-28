@@ -45,12 +45,15 @@ INSTALLED_APPS = [
     'rest_framework_xml',
     'django_filters',
 
+    # Core Apps
     'core.apps.CoreConfig',
     'api.apps.APIConfig',
 
+    # Site Data Apps
     'climate_data.apps.ClimateDataConfig',
     'herbarium_data.apps.HerbariumDataConfig',
 
+    # Apps Built on Data Definitions
     'climate_manager.apps.ClimateManagerConfig',
     'climate_exporter.apps.ClimateExporterConfig',
 ]
