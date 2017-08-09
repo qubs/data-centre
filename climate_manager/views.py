@@ -96,7 +96,15 @@ def station__data_type(request, pk=None, data_type=None):
         invalid=False
     ).only('read_time', 'value', 'sensor').select_related('sensor').order_by('read_time').iterator()]
 
+    if request.method == 'POST':
+        form = StationDataTypeInvalidateDataForm(request.POST)
+
+    else:
+        form = StationDataTypeInvalidateDataForm()
+
     return render(request, 'climate_manager/station__data_type.html', {
+        'invalidation_form': form,
+
         'station': station,
         'data_type': data_type,
         'graph_data': JSONRenderer().render(graph_data)

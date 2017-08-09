@@ -11,6 +11,16 @@
 
     <script src="http://code.highcharts.com/stock/highstock.js"></script>
 
+    <!-- Flatpickr -->
+    <link rel="stylesheet" href="https://unpkg.com/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_red.css">
+    <script src="https://unpkg.com/flatpickr" type="text/javascript"></script>
+    <style type="text/css">
+        .flatpickr-current-month {
+            font-size: 110%;
+        }
+    </style>
+
     <script type="text/javascript">
         const data = {
             name: '{{ data_type.name|escapejs }}',
@@ -129,6 +139,15 @@
             };
 
             new Highcharts.Chart(chartOptions);
+
+            flatpickr('#id_time_start', {
+            enableTime: true,
+            altInput: true
+            });
+            flatpickr('#id_time_end', {
+                enableTime: true,
+                altInput: true
+            });
         }, false);
     </script>
 {% endblock %}
@@ -143,5 +162,18 @@
         <span>{{ data_type.name }}</span>
     </h2>
     <p><em>All times are in UTC.</em></p>
+    <h3>Chart</h3>
     <div id="graph-container"></div>
+    <h3>Data Invalidation</h3>
+    <form action="" method="post">
+        {% csrf_token %}
+        <p>
+            Invalidate data between dates {{ invalidation_form.time_start }}
+            and {{ invalidation_form.time_end }} inclusive.
+        </p>
+        <p class="form-help-text">
+            Will mark any data invalidated as having also gone through a quality control process.
+        </p>
+        <button type="submit" value="submit">Submit</button>
+    </form>
 {% endblock %}

@@ -9,3 +9,8 @@ class InvalidateDataForm(forms.Form):
 
     time_start = forms.DateTimeField()
     time_end = forms.DateTimeField()
+
+
+class StationDataTypeInvalidateDataForm(forms.Form):
+    time_start = forms.DateTimeField()
+    time_end = forms.DateTimeField()
