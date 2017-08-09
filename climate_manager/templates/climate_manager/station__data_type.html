@@ -20,7 +20,7 @@
         };
 
         Highcharts.setOptions({
-			global : { useUTC : false }
+			global : { useUTC : true }
 		});
 
         Highcharts.theme = {
@@ -130,5 +130,6 @@
         <i class="material-icons">arrow_forward</i>
         <span>{{ data_type.name }}</span>
     </h2>
+    <p><em>All times are in UTC.</em></p>
     <div id="graph-container"></div>
 {% endblock %}
