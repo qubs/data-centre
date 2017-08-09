@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from rest_framework.renderers import JSONRenderer
 
-from climate_manager.forms import InvalidateDataForm
+from climate_manager.forms import *
 
 from climate_data.models import *
 from climate_data.serializers import *
