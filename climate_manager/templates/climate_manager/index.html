@@ -93,8 +93,9 @@
     </ul>
 
     <h2>Data Invalidation</h2>
-    <form action="/climate/manage/">
+    <form action="/climate/manage/" method="post">
         {{ invalidation_form.station.errors }}
+        {% csrf_token %}
         <p>
             Invalidate data from <label for="{{ invalidation_form.station.id_for_label }}">station</label>
             {{ invalidation_form.station }} with
