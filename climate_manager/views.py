@@ -7,8 +7,9 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from matplotlib.dates import DateFormatter, date2num
 
-from django.http import HttpResponse, HttpResponseBadRequest, Http404
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, HttpResponseBadRequest, Http404
 from django.shortcuts import render
 from rest_framework.renderers import JSONRenderer
 
@@ -34,6 +35,35 @@ def index(request):
 
             time_start = form.cleaned_data['time_start']
             time_end = form.cleaned_data['time_end']
+
+            queryset = Reading.objects.filter(
+                station=station,
+                station_sensor_link__data_type=data_type,
+
+                read_time__gte=time_start,
+                read_time__lte=time_end
+            )
+
+            count = queryset.count()
+
+            if count > 0:
+                queryset.update(invalid=True, qc_processed=True)
+
+                messages.success(
+                    request,
+                    'Invalidated {count} readings from {station_name} on interval [{s}, {e}].'.format(
+                        count=count,
+                        station_name=station.name,
+
+                        s=time_start,
+                        e=time_end
+                    )
+                )
+            else:
+                messages.info(request, 'No readings were found within those restrictions.')
+
+        else:
+            messages.error(request, 'The command submitted was not valid.')
 
     else:
         form = InvalidateDataForm()
