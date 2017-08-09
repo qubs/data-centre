@@ -38,6 +38,37 @@ main h3 {
     color: #444;
 }
 
+ul.messages {
+    margin: 15px 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+ul.messages li {
+    padding: 15px 20px;
+    border-radius: 2px;
+
+    background-color: #F3F3F3;
+    color: #444;
+}
+ul.messages li.info {
+    background-color: #BBDEFB;
+    color: #37474F;
+}
+ul.messages li.success {
+    background-color: #CDDC39;
+    color: #444;
+}
+ul.messages li.warning {
+    background-color: #FF8F00;
+    color: #FFFCF0;
+}
+ul.messages li.error {
+    background-color: #E53935;
+    color: #FFFBFE;
+}
+
 
 /* FORMS */
 
