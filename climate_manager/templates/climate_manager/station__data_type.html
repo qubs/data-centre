@@ -160,6 +160,15 @@
         <i class="material-icons">arrow_forward</i>
         <span>{{ data_type.name }}</span>
     </h2>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
     <p><em>All times are in UTC.</em></p>
     <h3>Chart</h3>
     <div id="graph-container"></div>
