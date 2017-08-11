@@ -135,14 +135,16 @@
                 series: [data]
             };
 
-            new Highcharts.Chart(chartOptions);
+            const chart = new Highcharts.Chart(chartOptions);
 
-            flatpickr('#id_time_start', {
-            enableTime: true,
-            altInput: true
-            });
-            flatpickr('#id_time_end', {
+            const timeStart = flatpickr('#id_time_start', {
                 enableTime: true,
+                time_24hr: true,
+                altInput: true
+            });
+            const timeEnd = flatpickr('#id_time_end', {
+                enableTime: true,
+                time_24hr: true,
                 altInput: true
             });
         }, false);
