@@ -18,6 +18,7 @@
         }
     </style>
 
+    <!--suppress JSCheckFunctionSignatures -->
     <script type="text/javascript">
         const data = {
             name: '{{ data_type.name|escapejs }}',
@@ -147,6 +148,18 @@
                 time_24hr: true,
                 altInput: true
             });
+
+            document.getElementById('importBounds').addEventListener('click', function () {
+                if (chart.series[0].points.length > 2) {
+                    var startDate = new Date(chart.series[0].points[1].x);
+                    var endDate = new Date(chart.series[0].points[chart.series[0].points.length - 2].x);
+
+                    timeStart.setDate(startDate.getUTCFullYear().toString() + '-' + (startDate.getUTCMonth() + 1) + '-'
+                        + startDate.getUTCDate() + ' ' + startDate.getUTCHours() + ':' + startDate.getUTCMinutes());
+                    timeEnd.setDate(endDate.getUTCFullYear().toString() + '-' + (endDate.getUTCMonth() + 1) + '-'
+                        + endDate.getUTCDate() + ' ' + endDate.getUTCHours() + ':' + endDate.getUTCMinutes());
+                }
+            });
         }, false);
     </script>
 {% endblock %}
@@ -178,6 +191,7 @@
         <p>
             Invalidate data between dates {{ invalidation_form.time_start }}
             and {{ invalidation_form.time_end }} inclusive.
+            <button type="button" id="importBounds" style="margin-left: 0.5em;">Use Bounds from Chart</button>
         </p>
         <p class="form-help-text">
             Will mark any data invalidated as having also gone through a quality control process.
