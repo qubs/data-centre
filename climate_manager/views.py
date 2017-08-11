@@ -123,16 +123,52 @@ def station__data_type(request, pk=None, data_type=None):
 
     station_sensor_link = StationSensorLink.objects.get(station=station, data_type=data_type)
 
+    if request.method == 'POST':
+        form = StationDataTypeInvalidateDataForm(request.POST)
+
+        if form.is_valid():
+            time_start = form.cleaned_data['time_start']
+            time_end = form.cleaned_data['time_end']
+
+            queryset = Reading.objects.filter(
+                station=station,
+                station_sensor_link__data_type=data_type,
+
+                read_time__gte=time_start,
+                read_time__lte=time_end,
+
+                invalid=False  # Don't bother re-invalidating readings - plus, it throws the count off.
+            )
+
+            count = queryset.count()
+
+            if count > 0:
+                queryset.update(invalid=True, qc_processed=True)
+
+                messages.success(
+                    request,
+                    'Invalidated {count} readings on interval [{s}, {e}].'.format(
+                        count=count,
+                        station_name=station.name,
+
+                        s=time_start,
+                        e=time_end
+                    )
+                )
+            else:
+                messages.info(request, 'No readings were found within those restrictions.')
+
+        else:
+            messages.error(request, 'The command submitted was not valid.')
+
+    else:
+        form = StationDataTypeInvalidateDataForm()
+
+    # Fetch data after potential invalidations.
     graph_data = [[r.read_time, r.decimal_value()] for r in Reading.objects.filter(
         station_sensor_link=station_sensor_link,
         invalid=False
     ).only('read_time', 'value', 'sensor').select_related('sensor').order_by('read_time').iterator()]
-
-    if request.method == 'POST':
-        form = StationDataTypeInvalidateDataForm(request.POST)
-
-    else:
-        form = StationDataTypeInvalidateDataForm()
 
     return render(request, 'climate_manager/station__data_type.html', {
         'invalidation_form': form,
