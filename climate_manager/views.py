@@ -62,7 +62,7 @@ def index(request):
                     )
                 )
             else:
-                messages.info(request, 'No readings were found within those restrictions.')
+                messages.info(request, 'No (non-invalid) readings were found within those restrictions.')
 
         else:
             messages.error(request, 'The command submitted was not valid.')
@@ -156,7 +156,7 @@ def station__data_type(request, pk=None, data_type=None):
                     )
                 )
             else:
-                messages.info(request, 'No readings were found within those restrictions.')
+                messages.info(request, 'No (non-invalid) readings were found within those restrictions.')
 
         else:
             messages.error(request, 'The command submitted was not valid.')
