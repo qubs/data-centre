@@ -41,7 +41,9 @@ def index(request):
                 station_sensor_link__data_type=data_type,
 
                 read_time__gte=time_start,
-                read_time__lte=time_end
+                read_time__lte=time_end,
+
+                invalid=False  # Don't bother re-invalidating readings - plus, it throws the count off.
             )
 
             count = queryset.count()
