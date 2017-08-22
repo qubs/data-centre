@@ -11,6 +11,13 @@ class InvalidateDataForm(forms.Form):
     time_end = forms.DateTimeField()
 
 
+class DataTypeInvalidateDataForm(forms.Form):
+    station = forms.ModelChoiceField(queryset=Station.objects.all())
+
+    time_start = forms.DateTimeField()
+    time_end = forms.DateTimeField()
+
+
 class StationDataTypeInvalidateDataForm(forms.Form):
     time_start = forms.DateTimeField()
     time_end = forms.DateTimeField()

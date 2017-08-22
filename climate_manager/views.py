@@ -233,3 +233,75 @@ def station_chart(request, pk=None, data_type=None):
     FigureCanvasAgg(chart).print_png(response)
 
     return response
+
+
+@login_required
+def data_type_overview(request, data_type=None):
+    if data_type is None:
+        return HttpResponseBadRequest()
+
+    try:
+        data_type = DataType.objects.get(short_name=data_type)
+    except DataType.DoesNotExist:
+        raise Http404('Data type does not exist')
+
+    if request.method == 'POST':
+        form = DataTypeInvalidateDataForm(request.POST)
+
+        if form.is_valid():
+            station = form.cleaned_data['station']
+
+            time_start = form.cleaned_data['time_start']
+            time_end = form.cleaned_data['time_end']
+
+            queryset = Reading.objects.filter(
+                station=station,
+                station_sensor_link__data_type=data_type,
+
+                read_time__gte=time_start,
+                read_time__lte=time_end,
+
+                invalid=False  # Don't bother re-invalidating readings - plus, it throws the count off.
+            )
+
+            count = queryset.count()
+
+            if count > 0:
+                queryset.update(invalid=True, qc_processed=True)
+
+                messages.success(
+                    request,
+                    'Invalidated {count} readings from {station_name} on interval [{s}, {e}].'.format(
+                        count=count,
+                        station_name=station.name,
+
+                        s=time_start,
+                        e=time_end
+                    )
+                )
+            else:
+                messages.info(request, 'No (non-invalid) readings were found within those restrictions.')
+
+        else:
+            messages.error(request, 'The command submitted was not valid.')
+
+    else:
+        form = DataTypeInvalidateDataForm()
+
+    # Fetch data after potential invalidations.
+    graph_data = [{
+        'name': s.name,
+        'data': [[r.read_time, r.decimal_value()] for r in Reading.objects.filter(
+            station_sensor_link__station=s,
+            station_sensor_link__data_type=data_type,
+            invalid=False
+        ).only('read_time', 'value', 'sensor', 'station_sensor_link').select_related('sensor', 'station_sensor_link')
+            .order_by('read_time').iterator()]
+    } for s in Station.objects.all().iterator()]
+
+    return render(request, 'climate_manager/data_type.html', {
+        'invalidation_form': form,
+
+        'data_type': data_type,
+        'graph_data': JSONRenderer().render(graph_data)
+    })
