@@ -151,5 +151,5 @@ def index(request):
 
     return render(request, 'climate_exporter/index.html', {
         'form': form,
-        'station_data_types': JSONRenderer().render(station_data_types)
+        'station_data_types': JSONRenderer().render(station_data_types).decode('utf-8')
     })

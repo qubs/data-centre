@@ -74,8 +74,9 @@ def index(request):
         'invalidation_form': form,
 
         'stations': list(Station.objects.all().values()),
-        'stations_json': JSONRenderer().render([StationSerializer(s).data for s in Station.objects.all().iterator()]),
-        'station_data_types': JSONRenderer().render(station_data_types)
+        'stations_json': JSONRenderer().render([StationSerializer(s).data for s in Station.objects.all().iterator()])
+                                       .decode('utf-8'),
+        'station_data_types': JSONRenderer().render(station_data_types).decode('utf-8')
     })
 
 
@@ -175,7 +176,7 @@ def station__data_type(request, pk=None, data_type=None):
 
         'station': station,
         'data_type': data_type,
-        'graph_data': JSONRenderer().render(graph_data)
+        'graph_data': JSONRenderer().render(graph_data).decode('utf-8')
     })
 
 
@@ -303,5 +304,5 @@ def data_type_overview(request, data_type=None):
         'invalidation_form': form,
 
         'data_type': data_type,
-        'graph_data': JSONRenderer().render(graph_data)
+        'graph_data': JSONRenderer().render(graph_data).decode('utf-8')
     })
