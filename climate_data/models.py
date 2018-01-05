@@ -204,10 +204,12 @@ class Reading(models.Model):
 
     FROM_GOES = "G"
     FROM_DEVICE_LOG = "L"
+    FROM_BOTH = "B"
 
     DATA_SOURCE_CHOICES = (
         (FROM_GOES, "GOES satellite message"),
         (FROM_DEVICE_LOG, "Station data log"),
+        (FROM_BOTH, "Both satellite message and log")
     )
 
     def decimal_value(self):
