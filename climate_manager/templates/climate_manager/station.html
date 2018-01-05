@@ -24,7 +24,19 @@
     <h3>Log Upload</h3>
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <p>{{ log_upload_form.log.errors }}{{ log_upload_form.log }}</p>
+        {{ log_upload_form.non_field_errors }}
+        <p>
+            {{ log_upload_form.log.errors }}
+            {{ log_upload_form.format.errors }}
+            Infill and upgrade data from a downloaded log file {{ log_upload_form.log }} with format
+            {{ log_upload_form.format.errors }}{{ log_upload_form.format }}
+        </p>
+        <p class="form-help-text">
+            Often, data downloaded from the data loggers themselves is of higher quality than the satellite-transmitted
+            values due to missed transmissions or transmission errors. However, log data is <strong>not</strong>
+            guaranteed to be always better than transmitted data (there have been odd circumstances where a data point
+            gets transmitted but not recorded in the log).
+        </p>
         <button type="submit">Upload</button>
     </form>
 

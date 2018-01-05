@@ -24,4 +24,11 @@ class StationDataTypeInvalidateDataForm(forms.Form):
 
 
 class LogUploadForm(forms.Form):
+    LOG_FORMAT_CHOICES = (
+        ('satlink_std', 'Satlink Standard CSV (SatLink2)'),
+        ('sutron_std', 'Sutron Standard CSV (XLite, SatLink3)'),
+        ('pendant_event', 'HOBO Pendant Event Logger CSV'),
+    )
+
+    format = forms.ChoiceField(choices=LOG_FORMAT_CHOICES)
     log = forms.FileField()
