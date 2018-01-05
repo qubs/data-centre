@@ -93,8 +93,7 @@ form td > input[type="password"] {
 
     outline: none;
 }
-form > p > input[type="file"]#id_log {
-    margin-left: 0; margin-bottom: 0;
+form > p > input[type="file"] {
     line-height: 1rem;
 }
 form > p > input[type="text"].active,
