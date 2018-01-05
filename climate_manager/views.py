@@ -92,13 +92,22 @@ def station_overview(request, pk=None):
     except Station.DoesNotExist:
         raise Http404('Station does not exist')
 
+    if request.method == 'POST':
+        log_upload_form = LogUploadForm(request.POST)
+
+        # if log_upload_form.is_valid():
+
+    else:
+        log_upload_form = LogUploadForm()
+
     station_data_types = [
         l.data_type for l in StationSensorLink.objects.filter(station=station).select_related('data_type').iterator()
     ]
 
     return render(request, 'climate_manager/station.html', {
         'station': station,
-        'station_data_types': [DataTypeSerializer(d).data for d in station_data_types]
+        'log_upload_form': log_upload_form,
+        'station_data_types': [DataTypeSerializer(d).data for d in station_data_types],
     })
 
 

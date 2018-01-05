@@ -21,3 +21,7 @@ class DataTypeInvalidateDataForm(forms.Form):
 class StationDataTypeInvalidateDataForm(forms.Form):
     time_start = forms.DateTimeField()
     time_end = forms.DateTimeField()
+
+
+class LogUploadForm(forms.Form):
+    log = forms.FileField()

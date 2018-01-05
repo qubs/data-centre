@@ -20,6 +20,15 @@
         <i class="material-icons">arrow_forward</i>
         {{ station.name }} <span>({{ station.goes_id }})</span>
     </h2>
+
+    <h3>Log Upload</h3>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p>{{ log_upload_form.log.errors }}{{ log_upload_form.log }}</p>
+        <button type="submit">Upload</button>
+    </form>
+
+    <h3>Sensors</h3>
     <div class="data-charts">
         {% for data_type in station_data_types %}
             <a class="data-chart" href="{% url 'station__data_type' station.id data_type.short_name %}"
