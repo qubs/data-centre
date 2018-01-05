@@ -73,6 +73,8 @@
 {% block content %}
     <h1>QUBS Climate Data Manager</h1>
 
+    <h2><i class="material-icons">home</i></h2>
+
     {% if messages %}
         <ul class="messages">
             {% for message in messages %}
@@ -81,7 +83,7 @@
         </ul>
     {% endif %}
 
-    <h2>Stations</h2>
+    <h3>Stations</h3>
 
     <ul id="station-list">
         {% for station in stations %}
@@ -89,7 +91,7 @@
         {% endfor %}
     </ul>
 
-    <h2>Data Invalidation</h2>
+    <h3>Data Invalidation</h3>
     <form action="/climate/manage/" method="post">
         {{ invalidation_form.station.errors }}
         {% csrf_token %}
