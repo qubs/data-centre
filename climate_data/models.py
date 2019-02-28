@@ -335,6 +335,8 @@ class Message(models.Model):
         ("XL", "Sioux Falls, LRIT; USGS EROS"),
         ("RL", "Reston, LRIT; Reston, Virginia"),
         ("FF", "Unknown 1"),
+        ("N1", "Unknown 2"),
+        ("N2", "Unknown 3"),
     )
 
     def message_content(self):
