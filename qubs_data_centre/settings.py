@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []  # Add the site's host URL for production deployment
 
-CORS_ORIGIN_WHITELIST = ('localhost', 'localhost:8080')
+CORS_ORIGIN_WHITELIST = ('http://localhost', 'http://localhost:8080')
 
 # Application definition
 
