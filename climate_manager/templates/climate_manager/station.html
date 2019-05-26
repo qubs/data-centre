@@ -1,0 +1,52 @@
+{% extends "generic_base.html" %}
+{% load static %}
+
+{% block title %}{{ station.name }} | Climate Data Manager{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static "climate_manager/style.css" %}">
+
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+
+        }, false);
+    </script>
+{% endblock %}
+
+{% block content %}
+    <h1>QUBS Climate Data Manager</h1>
+    <h2>
+        <a href="{% url 'index' %}"><i class="material-icons">home</i></a>
+        <i class="material-icons">arrow_forward</i>
+        {{ station.name }} <span>({{ station.goes_id }})</span>
+    </h2>
+
+    <h3>Log Upload</h3>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ log_upload_form.non_field_errors }}
+        <p>
+            {{ log_upload_form.log.errors }}
+            {{ log_upload_form.format.errors }}
+            Infill and upgrade data from a downloaded log file {{ log_upload_form.log }} with format
+            {{ log_upload_form.format.errors }}{{ log_upload_form.format }}
+        </p>
+        <p class="form-help-text">
+            Often, data downloaded from the data loggers themselves is of higher quality than the satellite-transmitted
+            values due to missed transmissions or transmission errors. However, log data is <strong>not</strong>
+            guaranteed to be always better than transmitted data (there have been odd circumstances where a data point
+            gets transmitted but not recorded in the log).
+        </p>
+        <button type="submit">Upload</button>
+    </form>
+
+    <h3>Sensors</h3>
+    <div class="data-charts">
+        {% for data_type in station_data_types %}
+            <a class="data-chart" href="{% url 'station__data_type' station.id data_type.short_name %}"
+               style="background-image: url('{% url 'station__data_type__chart' station.id data_type.short_name %}');">
+                <h3>{{ data_type.name }}</h3>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}

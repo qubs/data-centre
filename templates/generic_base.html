@@ -1,0 +1,23 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Page{% endblock %} | QUBS Data Centre</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,700,700i" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static "generic_style.css" %}">
+
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+</body>
+</html>

@@ -1,0 +1,89 @@
+main h2 > a,
+main h2 > a i {
+    color: #444;
+    text-decoration: none;
+    transition: color 0.1s;
+}
+main h2 > a:hover,
+main h2 > a:hover i {
+    color: #666;
+    transition: color 0.1s;
+}
+
+main h2 span {
+    font-weight: lighter;
+    color: #777;
+}
+
+main h2 i {
+    margin-top: 0.2em;
+    vertical-align: top;
+    color: #444;
+}
+
+p.form-help-text {
+    font-size: 0.9rem;
+    font-style: italic;
+    color: #666;
+}
+
+ul#station-list {
+    padding: 0;
+    list-style: none;
+}
+
+ul#station-list li {
+    margin-bottom: 5px;
+}
+
+ul#station-list li a {
+    color: #444;
+    transition: color 0.1s;
+}
+ul#station-list li a:hover {
+    color: #666;
+    transition: color 0.1s;
+}
+
+
+div.data-charts {
+    box-sizing: border-box;
+    padding: 10px;
+
+    border: 1px solid #EEE;
+    background-color: #FFFFFF;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+    font-size: 0;
+}
+
+div.data-charts a.data-chart {
+    position: relative;
+    display: inline-block;
+    box-sizing: border-box;
+    width: 33.3%;
+    height: 0;
+    padding-top: 24.975%;
+
+    opacity: 0.7;
+    background-position: center;
+    background-size: 100% 100%;
+
+    font-size: 1rem;
+
+    transition: opacity 0.1s;
+}
+div.data-charts a.data-chart:hover {
+    opacity: 1;
+    transition: opacity 0.1s;
+}
+
+div.data-charts a.data-chart h3 {
+    position: absolute;
+    top: 5px; left: 0;
+    width: 100%;
+    margin-top: 0;
+    z-index: 3;
+
+    text-align: center;
+}

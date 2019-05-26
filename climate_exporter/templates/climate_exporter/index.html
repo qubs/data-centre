@@ -1,0 +1,82 @@
+{% extends "generic_base.html" %}
+{% load static %}
+
+{% block title %}Climate Data Exporter{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static "climate_exporter/style.css" %}">
+
+    <!-- Flatpickr -->
+    <link rel="stylesheet" href="https://unpkg.com/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_red.css">
+    <script src="https://unpkg.com/flatpickr"></script>
+    <style type="text/css">
+        .flatpickr-current-month {
+            font-size: 120%;
+        }
+    </style>
+
+    <script type="text/javascript">
+        const stationDataTypes = JSON.parse('{{ station_data_types|safe }}');
+        var selectedStation = null;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const stationSelector = document.getElementById('id_station');
+            const dataTypeSelectorContainer = document.getElementById('id_data_types');
+
+            stationSelector.addEventListener('change', function () {
+                selectedStation = parseInt(stationSelector.value, 10);
+                if (isNaN(selectedStation)) {
+                    selectedStation = null;
+                }
+
+                for (var d in dataTypeSelectorContainer.children) {
+                    if (dataTypeSelectorContainer.children.hasOwnProperty(d)) {
+                        var currentDataTypeInput = dataTypeSelectorContainer.children[d]
+                            .getElementsByTagName('input')[0];
+                        var currentDataTypeID = parseInt(currentDataTypeInput.value, 10);
+
+                        if (isNaN(currentDataTypeID)) {
+                            currentDataTypeID = -1;
+                        }
+                        if (typeof stationDataTypes[selectedStation] !== 'undefined') {
+                            if (stationDataTypes[selectedStation].indexOf(currentDataTypeID) === -1) {
+                                dataTypeSelectorContainer.children[d].className = 'disabled';
+                                currentDataTypeInput.disabled = true;
+
+                                // Have to deselect the current checkbox so it doesn't get passed as part of the query
+                                // if hidden.
+                                currentDataTypeInput.checked = false;
+                            } else {
+                                dataTypeSelectorContainer.children[d].className = '';
+                                currentDataTypeInput.disabled = false;
+                            }
+                        } else {
+                            // Show everything if nothing is selected.
+                            dataTypeSelectorContainer.children[d].className = 'disabled';
+                        }
+                    }
+                }
+            }, false);
+
+            // TODO: Provide minimum dates based on earliest available data.
+            flatpickr('#id_time_start', {
+                enableTime: true,
+                altInput: true
+            });
+            flatpickr('#id_time_end', {
+                enableTime: true,
+                altInput: true
+            });
+        }, false);
+    </script>
+{% endblock %}
+
+{% block content %}
+    <h1>QUBS Climate Data Exporter</h1>
+    <form action="/climate/export/" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" value="submit">Export</button>
+    </form>
+{% endblock %}

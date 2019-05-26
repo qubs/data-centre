@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []  # Add the site's host URL for production deployment
 
-CORS_ORIGIN_WHITELIST = ('localhost',)
+CORS_ORIGIN_WHITELIST = ('http://localhost', 'http://localhost:8080')
 
 # Application definition
 
@@ -43,14 +43,19 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'rest_framework_xml',
+    'django_filters',
 
+    # Core Apps
     'core.apps.CoreConfig',
     'api.apps.APIConfig',
 
+    # Site Data Apps
     'climate_data.apps.ClimateDataConfig',
     'herbarium_data.apps.HerbariumDataConfig',
 
+    # Apps Built on Data Definitions
     'climate_manager.apps.ClimateManagerConfig',
+    'climate_exporter.apps.ClimateExporterConfig',
 ]
 
 MIDDLEWARE = [
@@ -62,7 +67,6 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -140,7 +144,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '{}/static/'.format(BASE_DIR)
+STATIC_ROOT = '{}/static_collected/'.format(BASE_DIR)
+STATICFILES_DIRS = (
+    '{}/static/'.format(BASE_DIR),
+)
 
 # REST Framework
 
@@ -155,5 +162,6 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
         'rest_framework_xml.renderers.XMLRenderer',
-    )
+    ),
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
 }

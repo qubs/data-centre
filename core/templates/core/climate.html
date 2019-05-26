@@ -1,0 +1,11 @@
+{% extends "generic_base.html" %}
+{% block title %}QUBS Climate Data{% endblock %}
+{% block content %}
+    <h1>QUBS Climate Data</h1>
+    <ul class="link-list">
+        <li><a href="http://climate.qubs.ca">Visualizer</a></li>
+        <li><a href="{% url 'climate-exporter-index' %}">Data Exporter</a></li>
+        <li><a href="{% url 'climate-manager-index' %}">Manager</a></li>
+        <li><a href="{% url 'climate-api-root' %}">API</a></li>
+    </ul>
+{% endblock %}

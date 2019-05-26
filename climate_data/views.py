@@ -30,7 +30,7 @@ from rest_framework.reverse import reverse
 from climate_data.serializers import *
 
 
-compact_reading_columns = ("id", "read_time", "value", "invalid", "sensor", "station")
+compact_reading_columns = ("id", "read_time", "value", "invalid", "sensor", "station", "station_sensor_link")
 station_compact_reading_columns = ("id", "read_time", "value", "invalid", "sensor")
 
 
@@ -152,17 +152,10 @@ class StationList(generics.ListCreateAPIView):
     Create a new station in the database.
     """
 
+    queryset = Station.objects.all()
     serializer_class = StationSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-
-    def get_queryset(self):
-        queryset = Station.objects.all()
-
-        goes_id = self.request.query_params.get("goes_id", None)
-        if goes_id is not None:
-            queryset = queryset.filter(goes_id=goes_id)
-
-        return queryset
+    filter_fields = ("name", "goes_id")
 
 
 class StationDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -312,6 +305,7 @@ class StationSensorLinkList(generics.ListCreateAPIView):
     def get_queryset(self):
         station = self.request.query_params.get("station", None)
         sensor = self.request.query_params.get("sensor", None)
+        deep = str(self.request.query_params.get("deep", "false")).lower()
 
         queryset = StationSensorLink.objects.all().order_by("created")
 
@@ -330,6 +324,10 @@ class StationSensorLinkList(generics.ListCreateAPIView):
                 pass  # There was a value error, so no filtering will be applied.
             else:
                 queryset = queryset.filter(sensor=sensor)
+
+        if deep != "false" and deep != "0":
+            # Hopefully improve performance by fetching related data_type
+            queryset = queryset.select_related("station", "sensor", "data_type")
 
         return queryset
 
@@ -365,13 +363,19 @@ class ReadingList(generics.ListCreateAPIView):
 
         start_date = self.request.query_params.get("start", None)
         start_date_object = datetime.datetime.now(pytz.utc) - datetime.timedelta(days=7)  # Default to a week's worth
+
         if start_date is not None:
             start_date_object = dateutil.parser.parse(start_date)
+            if start_date_object.tzinfo is None or start_date_object.tzinfo.utcoffset(start_date_object) is None:
+                start_date_object = pytz.utc.localize(start_date_object)
 
         end_date = self.request.query_params.get("end", None)
         end_date_object = datetime.datetime.now(pytz.utc)
+
         if end_date is not None:
             end_date_object = dateutil.parser.parse(end_date)
+            if end_date_object.tzinfo is None or end_date_object.tzinfo.utcoffset(end_date_object) is None:
+                end_date_object = pytz.utc.localize(end_date_object)
 
         sample_interval = self.request.query_params.get("interval", "1")  # TODO: Make this more elegant.
 
@@ -410,6 +414,11 @@ class ReadingList(generics.ListCreateAPIView):
 
         queryset = queryset.order_by("read_time")
         return queryset
+
+    def list(self, request, *args, **kwargs):
+        return Response(self.filter_queryset(self.get_queryset()).values(
+            *getattr(self.get_serializer_class().Meta, 'fields', None))
+        )
 
 
 class ReadingDetail(generics.RetrieveUpdateDestroyAPIView):

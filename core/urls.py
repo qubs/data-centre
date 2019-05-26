@@ -3,4 +3,5 @@ from core import views
 
 urlpatterns = [
     url(r'^$', views.home),
+    url(r'^climate/$', views.climate)
 ]

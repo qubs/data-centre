@@ -1,0 +1,201 @@
+{% extends "generic_base.html" %}
+{% load static %}
+
+{% block title %}{{ data_type.name }} | {{ station.name }} | Climate Data Manager{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static "climate_manager/style.css" %}">
+
+    <script src="http://code.highcharts.com/stock/highstock.js"></script>
+
+    <!-- Flatpickr -->
+    <link rel="stylesheet" href="https://unpkg.com/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_red.css">
+    <script src="https://unpkg.com/flatpickr" type="text/javascript"></script>
+    <style type="text/css">
+        .flatpickr-current-month {
+            font-size: 110%;
+        }
+    </style>
+
+    <!--suppress JSCheckFunctionSignatures -->
+    <script type="text/javascript">
+        const data = {
+            name: '{{ data_type.name|escapejs }}',
+            data: JSON.parse('{{ graph_data|escapejs }}').map(function (x) {
+                return [Date.parse(x[0]), x[1]]
+            })
+        };
+
+        Highcharts.setOptions({
+			global : { useUTC : true }
+		});
+
+        Highcharts.theme = {
+			colors: ['#03A9F4'],
+			chart: {backgroundColor: '#FEFEFE'},
+			title: {
+				style: {
+					color: '#424242',
+					font: '600 1rem "Open Sans", sans-serif'
+				}
+			},
+			subtitle: {
+				style: {
+					color: '#9E9E9E',
+					font: 'normal 0.8rem "Open Sans", sans-serif'
+				}
+			},
+
+			xAxis: {
+				gridLineColor: '#EEEEEE',
+				gridLineWidth: 1,
+
+				lineColor: '#E0E0E0',
+				tickColor: '#E0E0E0',
+
+				labels: {
+					style: { font: 'normal 0.7rem "Open Sans", sans-serif' }
+				}
+			},
+
+			yAxis: {
+				gridLineColor: '#EEEEEE',
+				gridLineWidth: 1,
+				labels: {
+					style: { font: 'normal 0.7rem "Open Sans", sans-serif' }
+				}
+			},
+
+            legend: {
+			    enabled: false
+            },
+
+			scrollbar: {
+				barBackgroundColor: '#CFD8DC'
+			}
+		};
+
+		// Apply the theme
+		Highcharts.setOptions(Highcharts.theme);
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var dateRange = new Date();
+            dateRange.setDate(dateRange.getDate() - 31);
+
+            const chartOptions = {
+                title: {text: ''},
+                subtitle: {text: ''},
+
+                xAxis: {
+                    type: 'datetime',
+                    tickPixelInterval: 150,
+                    min: dateRange.getTime(),
+                    max: (new Date()).getTime()
+                },
+
+                yAxis: {
+                    title: {text: '{{ data_type.name|escapejs }}'},
+                    plotLines: [{
+                        value: 0,
+                        width: 1,
+                        color: '#FF5722'
+                    }]
+                },
+
+                tooltip: {valueSuffix: '{{ data_type.unit|escapejs }}'},
+                scrollbar: {enabled: true},
+
+                plotOptions: {
+                    series: {
+                        marker: {enabled: false},
+                        gapSize: 5
+                    }
+                },
+
+                rangeSelector: {
+                    enabled: true,
+                    inputPosition: {
+                        align: 'right',
+                        y: 0
+                    }
+                },
+
+                navigator: {
+                    enabled: true
+                },
+
+                chart: {
+                    renderTo: 'graph-container',
+                    type: 'line',
+                    animation: Highcharts.svg,
+                    zoomType: 'x',
+                    spacingTop: 40
+                },
+
+                series: [data]
+            };
+
+            const chart = new Highcharts.Chart(chartOptions);
+
+            const timeStart = flatpickr('#id_time_start', {
+                enableTime: true,
+                time_24hr: true,
+                altInput: true
+            });
+            const timeEnd = flatpickr('#id_time_end', {
+                enableTime: true,
+                time_24hr: true,
+                altInput: true
+            });
+
+            document.getElementById('importBounds').addEventListener('click', function () {
+                if (chart.series[0].points.length > 2) {
+                    var startDate = new Date(chart.series[0].points[1].x);
+                    var endDate = new Date(chart.series[0].points[chart.series[0].points.length - 2].x);
+
+                    timeStart.setDate(startDate.getUTCFullYear().toString() + '-' + (startDate.getUTCMonth() + 1) + '-'
+                        + startDate.getUTCDate() + ' ' + startDate.getUTCHours() + ':' + startDate.getUTCMinutes());
+                    timeEnd.setDate(endDate.getUTCFullYear().toString() + '-' + (endDate.getUTCMonth() + 1) + '-'
+                        + endDate.getUTCDate() + ' ' + endDate.getUTCHours() + ':' + endDate.getUTCMinutes());
+                }
+            });
+        }, false);
+    </script>
+{% endblock %}
+
+{% block content %}
+    <h1>QUBS Climate Data Manager</h1>
+    <h2>
+        <a href="{% url 'climate-manager-index' %}"><i class="material-icons">home</i></a>
+        <i class="material-icons">arrow_forward</i>
+        <a href="{% url 'station' station.id %}">{{ station.name }}</a>
+        <i class="material-icons">arrow_forward</i>
+        <span>{{ data_type.name }}</span>
+    </h2>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <p><em>All times are in UTC.</em></p>
+    <h3>Chart</h3>
+    <div id="graph-container"></div>
+    <h3>Data Invalidation</h3>
+    <form action="" method="post">
+        {% csrf_token %}
+        <p>
+            Invalidate data between dates {{ invalidation_form.time_start }}
+            and {{ invalidation_form.time_end }} inclusive.
+            <button type="button" id="importBounds" style="margin-left: 0.5em;">Use Bounds from Chart</button>
+        </p>
+        <p class="form-help-text">
+            Will mark any data invalidated as having also gone through a quality control process.
+        </p>
+        <button value="submit">Submit</button>
+    </form>
+{% endblock %}

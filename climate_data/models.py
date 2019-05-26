@@ -155,6 +155,11 @@ class Station(models.Model):
     name = models.CharField(max_length=100)
     goes_id = models.CharField(max_length=8)
 
+    latitude = models.DecimalField(max_digits=10, decimal_places=7,
+                                   null=True)  # In decimal degrees. Gives ~10 mm resolution.
+    longitude = models.DecimalField(max_digits=10, decimal_places=7,
+                                    null=True)  # In decimal degrees. Gives ~10 mm resolution.
+
     # Foreign keys
     sensors = models.ManyToManyField(Sensor, through="StationSensorLink", related_name="stations")
 
@@ -199,10 +204,12 @@ class Reading(models.Model):
 
     FROM_GOES = "G"
     FROM_DEVICE_LOG = "L"
+    FROM_BOTH = "B"
 
     DATA_SOURCE_CHOICES = (
         (FROM_GOES, "GOES satellite message"),
         (FROM_DEVICE_LOG, "Station data log"),
+        (FROM_BOTH, "Both satellite message and log")
     )
 
     def decimal_value(self):
@@ -328,6 +335,8 @@ class Message(models.Model):
         ("XL", "Sioux Falls, LRIT; USGS EROS"),
         ("RL", "Reston, LRIT; Reston, Virginia"),
         ("FF", "Unknown 1"),
+        ("N1", "Unknown 2"),
+        ("N2", "Unknown 3"),
     )
 
     def message_content(self):
